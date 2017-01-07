@@ -1,0 +1,253 @@
+package com.saidian.web.Btiem;
+
+import com.saidian.bean.ResultBean;
+import com.saidian.config.AccessServices;
+import com.saidian.utils.HttpResultUtil;
+import com.saidian.utils.HttpUtil;
+import com.saidian.web.bean.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Administrator on 2017/1/5.
+ */
+@Service
+public class BTiemService {
+
+    private static String MER_LISTS = "mer/lists";
+
+    private static String MER_GET_ITEM_LIST = "mer/getMerItemList";
+
+    private static String MER_GET_MERCHANDISE_DETAIL = "mer/getMerchandiseDetail";
+
+    private static String ITEM_SHOW_BOOK_DAYS = "item/showBookDays";
+
+    private static String ITEM_VALID_PRICE_TIME = "mer/getValidPriceTime";
+
+
+    /**
+     * 根据卡种id 获取商品信息（运动类型）
+     *
+     * @param card_type_id
+     * @return
+     * @throws Exception
+     */
+    public ResultBean getGoodsByCardId(String card_type_id) throws Exception {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("card_type_id", card_type_id);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_LISTS, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<GoodsType> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            List<GoodsType> lists = new ArrayList<GoodsType>();
+            JSONObject resultJsonObject = new JSONObject(resultBean.getData());
+            for (String key : resultJsonObject.keySet()) {
+                GoodsType goods = new GoodsType();
+                goods.setId(key);
+                JSONObject goodsJsonObject = resultJsonObject.getJSONObject(key);
+                goods.setMerid(goodsJsonObject.getString("merid"));
+                goods.setName(goodsJsonObject.getString("name"));
+                goods.setCid(goodsJsonObject.getString("cid"));
+                goods.setAlias(goodsJsonObject.getString("alias"));
+                goods.setImgurl(goodsJsonObject.getString("imgurl"));
+                lists.add(goods);
+            }
+            resultBean.setLists(lists);
+        }
+        return resultBean;
+    }
+
+    /**
+     * 获取商品明细列表
+     *
+     * @param merid        商品ID
+     * @param mer_item_ids 商品明细ids(多个用逗号分隔)
+     * @param mer_price_id 商品价格ID
+     * @param city         城市ID
+     * @param q            关键字--搜索
+     * @param card_type_id 卡种id（必填）
+     * @param radius       距离
+     * @param longitude    经度
+     * @param latitude     纬度
+     * @param sort         距离排序
+     * @param price_sort   价格排序
+     * @param page         页数
+     * @param pagesize     页大小
+     * @param district     区域选
+     * @return
+     */
+    public ResultBean getMerItemList(String merid, String mer_item_ids, String mer_price_id, String city, String q, String card_type_id,
+                                     String radius, String longitude, String latitude, String sort, String price_sort, int page,
+                                     int pagesize, int district) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("merid", merid);
+        jsonObject.put("mer_item_ids", mer_item_ids);
+        jsonObject.put("mer_price_id", mer_price_id);
+        jsonObject.put("city", city);
+        jsonObject.put("q", q);
+        jsonObject.put("card_type_id", card_type_id);
+        jsonObject.put("radius", radius);
+        jsonObject.put("longitude", longitude);
+        jsonObject.put("latitude", latitude);
+        jsonObject.put("sort", sort);
+        jsonObject.put("price_sort", price_sort);
+        jsonObject.put("page", page);
+        jsonObject.put("pagesize", pagesize);
+        jsonObject.put("district", district);
+
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_GET_ITEM_LIST, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<GoogDetail> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            List<GoogDetail> lists = new ArrayList<GoogDetail>();
+            JSONObject resultJsonObject = new JSONObject(resultBean.getData());
+
+            resultBean.setPage(resultJsonObject.getInt("page"));
+            resultBean.setPageSize(resultJsonObject.getInt("pageSize"));
+            resultBean.setTotal(resultJsonObject.getInt("total"));
+            resultBean.setTotalPage(resultJsonObject.getInt("totalPage"));
+
+            JSONObject items = resultJsonObject.getJSONObject("items");
+
+            for (String key : items.keySet()) {
+                GoogDetail googDetail = new GoogDetail();
+                googDetail.setId(key);
+                JSONObject goodDetailJsonObject = items.getJSONObject(key);
+                HttpResultUtil.item2GoodDetail(googDetail, goodDetailJsonObject);
+                lists.add(googDetail);
+            }
+            resultBean.setLists(lists);
+        }
+        return resultBean;
+    }
+
+    public ResultBean getMerchandiseDetail(String merid) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("merid", merid);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_GET_MERCHANDISE_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<GoodsInfo> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJsonObject = new JSONObject(resultBean.getData());
+
+            GoodsInfo goodsInfo = new GoodsInfo();
+
+            JSONObject basicInfoJsonObject = dataJsonObject.getJSONObject("basicInfo");
+
+            GoodsInfoBasicInfo goodsInfoBasicInfo = new GoodsInfoBasicInfo();
+            goodsInfoBasicInfo.setMerid(basicInfoJsonObject.getDouble("merid"));
+            goodsInfoBasicInfo.setName(basicInfoJsonObject.getString("name"));
+            goodsInfoBasicInfo.setOrder_process_rules(basicInfoJsonObject.getDouble("order_process_rules"));
+            goodsInfoBasicInfo.setBook_rules(basicInfoJsonObject.getDouble("book_rules"));
+            goodsInfoBasicInfo.setIs_refund_rules(basicInfoJsonObject.getDouble("is_refund_rules"));
+            goodsInfoBasicInfo.setRefund_rules_hour(basicInfoJsonObject.getDouble("refund_rules_hour"));
+            goodsInfoBasicInfo.setRefund_rules(basicInfoJsonObject.getString("refund_rules"));
+            goodsInfoBasicInfo.setStatus(basicInfoJsonObject.getDouble("status"));
+            goodsInfoBasicInfo.setStaff_id(basicInfoJsonObject.getDouble("staff_id"));
+            goodsInfoBasicInfo.setUpdate_time(basicInfoJsonObject.getString("update_time"));
+            goodsInfoBasicInfo.setCreate_time(basicInfoJsonObject.getString("create_time"));
+
+            goodsInfo.setGoodsInfoBasicInfo(goodsInfoBasicInfo);
+
+            JSONArray priceRulesJSONArray = dataJsonObject.getJSONArray("priceRules");
+            int length = priceRulesJSONArray.length();
+            List<GoodsInfoPriceRule> priceRules = new ArrayList<GoodsInfoPriceRule>();
+
+            for (int i = 0; i < length; i++) {
+                JSONObject priceRuleJSONObject = priceRulesJSONArray.getJSONObject(i);
+
+                GoodsInfoPriceRule goodsInfoPriceRule = new GoodsInfoPriceRule();
+                goodsInfoPriceRule.setMer_price_id(priceRuleJSONObject.getString("mer_price_id"));
+                goodsInfoPriceRule.setMerid(priceRuleJSONObject.getString("merid"));
+                goodsInfoPriceRule.setName(priceRuleJSONObject.getString("name"));
+                goodsInfoPriceRule.setPrice_id(priceRuleJSONObject.getString("price_id"));
+                goodsInfoPriceRule.setOperate(priceRuleJSONObject.getString("operate"));
+                goodsInfoPriceRule.setNumber(priceRuleJSONObject.getString("number"));
+                goodsInfoPriceRule.setUnit(priceRuleJSONObject.getString("unit"));
+
+                priceRules.add(goodsInfoPriceRule);
+            }
+            goodsInfo.setPriceRules(priceRules);
+
+            JSONArray itemsJSONArray = dataJsonObject.getJSONArray("items");
+            length = itemsJSONArray.length();
+            List<GoogDetail> googDetails = new ArrayList<GoogDetail>();
+
+            for (int i = 0; i < length; i++) {
+                JSONObject priceRuleJSONObject = itemsJSONArray.getJSONObject(i);
+                GoogDetail googDetail = new GoogDetail();
+                HttpResultUtil.item2GoodDetail(googDetail, priceRuleJSONObject);
+                googDetails.add(googDetail);
+            }
+            goodsInfo.setGoogDetails(googDetails);
+
+            resultBean.setObject(goodsInfo);
+        }
+        return resultBean;
+    }
+
+
+    /**
+     * @param mer_item_id 商品明细ID
+     *                    number 日期数量 否(默认7)
+     * @return
+     */
+    public ResultBean showBookDays(String mer_item_id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_SHOW_BOOK_DAYS, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJsonObject = new JSONObject(resultBean.getData());
+            List<BookDay> bookDays = new ArrayList<BookDay>();
+            for (String key : dataJsonObject.keySet()) {
+                BookDay bookDay = new BookDay();
+                bookDay.setDay(dataJsonObject.getJSONObject(key).getString("day"));
+                bookDay.setStatus(dataJsonObject.getJSONObject(key).getInt("status"));
+                bookDays.add(bookDay);
+            }
+            resultBean.setLists(bookDays);
+        }
+        return resultBean;
+    }
+
+    /**
+     * 时段型获取报价时段
+     *
+     * @param mer_item_id  商品明细ID
+     * @param card_type_id 卡种ID
+     * @param date         日期
+     * @return
+     * @throws Exception
+     */
+    public ResultBean getValidPriceTime(String mer_item_id, String card_type_id, String date) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+        jsonObject.put("card_type_id", card_type_id);
+        jsonObject.put("date", date);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_VALID_PRICE_TIME, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJsonObject = new JSONObject(resultBean.getData());
+            List<BookDay> bookDays = new ArrayList<BookDay>();
+            for (String key : dataJsonObject.keySet()) {
+                BookDay bookDay = new BookDay();
+                bookDay.setDay(dataJsonObject.getJSONObject(key).getString("day"));
+                bookDay.setStatus(dataJsonObject.getJSONObject(key).getInt("status"));
+                bookDays.add(bookDay);
+            }
+            resultBean.setLists(bookDays);
+        }
+        return resultBean;
+
+    }
+
+
+}

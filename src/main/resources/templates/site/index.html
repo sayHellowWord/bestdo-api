@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>场馆列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!--忽略页面中的数字识别为电话号码-->
+    <meta name="format-detection" content="telephone=no"/>
+    <!--忽略页面中的邮箱格式为邮箱-->
+    <meta name="format-detection" content="email=no"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+</head>
+
+<body>
+<!--头部公用-->
+<div id="header">
+    <div class="header">
+        <div class="headerCont box">
+            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerC boxflex"><p class="font17">场馆预订</p></div>
+            <div class="headerR"></div>
+        </div>
+    </div>
+</div>
+<div class="chooseTab www25 font13">
+    <div class="chooseTabCont">
+        <a href="javascript:void(0)" data-tab="0">
+            运动类型<span></span>
+        </a>
+        <a href="javascript:void(0)" data-tab="1">
+            行政区<span></span>
+        </a>
+        <a href="javascript:void(0)" data-tab="2">
+            距离<span></span>
+        </a>
+    </div>
+</div>
+<!--区域-->
+<div class="slidemenu">
+    <div class="slidebg"></div>
+    <div class="slidemenuCont font14">
+        <a href="javascript:void(0)" class="on">全部</a>
+        <a href="javascript:void(0)" th:each="goodsType: ${goodsTypes}" th:text="${goodsType.name}"
+           th:attr="data-id=${goodsType.id}">全部</a>
+    </div>
+</div>
+<!--排序-->
+<div class="slidemenu">
+    <div class="slidebg"></div>
+    <div class="slidemenuCont font14">
+        <a href="javascript:void(0)" class="on">不限距离</a>
+        <a href="javascript:void(0)">距离最近</a>
+        <a href="javascript:void(0)">优惠最多</a>
+        <a href="javascript:void(0)">附近5km</a>
+        <a href="javascript:void(0)">附近10km</a>
+    </div>
+</div>
+<!--距离-->
+<div class="slidemenu">
+    <div class="slidebg"></div>
+    <div class="slidemenuCont font14">
+        <a href="javascript:void(0)" class="on">不限距离</a>
+        <a href="javascript:void(0)">距离最近</a>
+        <a href="javascript:void(0)">优惠最多</a>
+        <a href="javascript:void(0)">附近5km</a>
+        <a href="javascript:void(0)">附近10km</a>
+    </div>
+</div>
+<!--场馆列表-->
+<div class="wrapper">
+    <!--场馆列表-->
+    <div class="venueslist">
+        <ul class="list">
+            <li class="box vip" th:each="googDetail : ${goodsDetailResultBean.lists}">
+                <div class="venuesimg"><img th:src="${googDetail.thumb}"  src="../images/2.png"/></div>
+                <div class="venuesdetial boxflex">
+                    <h2 class="font16" th:text="${googDetail.name}">蓝岛大厦健身所</h2>
+                    <div class="price font12">
+                        <span class="font18" th:text="${googDetail.min_price}">￥140</span>起<i  th:text="${googDetail.price}">门市价￥180</i>
+                    </div>
+                    <div class="address font12">
+                        <span class="d">1.0km</span>
+                        <span class="q">海淀区</span>
+                        <span class="p">西直门</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="load-container font12">
+            <div class="loader"></div>
+            数据加载中...
+        </div>
+    </div>
+    <!--场馆列表结束-->
+    <div class="empty">
+        <div class="icon"></div>
+        <p class="font14">暂无相关相关场地信息</p>
+    </div>
+</div>
+<!--城市地位-->
+
+<div class="loading">
+    <div class="loadCont"></div>
+    <div class="loadBg"></div>
+</div>
+<!--地图图标-->
+<script language="javascript" type="text/javascript" src="../js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="../js/bestdo.js"></script>
+<script language="javascript" type="text/javascript">
+    var xmlhttp = new XMLHttpRequest();
+    if (xmlhttp.readyState < 4 || xmlhttp.status != 200) {
+        $(".loading").hide();
+    }
+
+    $(function () {
+
+        document.onreadystatechange = completeLoading;
+        function completeLoading() {
+            if (document.readyState == "complete") {
+                $(".loading").hide();
+            }
+        }
+
+        /*筛选条件*/
+        $(".chooseTab a").tabEve({
+            cls: ".slidemenu",
+            selected: "on",
+            empty: "gray",
+            typing: "slidemenu"
+        })
+
+
+    });
+</script>
+</body>
+</html>

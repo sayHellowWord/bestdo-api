@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<title>首页</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<!--忽略页面中的数字识别为电话号码-->  
+<meta name="format-detection" content="telephone=no" />
+<!--忽略页面中的邮箱格式为邮箱-->
+<meta name="format-detection" content="email=no"/>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+<!--搜索-->
+<div class="searchform">
+	<div class="searchformcont box">
+		<div class="citychoose box font14">
+			<span class="txt">北京</span>
+			<span class="icon iconfont font16"></span>
+		</div>
+		<div class="searchinput boxflex">
+			<input type="text" placeholder="输入场馆名称、场地名称" class="font14" />
+		</div>
+	</div>
+</div>
+<!--banner-->
+<div class="img"></div>
+<!--运动项目-->
+<div class="sportitem font13">
+	<div class="sportitemcont">
+		<div><a href="#" class="i1"><span class="iconfont font16"></span>网球</a></div>
+		<div><a href="#" class="i2"><span class="iconfont font16"></span>羽毛球</a></div>
+		<div><a href="#" class="i3"><span class="iconfont font16"></span>游泳</a></div>
+		<div><a href="#" class="i4"><span class="iconfont font16"></span>高尔夫</a></div>
+		<div><a href="#" class="i5"><span class="iconfont font16"></span>练习场</a></div>
+		<div><a href="#" class="i6"><span class="iconfont font16"></span>健身</a></div>	
+	</div>
+</div>
+<!--推荐场地-->
+<div class="recommend">
+	<h1 class="font15">推荐场地</h1>
+	<div class="venueslist">
+		<ul>
+			<li class="box vip">
+				<div class="venuesimg"><img src="images/2.png" /></div>
+				<div class="venuesdetial boxflex">
+					<h2 class="font16">蓝岛大厦健身所 </h2>
+					<div class="price font12">
+						<span class="font18">￥140</span>起<i>门市价￥180</i>
+					</div>
+					<div class="address font12">
+						<span class="d">1.0km</span>
+						<span class="q">海淀区</span>
+						<span class="p">西直门</span>
+					</div>
+				</div>
+			</li>
+			<li class="box vip">
+				<div class="venuesimg"><img src="images/2.png" /></div>
+				<div class="venuesdetial boxflex">
+					<h2 class="font16">蓝岛大厦健身所 </h2>
+					<div class="price font12">
+						<span class="font18">￥140</span>起<i>门市价￥180</i>
+					</div>
+					<div class="address font12">
+						<span class="d">1.0km</span>
+						<span class="q">海淀区</span>
+						<span class="p">西直门</span>
+					</div>
+				</div>
+			</li>
+			<li class="box vip">
+				<div class="venuesimg"><img src="images/2.png" /></div>
+				<div class="venuesdetial boxflex">
+					<h2 class="font16">蓝岛大厦健身所 </h2>
+					<div class="price font12">
+						<span class="font18">￥140</span>起<i>门市价￥180</i>
+					</div>
+					<div class="address font12">
+						<span class="d">1.0km</span>
+						<span class="q">海淀区</span>
+						<span class="p">西直门</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!--场馆列表结束-->
+	<div class="empty empty2">
+		<div class="icon"></div>
+		<p class="font14">所选城市下无相关推荐场地</p>
+	</div>
+</div>
+<!--导航-->
+<div id="nav">
+	<div class="nav font12">
+		<div class="navCont box">
+			<a href="javascript:void(0)" class="boxflex on"><span></span>预订</a>
+			<a href="javascript:void(0)" class="boxflex"><span></span>收藏</a>
+			<a href="javascript:void(0)" class="boxflex"><span></span>我的</a>
+		</div>
+	</div>
+</div>
+<script language="javascript" type="text/javascript" src="../js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="../js/myproject.js"></script>
+<script>
+$(function(){
+	$("#nav").clearfix();
+})
+</script>
+
+</body>
+</html>

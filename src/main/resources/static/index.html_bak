@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/handlebars-v4.0.5.js"></script>
+
+</head>
+<body>
+<div id="result">
+123123
+</div>
+</body>
+</html>
