@@ -48,14 +48,14 @@ public class HttpUtil {
      * @return
      * @throws Exception
      */
-    public static String doGet(String url, String data) throws Exception {
+    public static String doGet(String url, String data,String key) throws Exception {
         HttpClient client = new HttpClient();
         Request request = new Request();
         request.setUrl(url);
         request.getParameters().add(new String[]{"serviceId", HttpParams.serviceId});
         request.getParameters().add(new String[]{"serviceVersion", HttpParams.serviceVersion});
         request.getParameters().add(new String[]{"serviceType", HttpParams.serviceType});
-        data = new String(Base64.encodeBase64(DESedeUtil.encryptMode(DESedeUtil.Key, data.getBytes())));
+        data = new String(Base64.encodeBase64(DESedeUtil.encryptMode(key.getBytes(), data.getBytes())));
         request.getParameters().add(new String[]{"data", new String(data)});
         Response response = new Response();
 

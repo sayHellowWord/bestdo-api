@@ -5,10 +5,12 @@ import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
 import com.saidian.web.bean.GoodsType;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class VenueBookingController {
         List<GoodsType> goodsTypes = goodsResultBean.getLists();
 
         ResultBean goodsDetailResultBean = bTiemService.getMerItemList("", "", "", "", "", HttpParams.cardId,
-                "", "", "", "", "", 1, 10, 0);
+                "", "", "", "", "", 1, 2, 0);
 
         //讲接口返回jsondata 置空
         goodsDetailResultBean.setData(StringUtils.EMPTY);
@@ -69,17 +71,40 @@ public class VenueBookingController {
      * @param district     区域选
      * @return
      */
+    @ResponseBody
+    @RequestMapping(value = "search")
     public Object search(String merid, String mer_item_ids, String mer_price_id, String city, String q, String card_type_id,
                          String radius, String longitude, String latitude, String sort, String price_sort, Integer page,
                          Integer pagesize, Integer district) throws Exception {
 
         //商品列表
-        ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, mer_item_ids, mer_price_id, city, q, card_type_id,
+      /*  ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, mer_item_ids, mer_price_id, city, q, card_type_id,
                 radius, longitude, latitude, sort, price_sort, null == page ? 1 : page, null == pagesize ? 10 : pagesize, district);
+*/
+        ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, "", "", "", "", HttpParams.cardId,
+                "", "", "", "", "", null == page ? 1 : page, 2, 0);
 
+        //讲接口返回jsondata 置空
+        goodsDetailResultBean.setData(StringUtils.EMPTY);
 
         return goodsDetailResultBean;
     }
 
+
+    @RequestMapping(value = "toDetail")
+    public String toDetail(String mer_item_id, ModelMap map) throws Exception {
+
+     /*   if (Strings.isNullOrEmpty(mer_item_id)) {
+            map.addAttribute("detail", ResultBean.getErrorResult("商品明细ID不能为空"));
+        } else {*/
+        String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
+        JSONObject dataJsonObject = new JSONObject(detailResultBean);
+
+        //讲接口返回jsondata 置空
+        //detailResultBean.setData(StringUtils.EMPTY);
+        map.addAttribute("detail", new JSONObject(dataJsonObject.getString("data")));
+      /*  }*/
+        return "site/detail";
+    }
 
 }

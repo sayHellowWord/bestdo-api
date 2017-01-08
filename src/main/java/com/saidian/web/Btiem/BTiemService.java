@@ -26,7 +26,9 @@ public class BTiemService {
 
     private static String ITEM_SHOW_BOOK_DAYS = "item/showBookDays";
 
-    private static String ITEM_VALID_PRICE_TIME = "mer/getValidPriceTime";
+    private static String MER_VALID_PRICE_TIME = "mer/getValidPriceTime";
+
+    private static String ITEM_GET_MERCHANDISE_DETAIL = "item/getMerchandiseItemInfo";
 
 
     /**
@@ -126,7 +128,13 @@ public class BTiemService {
         return resultBean;
     }
 
-    public ResultBean getMerchandiseDetail(String merid) throws Exception {
+    /**
+     *  获取商品信息
+     * @param merid 商品ID
+     * @return
+     * @throws Exception
+     */
+    public ResultBean merGetMerchandiseDetail(String merid) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("merid", merid);
 
@@ -232,7 +240,7 @@ public class BTiemService {
         jsonObject.put("card_type_id", card_type_id);
         jsonObject.put("date", date);
 
-        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_VALID_PRICE_TIME, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_VALID_PRICE_TIME, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJsonObject = new JSONObject(resultBean.getData());
@@ -249,5 +257,22 @@ public class BTiemService {
 
     }
 
+
+    /**
+     *获取商品明细的基本信息(商品、商品明细、场地、场馆)
+     * @param mer_item_id 商品明细ID
+     * @return
+     */
+    public String itemGetMerchandiseItemInfo(String mer_item_id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_GET_MERCHANDISE_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+       /* ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            System.out.println(resultBean.getData());
+        }*/
+        return result;
+    }
 
 }

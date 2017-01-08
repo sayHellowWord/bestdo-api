@@ -10,6 +10,8 @@ public class HttpParams {
      */
     public static String url;
 
+    public static String key;
+
     public static String serviceId;
 
     public static String serviceVersion;

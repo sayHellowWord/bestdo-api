@@ -6,9 +6,9 @@ package com.saidian.web.bean;
 public class GoogDetail {
 
     private String id;
-    private double mer_item_id;
+    private String mer_item_id;
     private double mer_price_id;
-    private double merid;
+    private Integer merid;
     private double cid;
     private String name;
     private String address;
@@ -63,11 +63,11 @@ public class GoogDetail {
         this.id = id;
     }
 
-    public double getMer_item_id() {
+    public String getMer_item_id() {
         return mer_item_id;
     }
 
-    public void setMer_item_id(double mer_item_id) {
+    public void setMer_item_id(String mer_item_id) {
         this.mer_item_id = mer_item_id;
     }
 
@@ -79,11 +79,11 @@ public class GoogDetail {
         this.mer_price_id = mer_price_id;
     }
 
-    public double getMerid() {
+    public Integer getMerid() {
         return merid;
     }
 
-    public void setMerid(double merid) {
+    public void setMerid(Integer merid) {
         this.merid = merid;
     }
 

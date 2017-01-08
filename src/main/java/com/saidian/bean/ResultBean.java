@@ -31,6 +31,13 @@ public class ResultBean<T> {
 
     private List<T> lists;
 
+    public static ResultBean getErrorResult(String msg){
+        ResultBean resultBean = new ResultBean();
+        resultBean.setCode(-1);
+        resultBean.setMsg(msg);
+        return resultBean;
+    }
+
 
     public int getCode() {
         return code;

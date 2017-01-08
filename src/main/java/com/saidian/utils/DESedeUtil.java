@@ -1,13 +1,11 @@
 package com.saidian.utils;
 
-import java.security.Security;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DESedeUtil {
-    public static final byte[] Key = "thDbctWsPaW9iyb1VSMfOE72".getBytes();
+    // public static final byte[] Key = "thDbctWsPaW9iyb1VSMfOE72".getBytes();
     private static final String Algorithm = "DESede";  //定义 加密算法,可用 DES,DESede,Blowfish
 
     // 加密字符串
@@ -44,14 +42,4 @@ public class DESedeUtil {
         return null;
     }
 
-    public static void main(String[] args) { // 添加新安全算法,如果用JCE就要把它添加进去
-        Security.addProvider(new com.sun.crypto.provider.SunJCE());
-        final byte[] keyBytes = Key;    //8字节的密钥
-        String szSrc = "This is a 3DES test.";
-        System.out.println("加密前的字符串:" + szSrc);
-        byte[] encoded = encryptMode(keyBytes, szSrc.getBytes());
-        System.out.println("加密后的字符串:" + new String(encoded));
-        byte[] srcBytes = decryptMode(keyBytes, encoded);
-        System.out.println("解密后的字符串:" + (new String(srcBytes)));
-    }
 }

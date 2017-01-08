@@ -27,13 +27,13 @@ public class HttpResultUtil {
 
     public static void item2GoodDetail(GoogDetail googDetail, JSONObject goodDetailJsonObject) {
         if (goodDetailJsonObject.has("mer_item_id")) {
-            googDetail.setMer_item_id(goodDetailJsonObject.getDouble("mer_item_id"));
+            googDetail.setMer_item_id(goodDetailJsonObject.get("mer_item_id").toString());
         }
         if (goodDetailJsonObject.has("mer_price_id")) {
             googDetail.setMer_price_id(goodDetailJsonObject.getDouble("mer_price_id"));
         }
         if (goodDetailJsonObject.has("merid")) {
-            googDetail.setMerid(goodDetailJsonObject.getDouble("merid"));
+            googDetail.setMerid(goodDetailJsonObject.getInt("merid"));
         }
         if (goodDetailJsonObject.has("cid")) {
             googDetail.setCid(goodDetailJsonObject.getDouble("cid"));

@@ -37,18 +37,18 @@ public class ServiceInit implements CommandLineRunner {
         HttpParams.serviceId = env.getProperty("service.base.serviceId");
         HttpParams.serviceVersion = env.getProperty("service.base.serviceVersion");
         HttpParams.serviceType = env.getProperty("service.base.serviceType");
+        HttpParams.key = env.getProperty("service.base.key");
 
         //卡种id
         HttpParams.cardId = env.getProperty("service.card.id");
 
-
         //城市信息
         HttpParams.cityId = env.getProperty("server.city.id");
 
-        //初始化可接入服务
+        //初始化可接入服务 todo
         String data = "{'internalIp':'10.14.22.65','internalPort':'8080','externalIp':'10.14.22.65','externalPort':'8080' }";
         String AUTH_URL = "config/v1/api/service/getKeys";
-        ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data, new String(DESedeUtil.Key)));
+        ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data,  HttpParams.key));
         JSONObject jsonObject = new JSONObject(resultBean.getData());
         Map accessServices = new HashMap();
         if (jsonObject.has("list")) {

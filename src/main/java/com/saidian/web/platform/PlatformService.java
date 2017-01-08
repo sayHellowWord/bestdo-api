@@ -1,6 +1,12 @@
 package com.saidian.web.platform;
 
+import com.saidian.bean.ResultBean;
+import com.saidian.config.AccessServices;
+import com.saidian.config.HttpParams;
+import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
+import com.saidian.web.bean.GoogDetail;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,41 +15,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlatformService {
 
-    private String URL_SERVICE_MODULE = "config/v1/api/service/getKeys";
+    private String REGION_GET_CHILDREN = "region/api/getChildren";
 
+   /* public ResultBean regionGetChildren(String region_id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("region_id", region_id);
 
-    public void getServiceModule() throws Exception {
-        String data = "{'internalIp':'10.14.22.65','internalPort':'8080','externalIp':'10.14.22.65','externalPort':'8080' }";
-        //String result = HttpUtil.doPost(URL_SERVICE_MODULE, data);
+        String result = HttpUtil.doPost(HttpParams.url + REGION_GET_CHILDREN, jsonObject.toString(), HttpParams.key);
 
+        System.out.println(result);
 
-    }
-
-
-    /**
-     * unicode 转字符串
-     */
-    public static String unicode2String(String unicode) {
-
-        StringBuffer string = new StringBuffer();
-        String[] hex = unicode.split("\\\\u");
-        for (int i = 1; i < hex.length; i++) {
-            // 转换出每一个代码点
-            int data = Integer.parseInt(hex[i], 16);
-            // 追加成string
-            string.append((char) data);
+        ResultBean<GoogDetail> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            System.out.println(resultBean.getData());
         }
-        return string.toString();
-    }
-
-    public static void main(String[] args) {
-        String unicode = "\\u65e5\\u671f\\u9519\\u8bef\\u4e0d\\u53ef\\u9884\\u8ba2";
-        String string = unicode2String(unicode) ;
-
-        System.out.println(unicode);
-
-        System.out.println(string);
-
-    }
+        return resultBean;
+    }*/
 
 }

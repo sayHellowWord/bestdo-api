@@ -32,7 +32,7 @@
         <!-- ============   spring mvc begin  ============  -->
 
         <!-- ============   模板引擎   Thymeleaf begin  ============  -->
-        <dependency>
+      <!--  <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
@@ -41,7 +41,14 @@
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
             <version>1.9.22</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+            <version>1.4.1.RELEASE</version>
         </dependency>
+
         <!-- ============   模板引擎   Thymeleaf end  ============  -->
 
         <!-- ============   http请求工具类 begin  ============  -->
