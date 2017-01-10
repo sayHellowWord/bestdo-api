@@ -1,5 +1,7 @@
 package com.saidian.web.controller;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableBiMap;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
@@ -12,7 +14,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/1/7.
@@ -40,7 +44,7 @@ public class VenueBookingController {
         List<GoodsType> goodsTypes = goodsResultBean.getLists();
 
         ResultBean goodsDetailResultBean = bTiemService.getMerItemList("", "", "", "", "", HttpParams.cardId,
-                "", "", "", "", "", 1, 2, 0);
+                "", "", "", "", "", HttpParams.DEFAULT_PAGE, HttpParams.DEFAULT_PAGE_SIZE, 0);
 
         //讲接口返回jsondata 置空
         goodsDetailResultBean.setData(StringUtils.EMPTY);
@@ -77,12 +81,8 @@ public class VenueBookingController {
                          String radius, String longitude, String latitude, String sort, String price_sort, Integer page,
                          Integer pagesize, Integer district) throws Exception {
 
-        //商品列表
-      /*  ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, mer_item_ids, mer_price_id, city, q, card_type_id,
-                radius, longitude, latitude, sort, price_sort, null == page ? 1 : page, null == pagesize ? 10 : pagesize, district);
-*/
         ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, "", "", "", "", HttpParams.cardId,
-                "", "", "", "", "", null == page ? 1 : page, 2, 0);
+                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
 
         //讲接口返回jsondata 置空
         goodsDetailResultBean.setData(StringUtils.EMPTY);
@@ -92,19 +92,47 @@ public class VenueBookingController {
 
 
     @RequestMapping(value = "toDetail")
-    public String toDetail(String mer_item_id, ModelMap map) throws Exception {
+    public String toDetail(String mer_item_id, String mer_price_id, ModelMap map) throws Exception {
 
-     /*   if (Strings.isNullOrEmpty(mer_item_id)) {
-            map.addAttribute("detail", ResultBean.getErrorResult("商品明细ID不能为空"));
-        } else {*/
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
 
-        //讲接口返回jsondata 置空
-        //detailResultBean.setData(StringUtils.EMPTY);
-        map.addAttribute("detail", new JSONObject(dataJsonObject.getString("data")));
-      /*  }*/
+        dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
+
+        map.addAttribute("detail", dataJsonObject);
+
+        //场馆服务
+        JSONObject stadium = dataJsonObject.getJSONObject("venue").getJSONObject("stadium");
+        if (stadium.has("stadium_services")) {
+            List<Map> stadium_services = new ArrayList<Map>();
+            JSONObject stadiumServices = stadium.getJSONObject("stadium_services");
+            for (String key : stadiumServices.keySet()) {
+                stadium_services.add(ImmutableBiMap.of("name", stadiumServices.getJSONObject(key).getString("name"), "stadium_service_id", stadiumServices.getJSONObject(key).getString("stadium_service_id")));
+            }
+            map.addAttribute("stadium_services", stadium_services);
+        }
+
+        map.addAttribute("mer_item_id", mer_item_id);
+        map.addAttribute("mer_price_id", Strings.isNullOrEmpty(mer_price_id) ? "" : mer_price_id);
+
         return "site/detail";
     }
+
+    /**
+     * 获取八天价格汇总以及库存汇总(乒羽篮网）
+     *
+     * @param mer_item_id
+     * @param mer_price_id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "priceAndInventorySummaryCommon")
+    public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id) throws Exception {
+
+        System.out.println("================    获取八天价格汇总以及库存汇总(乒羽篮网）    =======================");
+        ResultBean resultBean = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
+        return bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
+    }
+
 
 }

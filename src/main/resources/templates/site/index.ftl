@@ -71,7 +71,7 @@
     <div class="venueslist">
         <ul id="googDetail-list" class="list">
         <#list goodsDetailResultBean.lists as googDetail>
-            <li class="box vip" data-mer_item_id="${googDetail.mer_item_id}">
+            <li class="box vip" data-mer_item_id="${googDetail.mer_item_id}" data-mer_price_id="${googDetail.mer_price_id}" >
                 <div class="venuesimg"><img src="${googDetail.thumb}"/></div>
                 <div class="venuesdetial boxflex">
                     <h2 class="font16">${googDetail.name}</h2>
@@ -119,18 +119,6 @@
 <script>
     $(function () {
 
-        /*    var xmlhttp = new XMLHttpRequest();
-            if (xmlhttp.readyState < 4 || xmlhttp.status != 200) {
-                $(".loading").hide();
-            }
-    */
-        /*  document.onreadystatechange = completeLoading;
-          function completeLoading() {
-              if (document.readyState == "complete") {
-                  $(".loading").hide();
-              }
-          }*/
-
         /*筛选条件*/
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -141,6 +129,9 @@
 
         //筛选列表点击
         $(".slidemenu").on("click", "#sport-type > a,#administrative-area > a,#distance > a", function () {
+
+            alert($("#sport-type").find(".on").data("merid"));
+
             var merid = $("#sport-type").find(".on").data("merid");
             var radius = $("#distance").find(".on").data("value");
             var longitude;
@@ -150,15 +141,15 @@
             var page = 1;
             var pagesize = 10;
             var district = $("#administrative-area").find(".on").data("value");
+            $("#googDetail-list").html('');
             venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
         });
 
         //文章详情点击
         $("#googDetail-list").on("click", "li", function () {
-           // var regExp = new RegExp(",","g");
-//            ).replace(regExp, "")
             var merid = $(this).data("mer_item_id");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid;
+            var mer_price_id = $(this).data("mer_price_id");
+            window.location.href = "/site/toDetail?mer_item_id=" + merid +"&mer_price_id="+mer_price_id;
         });
 
     });
@@ -166,6 +157,9 @@
 
     //场馆列表搜索
     function venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
+
+        $(".load-container").show();
+
         $.ajax({
             type: "POST",
             url: "../site/search",
@@ -182,9 +176,13 @@
             },
             success: function (result) {
                 if (200 === result.code) {
+
                     var source = $("#googDetail-template").html();
                     var template = Handlebars.compile(source);
                     var html = template(result.lists);
+
+                    $(".load-container").hide();
+
                     $("#googDetail-list").append(html);
                 }
             }
@@ -197,7 +195,7 @@
 
 <script id="googDetail-template" type="text/x-handlebars-template">
     {{#each this}}
-    <li class="box vip" data-mer_item_id="{{mer_item_id}} ">
+    <li class="box vip" data-mer_item_id="{{mer_item_id}}" data-mer_price_id="{{mer_price_id}} ">
         <div class="venuesimg"><img src="{{thumb}}"/></div>
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>

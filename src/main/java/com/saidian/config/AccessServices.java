@@ -24,6 +24,12 @@ public class AccessServices {
     public static String B_TIEM_SERVICE_KEY;
 
 
+    //平台服务
+    public static String PLATFORM_SERVICE_URL;
+
+    public static String PLATFORM_SERVICE_KEY;
+
+
     /**
      * 初始化方法
      *
@@ -37,6 +43,9 @@ public class AccessServices {
 
         B_TIEM_SERVICE_URL = accessServices.get("65").getGoalServiceUrl() + "/";
         B_TIEM_SERVICE_KEY = accessServices.get("65").getSercertKey();
+
+        PLATFORM_SERVICE_URL = accessServices.get("55").getGoalServiceUrl() + "/";
+        PLATFORM_SERVICE_KEY = accessServices.get("55").getSercertKey();
 
     }
 

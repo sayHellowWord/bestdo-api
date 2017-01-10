@@ -19,7 +19,7 @@ public class BTiemController {
     @RequestMapping(value = "test")
     public ResultBean accountRegister() throws Exception {
 
-      //  return bTiemService.getGoodsByCardId(HttpParams.cardId);
+      bTiemService.getGoodsByCardId(HttpParams.cardId);
 
      /*   return bTiemService.getMerItemList("", "", "", "", "", HttpParams.cardId,
                 "", "", "", "", "", 1, 10, 0);
@@ -28,7 +28,11 @@ public class BTiemController {
 
         return bTiemService.showBookDays("10200031000009");*/
 
-        return bTiemService.getValidPriceTime("10200031000009","15","2017-01-08");
+       // return bTiemService.getValidPriceTime("10200031000009","15","2017-01-08");
+
+        return bTiemService.lists("","","","","","",
+                "","","","",1,10);
+
     }
 
 

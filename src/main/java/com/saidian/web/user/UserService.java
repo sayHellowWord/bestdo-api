@@ -25,6 +25,10 @@ public class UserService {
 
     private static String ACCOUNT_VALID_LOGIN_REGISTER = "uccore/v1/api/account/validLoginRegister";
 
+    private static String ACCOUNT_CHECK = "uccore/v1/api/account/checkAccount";//检查账户是否存在
+
+    private static String SECURITY_VERIFICATION_VALID = "uccore/v1/api/securityVerification/valid"; //验证接口仅验证
+
 
     /**
      * 普通用户注册 ok
@@ -46,13 +50,7 @@ public class UserService {
 
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_REGISTER, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
 
-        ResultBean resultBean = HttpResultUtil.result2Bean(result);
-
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        System.out.println(resultBean);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-
-        return resultBean;
+        return HttpResultUtil.result2Bean(result);
     }
 
     /**
@@ -61,24 +59,18 @@ public class UserService {
      * @param account
      * @param password
      */
-    public void accountLogin(String account, String password) throws Exception {
+    public ResultBean accountLogin(String account, String password) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("account", account);
         jsonObject.put("password", password);
-
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_LOGIN, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
-
-        ResultBean resultBean = HttpResultUtil.result2Bean(result);
-
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        System.out.println(resultBean);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-
+        return HttpResultUtil.result2Bean(result);
     }
 
 
     /**
      * 修改密码
+     *
      * @param uid
      * @param oldPassword
      * @param newPassword
@@ -99,12 +91,13 @@ public class UserService {
 
     /**
      * 找回密码
+     *
      * @param telephone
      * @param validId
      * @param validCode
      * @param newPassword
      */
-    public void setAccountFindPassword(String telephone,String validId,String validCode,String newPassword) throws Exception {
+    public ResultBean setAccountFindPassword(String telephone, String validId, String validCode, String newPassword) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("telephone", telephone);
         jsonObject.put("validId", validId);
@@ -113,14 +106,14 @@ public class UserService {
 
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_FIND_PASSWORD, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
         ResultBean resultBean = HttpResultUtil.result2Bean(result);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        System.out.println(resultBean);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
+        return resultBean;
     }
 
 
     /**
      * 获取验证码
+     *
      * @param uid
      * @param validType
      * @param account
@@ -128,7 +121,7 @@ public class UserService {
      * @param reqOrigin
      * @param smsHead
      */
-    public void securityVerificationSend(String uid,String validType,String account,String validDesc,String reqOrigin,String smsHead) throws Exception {
+    public ResultBean securityVerificationSend(String uid, String validType, String account, String validDesc, String reqOrigin, String smsHead) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
         jsonObject.put("validType", validType);
@@ -138,30 +131,57 @@ public class UserService {
         jsonObject.put("smsHead", smsHead);
 
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + SECURITY_VERIFICATION_SEND, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
-        ResultBean resultBean = HttpResultUtil.result2Bean(result);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        System.out.println(resultBean);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        return HttpResultUtil.result2Bean(result);
+
     }
 
 
     /**
-     *
      * @param telephone
      * @param validId
      * @param validCode
      */
-    public void accountValidLoginRegister(String telephone,String validId,String validCode) throws Exception {
+    public ResultBean accountValidLoginRegister(String telephone, String validId, String validCode) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("telephone", telephone);
         jsonObject.put("validId", validId);
         jsonObject.put("validCode", validCode);
 
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_VALID_LOGIN_REGISTER, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
-        ResultBean resultBean = HttpResultUtil.result2Bean(result);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        System.out.println(resultBean);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        return HttpResultUtil.result2Bean(result);
+    }
+
+
+    /**
+     * 检查账号是否可用
+     *
+     * @param account
+     * @return
+     */
+    public ResultBean checkAccount(String account) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("account", account);
+
+        String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_CHECK, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
+        return HttpResultUtil.result2Bean(result);
+    }
+
+    /**
+     *  验证接口仅验证
+     * @param account
+     * @param validId
+     * @param validCode
+     * @return
+     * @throws Exception
+     */
+    public ResultBean securityVerificationValid(String account,String validId,String validCode) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("account", account);
+        jsonObject.put("validId", validId);
+        jsonObject.put("validCode", validCode);
+
+        String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + SECURITY_VERIFICATION_VALID, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
+        return HttpResultUtil.result2Bean(result);
     }
 
 

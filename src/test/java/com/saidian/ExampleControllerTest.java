@@ -54,8 +54,8 @@ public class ExampleControllerTest {
 
     @Test
     public void btiemController() {
-        String result = restTemplate.getForObject("http://localhost:" + port + "/test", String.class);
-        //String result = restTemplate.getForObject("http://localhost:" + port + "/btiem/test", String.class);
+       // String result = restTemplate.getForObject("http://localhost:" + port + "/test", String.class);
+        String result = restTemplate.getForObject("http://localhost:" + port + "/login/fastloginVerificationSend?account=18591960682", String.class);
         // String result = restTemplate.getForObject("http://localhost:" + port + "/order/test", String.class);
         assertNotNull(result);
         System.out.println("*******************************************************");

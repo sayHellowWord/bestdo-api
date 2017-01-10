@@ -22,4 +22,10 @@ public class HttpParams {
 
     public static String cityId;
 
+
+    public static int DEFAULT_PAGE = 1;//默认分页-起始页码
+
+    public static int DEFAULT_PAGE_SIZE = 2;//默认分页-每页大小
+
+
 }

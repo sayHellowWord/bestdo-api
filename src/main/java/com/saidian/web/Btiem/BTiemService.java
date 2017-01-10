@@ -22,6 +22,9 @@ public class BTiemService {
 
     private static String MER_GET_ITEM_LIST = "mer/getMerItemList";
 
+  //http://test.weixin.bestdo.com/mer/lists?mer_id=1020457&latitude=39.929985&longitude=116.395645&city=52&sport=life&show_price_id=1845&default_price_id=1845&radius=10000&price_sort=&district=510
+   private static String LISTS = "mer/lists";
+
     private static String MER_GET_MERCHANDISE_DETAIL = "mer/getMerchandiseDetail";
 
     private static String ITEM_SHOW_BOOK_DAYS = "item/showBookDays";
@@ -30,6 +33,8 @@ public class BTiemService {
 
     private static String ITEM_GET_MERCHANDISE_DETAIL = "item/getMerchandiseItemInfo";
 
+    //获取八天价格汇总以及库存汇总(乒羽篮网）
+    private static String ITEM_PRICE_INVENTORY_SUMMARY_COMMON = "item/priceAndInventorySummaryCommon";
 
     /**
      * 根据卡种id 获取商品信息（运动类型）
@@ -127,6 +132,11 @@ public class BTiemService {
         }
         return resultBean;
     }
+
+
+
+
+
 
     /**
      *  获取商品信息
@@ -268,11 +278,64 @@ public class BTiemService {
         jsonObject.put("mer_item_id", mer_item_id);
 
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_GET_MERCHANDISE_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-       /* ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
-        if (200 == resultBean.getCode()) {
-            System.out.println(resultBean.getData());
-        }*/
+
         return result;
     }
+
+
+    /**
+     * ?mer_id=1020457&
+     * latitude=39.929985&longitude=116.395645&city=52&sport=life&show_price_id=1845&default_price_id=1845&radius=10000&price_sort=&district=510
+     * @return
+     */
+    public ResultBean lists(String mer_id,String latitude,String longitude,String city,String sport,String show_price_id,
+                            String default_price_id,String radius,String price_sort,String district, int page,
+                            int pagesize) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_id", mer_id);
+        jsonObject.put("latitude", latitude);
+        jsonObject.put("longitude", longitude);
+        jsonObject.put("city", city);
+        jsonObject.put("sport", sport);
+        jsonObject.put("show_price_id", show_price_id);
+        jsonObject.put("default_price_id", default_price_id);
+        jsonObject.put("radius", radius);
+        jsonObject.put("price_sort", price_sort);
+        jsonObject.put("district", district);
+
+        String result = HttpUtil.doPost(AccessServices.PLATFORM_SERVICE_URL + LISTS, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+
+        }
+        return resultBean;
+    }
+
+
+    /**
+     * 获取八天价格汇总以及库存汇总(乒羽篮网）
+     * @param mer_item_id
+     * @param mer_price_id
+     * @return
+     */
+    public ResultBean priceAndInventorySummaryCommon(String mer_item_id,String mer_price_id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+        jsonObject.put("mer_price_id", mer_price_id);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_PRICE_INVENTORY_SUMMARY_COMMON, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+            for (String key : dataJSONObject.keySet()) {
+
+            }
+        }
+        return resultBean;
+    }
+
+
+
+
 
 }
