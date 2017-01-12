@@ -29,6 +29,10 @@ public class UserService {
 
     private static String SECURITY_VERIFICATION_VALID = "uccore/v1/api/securityVerification/valid"; //验证接口仅验证
 
+    private static String ACCOUNT_FIND_PASSPORT = "uccore/v1/api/account/findPassport"; //查询登录账户信息
+
+    private static String ACCOUNT_USER_INFO = "uccore/v1/api/account/findUserInfo"; //查询用户信息
+
 
     /**
      * 普通用户注册 ok
@@ -41,7 +45,7 @@ public class UserService {
      */
     public ResultBean accountRegister(String telephone, String email, String loginName, String password, String regOrigin) throws Exception {
 
-        JSONObject jsonObject = new JSONObject();
+           JSONObject jsonObject = new JSONObject();
         jsonObject.put("telephone", telephone);
         jsonObject.put("email", email);
         jsonObject.put("loginName", loginName);
@@ -184,5 +188,36 @@ public class UserService {
         return HttpResultUtil.result2Bean(result);
     }
 
+    /**
+     * 查询登录账户信息
+     * @param uid
+     * @param loginName
+     * @param telephone
+     * @param email
+     * @param account
+     * @return
+     */
+    public ResultBean accountFindPassport(String uid,String loginName,String telephone,String email,String account) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uid", uid);
+        jsonObject.put("loginName", loginName);
+        jsonObject.put("telephone", telephone);
+        jsonObject.put("email", email);
+        jsonObject.put("account", account);
+        String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_FIND_PASSPORT, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
+        return HttpResultUtil.result2Bean(result);
+    }
+
+    /**
+     * 查询用户基本信息
+     * @param uid
+     * @return
+     */
+    public ResultBean findUserInfo(String uid) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uid", uid);
+        String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_USER_INFO, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
+        return HttpResultUtil.result2Bean(result);
+    }
 
 }

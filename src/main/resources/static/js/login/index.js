@@ -1,4 +1,5 @@
 $(function () {
+
     $("input").inputEve({
         cls: '.header',
         clearVal: '.close'
@@ -35,6 +36,7 @@ $(function () {
                 console.info(result.data.validId)
                 if (200 === result.code) {
                     alert("登录成功");
+                    back();
                 } else {
                     alert(result.msg);
                 }
@@ -60,6 +62,8 @@ $(function () {
             alert('手机号码格式不正确!');
             return;
         }
+        //倒计时
+        time();
 
         $.ajax({
             type: "POST",
@@ -69,7 +73,6 @@ $(function () {
             },
             success: function (result) {
                 if (200 === result.code) {
-                    time();
                     $("#fast-login-account-validId").val(result.object);
                 } else {
                     alert(result.msg);
@@ -104,6 +107,7 @@ $(function () {
         $.ajax({
             type: "POST",
             url: "../login/fastlogin",
+            async:false,
             data: {
                 "account": account,
                 "identifying": identifying,
@@ -112,18 +116,23 @@ $(function () {
             success: function (result) {
                 if (200 === result.code) {
                     alert("快速登录成功");
+                    back();
                 } else {
                     alert(result.msg);
                 }
             }
         });
-
     })
 
 })
 
+function  back() {
+    window.location.href = backURL;
+}
+
+
 //验证按倒计时
-var wait = 60;
+var wait = 90;
 function time() {
     if (wait == 0) {
         $("#fast-login-account-identifying-code").html('获取验证码');

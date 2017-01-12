@@ -28,4 +28,5 @@ public class HttpParams {
     public static int DEFAULT_PAGE_SIZE = 2;//默认分页-每页大小
 
 
+    public static String CMS_URL ;//cms访问地址
 }

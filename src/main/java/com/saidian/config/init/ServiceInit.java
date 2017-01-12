@@ -4,7 +4,6 @@ import com.saidian.bean.ResultBean;
 import com.saidian.bean.ServiceBean;
 import com.saidian.config.AccessServices;
 import com.saidian.config.HttpParams;
-import com.saidian.utils.DESedeUtil;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
 import org.json.JSONArray;
@@ -45,10 +44,13 @@ public class ServiceInit implements CommandLineRunner {
         //城市信息
         HttpParams.cityId = env.getProperty("server.city.id");
 
+        //cms访问地址
+        HttpParams.CMS_URL = env.getProperty("server.cms.url");
+
         //初始化可接入服务 todo
         String data = "{'internalIp':'10.14.22.65','internalPort':'8080','externalIp':'10.14.22.65','externalPort':'8080' }";
         String AUTH_URL = "config/v1/api/service/getKeys";
-        ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data,  HttpParams.key));
+        ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data, HttpParams.key));
         JSONObject jsonObject = new JSONObject(resultBean.getData());
         Map accessServices = new HashMap();
         if (jsonObject.has("list")) {

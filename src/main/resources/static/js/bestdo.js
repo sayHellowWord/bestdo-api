@@ -30,13 +30,23 @@
 			        return false;
 				}
 			}
+
+			if(document.querySelector(".area") !== null) {
+				document.querySelector(".area").ontouchmove = function(e){
+					e.preventDefault && e.preventDefault();
+					e.stopPropagation && e.stopPropagation();
+					e.returnValue=true;
+					return true;
+				}
+			}
 		}
 	};
 	$.fn.extend({
 		/*position:fixed兼容问题  输入框效果*/
 		inputEve: function(options){
 			var defaults = {
-				cls:''
+				cls:'',
+				clearVal:'.close'
 			};
 			var ops = $.extend(defaults,options);	
 			$("input").focus(function(){
@@ -52,18 +62,18 @@
 			$("input").keyup(function(){
 				var str = $(this).val();
 				if(str!=''){
-					$(this).siblings().show();
-					$(this).parent().siblings(".btn").removeClass("gray");
+					$(this).siblings(ops.clearVal).show();
+					//$(this).parent().siblings(".btn").removeClass("gray");
 				}
 				else{
-					$(this).siblings().hide();
-					$(this).parent().siblings(".btn").addClass("gray");
+					$(this).siblings(ops.clearVal).hide();
+					//$(this).parent().siblings(".btn").addClass("gray");
 				}
 			})
 			$(ops.clearVal).on("click",function(){
 				$(this).siblings().val('');
 				$(this).hide();
-				$(this).parent().siblings(".btn").addClass("gray");
+				//$(this).parent().siblings(".btn").addClass("gray");
 			})
 		},
 		//下拉菜单、选项卡
@@ -101,6 +111,8 @@
 				//单选
 				if(typing=="radio"){
 					$(this).addClass(ops.selected).siblings().removeClass(ops.selected);
+					$(ops.cls).slideUp(function(){
+				});
 				}
 				//复选
 				if(typing=="checkbox"){
@@ -127,23 +139,23 @@
 			var defaults = {
 				layername:"#venueslist",
 				flag: false,
-				istrue:true
 			};
 			var ops = $.extend(defaults,options);	
 			var obj = $(this);
-			$(window).scroll(function(){/*
+			$(window).scroll(function(){
 				var sh = $(window).height();
 				var ch = obj.height();
-				var st = $(this).scrollTop();*/
-				/*if(st>ch-sh){
-					var data = ops.getData();
-					console.log(data);
+				var st = $(this).scrollTop();
+				var offsetTop = obj.offset().top;
+
+				if(offsetTop+ch-sh-st<2) {
+					var data = false;
 					setTimeout(function(){
-						obj.append(data);
-					},3000)
-				}*/
-				var data = ops.getData();
-				obj.append(data);
+						data = ops.getData();
+						data && obj.append(data);
+						//console.info('reach the bottom');
+					},1000);
+				}
 			})
 		},
 		//弹层提示
@@ -157,6 +169,7 @@
 			$("#prompt").fadeIn();
 			var t = setTimeout(function(){
 				$("#prompt").fadeOut(1000);
+				$('#prompt').remove();
 			},1000);
 		},
 		//日期时间控件
@@ -165,70 +178,80 @@
 			var defaults = {};
 			var ops = $.extend(defaults,options);	
 			var obj = $(this);
-			var sy,my,ey,st,ix,sh,ah,len,objh,olen,slen;
-			var flag = false;
+
 			var touchEvents = {
 			    touchstart: "touchstart",
 			    touchmove: "touchmove",
 			    touchend: "touchend",
-			    initTouchEvents: function () {
+			    /*initTouchEvents: function () {
 			        if (!(/iphone|ipad|ipod/i.test(navigator.userAgent))) {
 			            this.touchstart = "mousedown";
 			            this.touchmove = "mousemove";
 			            this.touchend = "mouseup";
 			        }
-			    },
+			    },*/
 			};
-			var scrollEvents = {
-			    scrollStart: function(e){
-					flag = true;
-					sy = e.pageY || e.originalEvent.targetTouches[0].pageY;
-					st = parseInt($(this).css("top"));
-					ah = $(this).children().eq(0).height();
-					len = $(this).children().length-1;
-					objh = $(this).height();
-			    },
-			    scrollMove: function(e){
-					e.stopPropagation;
-					if(flag){
-						my = e.pageY || e.originalEvent.targetTouches[0].pageY;
-						ey = my-sy;
-						if(ey+st>=ah*2){
-							ix = 0;
-						}
-						else{
-							ix = Math.floor(Math.abs((ah*2-ey-st+ah/2)/ah));
-						}
-						$(this).children().eq(ix).addClass("on").siblings().removeClass("on");
-						$(this).css("top",ey+st);
+			var sy,my,ey,st,ix,sh,ah,len,objh,olen,slen;
+			var flag = false;
+			function scrollStart(e){
+				flag = true;
+				sy = e.pageY || e.originalEvent.targetTouches[0].pageY;
+				st = parseInt($(this).css("top"));
+				ah = $(this).children().eq(0).height();
+				len = $(this).children().length-1;
+				objh = $(this).height();
+		    }
+		    function scrollMove(e){
+				e.stopPropagation;
+				if(flag){
+					my = e.pageY || e.originalEvent.targetTouches[0].pageY;
+					ey = my-sy;
+					if(ey+st>=ah*2){
+						ix = 0;
 					}
-			    },
-			    scrollEnd: function(){
-					flag = false;
-					if(my){
-						st = parseFloat($(this).css("top"));
-						if(st>=ah*2){
-							st = ah*2;
-						}
-						else if(st<=ah*2-len*ah){
-							ix = len;
-							st = ah*2-len*ah;
-						}
-						else{
-							st = ah*2-ix*ah;
-						}
-						$(this).attr("data-on",ix);
-						$(this).stop().animate({"top":st},100);
-						$(this).children().eq(ix).addClass("on").siblings().removeClass("on");
-						my = null;
+					else{
+						ix = Math.floor(Math.abs((ah*2-ey-st+ah/2)/ah));
 					}
-			    }
-			}
+					$(this).children().eq(ix).addClass("on").siblings().removeClass("on");
+					$(this).css("top",ey+st);
+				}
+		    }
+		    function scrollEnd(){
+				flag = false;
+				if(my){
+					st = parseFloat($(this).css("top"));
+					if(st>=ah*2){
+						st = ah*2;
+					}
+					else if(st<=ah*2-len*ah){
+						ix = len;
+						st = ah*2-len*ah;
+					}
+					else{
+						st = ah*2-ix*ah;
+					}
+					$(this).attr("data-on",ix);
+					$(this).stop().animate({"top":st},100);
+					$(this).children().eq(ix).addClass("on").siblings().removeClass("on");
+					my = null;
+					
+					//详情页自己加的请求
+					if($(this).hasClass('sdate')) {
+						item.getValidTime();
+					}
+					//高尔夫过滤分钟
+					if($(this).hasClass('stime')) {
+						item.setNowMinute();
+					}
+					
+				}
+		    }
+
 			obj.on("click",function(){
 				$(ops.datecontrol).parent().slideDown();
 				$(ops.dateparent).show();
 
-				touchEvents.initTouchEvents();
+				//touchEvents.initTouchEvents();
 				stopWindowDefault.windowdefaultEvent(false);
 				olen = $(ops.datecontrol).length;
 				$(ops.datecontrol).each(function(){
@@ -237,106 +260,54 @@
 					ah = $(this).children().eq(0).height();
 					$(this).css("top",ah*2-m*ah);
 				})
-				$(ops.datecontrol).on(touchEvents.touchstart,scrollEvents.scrollStart);
-				$(ops.datecontrol).on(touchEvents.touchmove,scrollEvents.scrollMove);
-				$(ops.datecontrol).on(touchEvents.touchend,scrollEvents.scrollEnd);
+				$(ops.datecontrol).on(touchEvents.touchstart,scrollStart);
+				$(ops.datecontrol).on(touchEvents.touchmove,scrollMove);
+				$(ops.datecontrol).on(touchEvents.touchend,scrollEnd);
 			});
-			$(ops.datesureBtn+","+ops.datecancleBtn).on("click",function(){
+			$(ops.datesureBtn).on("click",function(){
 				slen = $(ops.datecontrol).length;
 				$(ops.datecontrol).parent().slideUp(function(){
 					$(ops.dateparent).hide();
 					stopWindowDefault.windowdefaultEvent(true);
 					olen = $(ops.datecontrol).length;
+					txt = '';
 					for(i=0;i<olen;i++){
 						if(olen==3){
-							txt = $(ops.datecontrol).eq(0).find(".on").html()+$(ops.datecontrol).eq(1).find(".on").html()+":"+$(ops.datecontrol).eq(2).find(".on").html();	
+							if($(ops.datecontrol).eq(1).find(".on").html() != undefined) {
+								txt = $(ops.datecontrol).eq(0).find(".on").html()+$(ops.datecontrol).eq(1).find(".on").html()+":"+$(ops.datecontrol).eq(2).find(".on").html();
+							} else {
+								txt = $(ops.datecontrol).eq(0).find(".on").html();
+							}
 						}
 						else{
-							txt = txt + $(ops.datecontrol).eq(i).find(".on").html();	
+							if($(ops.datecontrol).eq(i).find(".on").html() != undefined) {
+								txt = txt + $(ops.datecontrol).eq(i).find(".on").html();
+							}
 						}
 						obj.html(txt);
 						obj.css("color","#333");
 					}
+					
+					$('.venuesInfo .date p').attr('data-now_day', $('.sdate .on').attr('data-day'));
+					if(olen==3){
+						if($(ops.datecontrol).eq(1).find(".on").html() != undefined) {
+							$('.venuesInfo .date p').attr('data-hours', $('.stime .on').attr('data-valid_time'));
+							$('.venuesInfo .date p').attr('data-teetime', $('.stime .on').text()+':'+$('.steetime .on').text());
+						} 
+					} else {
+						if($(ops.datecontrol).eq(1).find(".on").html() != undefined) {
+							$('.venuesInfo .date p').attr('data-hours', $('.stime .on').text());
+						}
+					}
+				});
+			})
+			$(ops.datecancleBtn).on("click",function(){
+				slen = $(ops.datecontrol).length;
+				$(ops.datecontrol).parent().slideUp(function(){
+					$(ops.dateparent).hide();
+					stopWindowDefault.windowdefaultEvent(true);
 				});
 			})
 		}
 	})
 })(jQuery);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

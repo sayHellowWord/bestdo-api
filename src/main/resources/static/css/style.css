@@ -222,7 +222,6 @@ body{
 	display:block;
 	margin:0 auto;
 	margin-bottom:0.65rem;
-	overflow:auto;
 	text-align:center;
 	color:#5e6366;
 	white-space: nowrap;
@@ -348,7 +347,7 @@ background-image:url(../images/home/home8.png);
 	bottom:0;
 	border-bottom:1px solid #e6e6e6;
 }
-.venueslist,
+
 .venueslist ul{
 	width:100%;
 	overflow:auto;
@@ -377,6 +376,18 @@ background-image:url(../images/home/home8.png);
 	border-bottom:1px solid #e6e6e6;
 }
 
+.venueslist li .xiajia{
+	height: 100%;
+	padding-right:0.575rem;
+	padding-bottom:9px;
+	border-bottom:1px solid #e6e6e6;
+}
+.venueslist li .xiajia p{
+	color: #fc821b;
+}
+.venueslist li .xiajia p.on{
+	color: #999;
+}
 .venueslist li:last-child .venuesdetial{
 	border:none;
 }
@@ -422,6 +433,7 @@ background-image:url(../images/home/home8.png);
 	margin-top: 0.5rem;
 }
 
+
 .bodylist,
 .bodylist .list2{
 	width: 100%;
@@ -429,21 +441,31 @@ background-image:url(../images/home/home8.png);
 }
 .bodylist .list2 li{
 	width: 100%;
-	height: 3.9rem;
+	height: 3.5rem;
 	background: #fff;
 	margin-bottom: 0.5rem;
 	padding:0.5rem 0;
 	overflow:hidden;
 }
+.bodylist .list2.list3 li{
+	margin-bottom: 0px;
+	border-bottom: 1px solid #e6e6e6;
+}
+.bodylist .list2.list3 li.short{
+	height: 2.5rem;
+}
 .bodylist .list2 li .bodyimg{
 	width:5.5rem;
-	height:3.9rem;
+	height:3.5rem;
 	margin-left:0.85rem;
-	margin-right: 0.85rem;
 	overflow:hidden;
+	border-radius: 4px;
 }
 .bodylist .list2 li .bodyimg img{
 	width: 5.5rem;
+}
+.bodylist .list2 li .bodydetail{
+	margin-left: 0.85rem;
 }
 .bodylist .list2 li .bodydetail h2{
 	width:100%;
@@ -453,8 +475,33 @@ background-image:url(../images/home/home8.png);
 	font-weight:100;
 	color:#333;
 }
-.bodylist .list2 li .bodydetail address{
-	
+.bodylist .list2 li .bodydetail .address{
+	margin-top: 0.8rem;
+}
+.bodylist .list2 li .bodydetail .address .d{
+	float: right;
+	margin-right:0.575rem;
+	color:#999;
+}
+.bodylist .list2 li .bodydetail .address .p{
+	color: #999;
+}
+.textready{
+	position: absolute;
+	bottom: 10px;
+	z-index: 9999;
+	width: 100%;
+}
+.textready span{
+	color: #999;
+}
+.textready span.left{
+	margin-left: 0.8rem;
+	float: left;
+}
+.textready span.right{
+	float: right;
+	margin-right: 0.8rem;
 }
 /*首页-导航*/
 #nav{
@@ -507,7 +554,30 @@ background-image:url(../images/home/home8.png);
 	background-image:url(../images/home/tehui_selected.png);
 }
 .nav .on:nth-child(3) span{
-	background-image:url(../images/home/mine_seleted.png);
+	background-image:url(../images/home/mine_selected.png);
+}
+.xuangou{
+	width: 100%;
+	height: 2rem;
+	border-top: 1px solid #e5e5e5;
+	background: #fff;
+	margin-bottom: 0.5rem;
+}
+.xuangou p{
+	color: #b3b3b3;
+	line-height: 2rem;
+	margin-left: 0.625rem;
+}
+.xuangou a{
+	display: block;
+	background: #fc821b;
+	color: #fff;
+	height: 1.25rem;
+	line-height: 1.25rem;
+	padding: 0rem 0.5rem;
+	margin-right: 0.625rem;
+	margin-top: 0.375rem;
+	border-radius: 4px;
 }
 /*头部公用*/
 #header{
@@ -541,6 +611,10 @@ background-image:url(../images/home/home8.png);
 	height:2.2rem;
 	line-height:2.2rem;
 	position:relative;
+}
+.headerR a.txt{
+	width: auto;
+	margin-right: 0.625rem;
 }
 .headerL a:after,.headerR a:after{
 	content:'';
@@ -716,11 +790,23 @@ background-image:url(../images/home/home8.png);
 	margin:0 0.2rem;
 	font-style:normal;
 }
+.venuesInfo li.ede p{
+	padding-left:0; 
+}
+.venuesInfo li.ede p:after{
+	background-image: none;
+}
+.venuesInfo li.ede p i{
+	color: #999999;
+}
 .venuesInfo .other{
 	overflow:auto;
 }
 .venuesInfo .address p{
 	background-image:url(../images/ic_location_2.png);
+}
+.venuesInfo .tou p{
+	background-image:url(../images/home/mine_normal.png);
 }
 .venuesInfo .tel p{
 	background-image:url(../images/ic_phone.png);
@@ -728,12 +814,25 @@ background-image:url(../images/home/home8.png);
 .venuesInfo .date p{
 	background-image:url(../images/ic_time.png);
 }
+.venuesInfo li.date p:after{
+	background-image:none;
+}
+.venuesInfo li.tou p:after{
+	background-image:none;
+}
 .scrolldate{
 	height:4rem;
 	overflow:hidden;
 	margin-bottom:0.625rem;
 	padding:0.5rem 0 0.5rem 0.625rem;
 	background:#fff;
+}
+.scrolldate.yu{
+	height: 5rem;
+}
+.biaotiyong{
+	color: #999;
+	font-weight: 500;
 }
 .scrolldateCont{
 	padding-left:0.625rem;
@@ -797,6 +896,45 @@ background-image:url(../images/home/home8.png);
 	line-height:1.9rem;
 	color:#ccc;
 }
+.scrolldateCont span a.sai{
+	border: 0px;
+	border-radius: 0px;
+	width: 10.625rem;
+	height: 3.25rem;
+}
+.scrolldateCont span a.sai div img{
+	width: 3.25rem;
+	height: 3.25rem;
+	margin-right: 0.375rem;
+}
+.scrolldateCont span a.sai div div{
+	width: 7rem;
+}
+.scrolldateCont span a.sai div div h2{
+	width: 7rem;
+	height: 1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 100;
+    color: #333;
+    display: block;
+    text-align: left;
+}
+.scrolldateCont span a.sai div div p{
+	width: 7rem;
+	height: 1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #999;
+    display: block;
+    text-align: left;
+}
+.scrolldateCont span a.sai div div p.now{
+	margin-top: 0.4rem;
+}
+
 .venuesInfo h1{
 	width:100%;
 	padding:0.625rem 0;
@@ -853,6 +991,52 @@ background-image:url(../images/home/home8.png);
 	display:block;
 	padding:0.625rem 0.625rem 0.625rem 0;
 	color:#666;
+}
+.ditel{
+	width: 100%;
+	height: 2.8rem;
+	background: #fff;
+	border-top: 1px solid #b0b0b0; 
+	position: fixed;
+	bottom: 0px;
+}
+.ditel p{
+	height: 2.8rem;
+	line-height: 2.8rem;
+	margin-left: 0.875rem;
+	color: #333333;
+}
+.ditel a{
+	display: block;
+	color: #fff;
+	background: #fc821b;
+	width: 4.5rem;
+	height: 1.65rem;
+	line-height: 1.65rem;
+	text-align: center;
+	border-radius: 5px;
+	margin-top: 0.575rem;
+	margin-right: 0.875rem;
+}
+.jianju{
+	width: 100%;
+	height: 3rem;
+}
+.saishi{
+	width: 94%;
+	height: auto;
+	padding: 0.8rem 0;
+	margin-left: 3%;
+}
+.saishi img{
+	width: 100%;
+	height: auto;
+}
+.saishi span{
+	color: #999;
+	display: block;
+	margin-top: 0.8rem;
+	margin-bottom: 1rem;
 }
 /*场馆详情-场馆设施*/
 .venuesInfo .icon span{
@@ -2327,8 +2511,8 @@ background-image:url(../images/home/home8.png);
 /*我的*/
 .centerTop{
 	position:relative;
-	padding:1.875rem 0.75rem;
-	background-image:url(../images/center/background.jpg);
+	padding:1rem 0.75rem;
+	background-image:url(../images/jiaolian.jpg);
 	background-size:100% 100%;
 }	
 .centerTop:after{
@@ -2338,10 +2522,13 @@ background-image:url(../images/home/home8.png);
 	position:absolute;
 	right:0.5rem;
 	top:0;
-	background-image:url(../images/center/arrow_3_white.png);
+	background-image:url(../images/arrow_3_white.png);
 	background-size:14px 14px;
 	background-repeat:no-repeat;
 	background-position:center center;
+}
+.centerTop.no:after{
+	background-image: none;
 }
 .centerTopCont{
 	width:100%;
@@ -2361,6 +2548,10 @@ background-image:url(../images/home/home8.png);
 .centerTop .cont{
 	margin-left:0.6rem;
 	color:#fff;
+}
+.centerTop .cont p.wit{
+	color: #c5deee;
+	margin-top: 0.6rem;
 }
 .centerTop .cont a{
 	color:#fff;
@@ -2427,26 +2618,36 @@ background-image:url(../images/home/home8.png);
 }
 .centerOrder .part a{
 	float:left;
-	width:50%;
-	height:1.6rem;
-	line-height:1.6rem;
+	width:25%;
+	height:2.5rem;
 	padding:0.5rem 0;
 	text-align:center;
 }
 .centerOrder .part a span{
 	display:inline-block;
-	height:1.6rem;
-	padding-left:1.8rem;
-	background-size:32px 32px;
+	height:1.4rem;
+	padding-left:1.3rem;
+	background-size:25px 25px;
 	background-repeat:no-repeat;
 	color:#666;
 }
-.centerOrder .part a:first-child span{
-	background-image:url(../images/center/ic_mine_pay.png);
+.centerOrder .part a p{
+	color: #666666;
 }
-.centerOrder .part a:last-child span{
-	background-image:url(../images/center/ic_mine_pending_fate.png);
+.centerOrder .part a:nth-child(1) span{
+	background-image:url(../images/center/daifu.png);
+
 }
+.centerOrder .part a:nth-child(2) span{
+	background-image:url(../images/center/queren.png);
+}
+.centerOrder .part a:nth-child(3) span{
+	background-image:url(../images/center/daixia.png);
+}
+.centerOrder .part a:nth-child(4) span{
+	background-image:url(../images/center/jieshu.png);
+}
+
 .centerOther{
 	margin-top:0.8rem;
 }

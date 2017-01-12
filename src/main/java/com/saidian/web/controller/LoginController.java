@@ -3,12 +3,16 @@ package com.saidian.web.controller;
 import com.saidian.bean.ReqOrigin;
 import com.saidian.bean.ResultBean;
 import com.saidian.bean.ValidType;
+import com.saidian.web.bean.User;
 import com.saidian.web.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2017/1/7.
@@ -67,8 +71,26 @@ public class LoginController {
      */
     @ResponseBody
     @RequestMapping(value = "fastlogin")
-    public ResultBean fastlogin(String account, String identifying, String validId) throws Exception {
+    public ResultBean fastlogin(String account, String identifying, String validId,HttpSession httpSession) throws Exception {
         ResultBean resultBean = userService.accountValidLoginRegister(account, validId, identifying);
+        if(200 == resultBean.getCode()){
+            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+
+            User user = new User();
+
+            user.setId(dataJSONObject.getInt("id"));
+            user.setSid(dataJSONObject.getString("sid"));
+            user.setUid(dataJSONObject.getString("uid"));
+            user.setLoginAccount(dataJSONObject.getString("loginAccount"));
+            user.setAccountType(dataJSONObject.getString("accountType"));
+            user.setLoginType(dataJSONObject.getString("loginType"));
+            user.setScopeTime(dataJSONObject.getInt("scopeTime"));
+          //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
+
+            httpSession.setAttribute("user",user);
+
+            resultBean.setData(StringUtils.EMPTY);
+        }
         return resultBean;
     }
 

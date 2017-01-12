@@ -6,6 +6,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.saidian</groupId>
     <artifactId>bestdo-api</artifactId>
+
+    <!-- ============   tomcat >> war  ============  -->
+  <!--  <packaging>war</packaging>-->
     <version>1.0-SNAPSHOT</version>
 
     <parent>
@@ -13,7 +16,6 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.4.2.RELEASE</version>
     </parent>
-
 
     <dependencies>
 
@@ -28,7 +30,24 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+
+            <!-- ============   tomcat >> war  ============  -->
+           <!-- <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>-->
+
         </dependency>
+
+        <!-- ============   tomcat >> war  ============  -->
+      <!--  <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+-->
         <!-- ============   spring mvc begin  ============  -->
 
         <!-- ============   模板引擎   Thymeleaf begin  ============  -->
@@ -106,6 +125,7 @@
     <build>
         <finalName>bestdo-api</finalName>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -122,6 +142,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
     </build>
 

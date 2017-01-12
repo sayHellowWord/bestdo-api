@@ -77,6 +77,10 @@
         <div class="getPswTxt font13"><a href="#">忘记密码</a></div>
     </div>
 </div>
+<script>
+    //返回页面
+    var backURL = '${back_url}';
+</script>
 <script language="javascript" type="text/javascript" src="../js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="../js/bestdo.js"></script>
 <!--    登录相关js     -->

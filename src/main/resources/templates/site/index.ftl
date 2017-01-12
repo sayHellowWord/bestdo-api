@@ -8,7 +8,7 @@
     <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
-    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 
 <body>
@@ -114,8 +114,8 @@
     <div class="loadBg"></div>
 </div>-->
 <!--地图图标-->
-<script language="javascript" type="text/javascript" src="../js/jquery.js"></script>
-<script language="javascript" type="text/javascript" src="../js/bestdo.js"></script>
+<script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
     $(function () {
 
@@ -157,9 +157,7 @@
 
     //场馆列表搜索
     function venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
-
         $(".load-container").show();
-
         $.ajax({
             type: "POST",
             url: "../site/search",
@@ -176,13 +174,10 @@
             },
             success: function (result) {
                 if (200 === result.code) {
-
                     var source = $("#googDetail-template").html();
                     var template = Handlebars.compile(source);
                     var html = template(result.lists);
-
                     $(".load-container").hide();
-
                     $("#googDetail-list").append(html);
                 }
             }

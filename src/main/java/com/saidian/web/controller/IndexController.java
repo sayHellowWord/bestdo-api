@@ -1,7 +1,10 @@
 package com.saidian.web.controller;
 
+import com.saidian.config.HttpParams;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2017/1/4.
@@ -10,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @RequestMapping("/")
-    public String boot() {
+    public String boot(HttpSession httpSession) {
+        httpSession.setAttribute("cms_url", HttpParams.CMS_URL);
         return "index";
     }
 
