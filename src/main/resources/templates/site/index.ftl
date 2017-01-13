@@ -40,9 +40,11 @@
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
         <a href="javascript:void(0)" class="on">全部</a>
+    <#if goodsTypes?? >
         <#list goodsTypes as goodsType>
             <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.name}</a>
         </#list>
+    </#if>
     </div>
 </div>
 <!--行政区-->
@@ -50,8 +52,11 @@
     <div class="slidebg"></div>
     <div id="administrative-area" class="slidemenuCont font14">
         <a href="javascript:void(0)" class="on">全部区域</a>
-        <a href="javascript:void(0)" data-value="1">亭湖区</a>
-        <a href="javascript:void(0)" data-value="2">盐都区</a>
+    <#if regions??>
+        <#list regions as regions>
+            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+        </#list>
+    </#if>
     </div>
 </div>
 <!--距离-->
@@ -70,7 +75,7 @@
     <!--场馆列表-->
     <div class="venueslist">
         <ul id="googDetail-list" class="list">
-        <#list goodsDetailResultBean.lists as googDetail>
+        <#--   <#list goodsDetailResultBean.lists as googDetail>
             <li class="box vip" data-mer_item_id="${googDetail.mer_item_id}" data-mer_price_id="${googDetail.mer_price_id}" >
                 <div class="venuesimg"><img src="${googDetail.thumb}"/></div>
                 <div class="venuesdetial boxflex">
@@ -88,21 +93,21 @@
                                 <span class="p">${googDetail.region}</span>
                             </#if>
                         </#list>
-                    <#-- <span class="q">${googDetail.region}</span>
-                     <span class="p">${googDetail.region}</span>-->
+                    &lt;#&ndash; <span class="q">${googDetail.region}</span>
+                     <span class="p">${googDetail.region}</span>&ndash;&gt;
                     </div>
                 </div>
             </li>
-        </#list>
+        </#list>-->
         </ul>
-        <div class="load-container font12" style="display: none;">
-            <div class="loader"></div>
-            数据加载中...
-        </div>
+    <#-- <div id="data-loading" class="load-container font12">
+         <div class="loader"></div>
+         数据加载中...
+     </div>-->
     </div>
 
     <!--场馆列表结束-->
-    <div class="empty">
+    <div id="no-result" class="empty">
         <div class="icon"></div>
         <p class="font14">暂无相关相关场地信息</p>
     </div>
@@ -119,6 +124,20 @@
 <script>
     $(function () {
 
+        //初始化加载
+        var merid = $("#sport-type").find(".on").data("merid");
+        var radius = $("#distance").find(".on").data("value");
+        var longitude;
+        var latitude;
+        var sort;
+        var price_sort;
+        var page = 1;
+        var pagesize = 10;
+        var district = $("#administrative-area").find(".on").data("value");
+        $("#googDetail-list").html('');
+
+        venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+
         /*筛选条件*/
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -126,12 +145,9 @@
             empty: "gray",
             typing: "slidemenu"
         });
-
         //筛选列表点击
         $(".slidemenu").on("click", "#sport-type > a,#administrative-area > a,#distance > a", function () {
-
             alert($("#sport-type").find(".on").data("merid"));
-
             var merid = $("#sport-type").find(".on").data("merid");
             var radius = $("#distance").find(".on").data("value");
             var longitude;
@@ -149,7 +165,7 @@
         $("#googDetail-list").on("click", "li", function () {
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid +"&mer_price_id="+mer_price_id;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id;
         });
 
     });
@@ -157,7 +173,7 @@
 
     //场馆列表搜索
     function venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
-        $(".load-container").show();
+        //$(".load-container").show();
         $.ajax({
             type: "POST",
             url: "../site/search",
@@ -174,11 +190,16 @@
             },
             success: function (result) {
                 if (200 === result.code) {
-                    var source = $("#googDetail-template").html();
-                    var template = Handlebars.compile(source);
-                    var html = template(result.lists);
-                    $(".load-container").hide();
-                    $("#googDetail-list").append(html);
+                    //  $(".load-container").hide();
+                    if (result.total > 0) {
+                        var source = $("#googDetail-template").html();
+                        var template = Handlebars.compile(source);
+                        var html = template(result.lists);
+                        $(".load-container").hide();
+                        $("#googDetail-list").append(html);
+                    } else {
+                        $("#no-result").show();
+                    }
                 }
             }
         });

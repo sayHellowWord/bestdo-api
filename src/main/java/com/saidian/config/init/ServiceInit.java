@@ -44,11 +44,19 @@ public class ServiceInit implements CommandLineRunner {
         //城市信息
         HttpParams.cityId = env.getProperty("server.city.id");
 
+        //商品id
+        HttpParams.merid = env.getProperty("server.mer.id");
+
+        //商品价格id
+        HttpParams.merPriceId = env.getProperty("server.merPrice.id");
+
         //cms访问地址
         HttpParams.CMS_URL = env.getProperty("server.cms.url");
 
         //初始化可接入服务 todo
-        String data = "{'internalIp':'10.14.22.65','internalPort':'8080','externalIp':'10.14.22.65','externalPort':'8080' }";
+        String data = "{'internalIp':'" + env.getProperty("application.internalIp") + "','internalPort':'" + env.getProperty("application.internalPort") + "'," +
+                "'externalIp':'" + env.getProperty("application.externalIp") + "','externalPort':'" + env.getProperty("application.externalPort") + "' }";
+
         String AUTH_URL = "config/v1/api/service/getKeys";
         ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data, HttpParams.key));
         JSONObject jsonObject = new JSONObject(resultBean.getData());

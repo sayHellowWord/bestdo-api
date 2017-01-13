@@ -1451,7 +1451,7 @@ background-image:url(../images/home/home8.png);
 	width:100%;
 	margin-top:6.025rem;
 	overflow:auto;
-	display:none;
+
 }
 .noResult .icon{
 	width:3rem;
@@ -3355,6 +3355,13 @@ background-image:url(../images/home/home8.png);
 	} 
 }
 
+
+/**
+add by wub  需同步
+ */
+.scrolldateCont a.on{
+	border:1px solid #43a2dd;
+}
 
 
 

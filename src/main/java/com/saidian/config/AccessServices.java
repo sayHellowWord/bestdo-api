@@ -12,6 +12,7 @@ public class AccessServices {
     /**
      * 当前可接入服务
      * 01（基础服务系统）、04（用户中心）、33（企业项目管理接口系统）、55（预定中心C端服务API）、65（b端web-api）70（订单系统）
+     * 13(公共服务)
      */
     public static Map<String, ServiceBean> accessServices;
 
@@ -28,6 +29,12 @@ public class AccessServices {
     public static String PLATFORM_SERVICE_URL;
 
     public static String PLATFORM_SERVICE_KEY;
+
+
+    //公共服务
+    public static String PUBLIC_SERVICE_URL;
+
+    public static String PUBLIC_SERVICE_KEY;
 
 
     /**
@@ -47,6 +54,8 @@ public class AccessServices {
         PLATFORM_SERVICE_URL = accessServices.get("55").getGoalServiceUrl() + "/";
         PLATFORM_SERVICE_KEY = accessServices.get("55").getSercertKey();
 
+        PUBLIC_SERVICE_URL = accessServices.get("13").getGoalServiceUrl() + "/";
+        PUBLIC_SERVICE_KEY = accessServices.get("13").getSercertKey();
     }
 
 

@@ -51,42 +51,15 @@
         <!-- 时段性  102 羽毛球  101 网球  106 乒乓球 104 篮球 -->
     <#if detail.cid?number == 101 || detail.cid?number == 102 || detail.cid?number == 104 || detail.cid?number == 106>
         <#include "detail-priceAndInventorySummaryCommon.ftl">
-
-       <#-- <div class="scrolldate">
-            <div class="scrolldateCont box font12">
-				<span class="on"><a href="javascript:void(0)">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="price font13">
-						<em>￥3510起</em><i></i>
-					</div>
-					<P>门市价￥180</P>
-				</a></span>
-                <span><a href="javascript:void(0)">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="price font13">
-						<em>￥3510起</em><i></i>
-					</div>
-					<P>门市价￥180</P>
-				</a></span>
-                <span class="gray"><a href="javascript:void(0)">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="noprice">不可预订</div>
-				</a></span>
-                <span><a href="javascript:void(0)">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="price font13">
-						<em>￥3510起</em><i></i>
-					</div>
-					<P>门市价￥180</P>
-				</a></span>
-            </div>
-        </div>-->
+        <!-- 时段性 109 游泳 108 健身 122 台球-->
+    <#elseif detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122 >
+        <#include "detail-showBookDays.ftl">
     <#else>
-        <div class="venuesInfo">
+     <#--   <div class="venuesInfo">
             <ul>
                 <li class="date font15"><p>10月11日 周三 18:00</p></li>
             </ul>
-        </div>
+        </div>-->
     </#if>
 
 
@@ -154,8 +127,8 @@
             </div>
         </div>
     </div>-->
-    <script src="../js/jquery.js"></script>
-    <script src="../js/bestdo.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bestdo.js"></script>
     <script>
         $(function () {
 

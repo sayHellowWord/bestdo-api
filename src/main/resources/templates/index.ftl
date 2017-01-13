@@ -9,8 +9,8 @@
 <!--忽略页面中的邮箱格式为邮箱-->
 <meta name="format-detection" content="email=no"/>
 
-<link rel="stylesheet" href="../css/swiper-3.2.7.min.css">
-<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<link rel="stylesheet" href="/css/swiper-3.2.7.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 
 
@@ -40,14 +40,14 @@
 		<div><a href="/cms/train/list" class="i4"><span class="iconfont font16"></span><i></i>体育培训</a></div>
 		<div><a href="#" class="i5"><span class="iconfont font16"></span><i></i>健身指导</a></div>
 		<div><a href="#" class="i6"><span class="iconfont font16"></span><i></i>体育组织</a></div>	
-		<div><a href="#" class="i7"><span class="iconfont font16"></span><i></i>健身信息</a></div>
+		<div><a href="#" class="i7"><span class="iconfont font16"></span><i></i>体育信息</a></div>
 		<div><a href="#" class="i8"><span class="iconfont font16"></span><i></i>联系我们</a></div>
 	</div>
 </div>
 
 <!-- 标语 -->
 <div class="biaoyu">
-	<img src="../images/home/slogan.png">
+	<img src="/images/home/slogan.png">
 </div>
 
 <!--导航-->
@@ -56,13 +56,13 @@
 		<div class="navCont box">
 			<a href="javascript:void(0)" class="boxflex on"><span></span>首页</a>
 			<a href="javascript:void(0)" class="boxflex"><span></span>特惠</a>
-			<a href="../user/index" class="boxflex"><span></span>我的</a>
+			<a href="/user/index" class="boxflex"><span></span>我的</a>
 		</div>
 	</div>
 </div>
 
-<script language="javascript" type="text/javascript" src="../js/jquery.js"></script>
-<script language="javascript" type="text/javascript" src="../js/myproject.js"></script>
+<script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="js/swiper-3.2.7.min.js"></script>
 <script>        
   var mySwiper = new Swiper ('.swiper-container', {

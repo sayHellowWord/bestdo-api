@@ -1,16 +1,20 @@
 package com.saidian.web.Btiem;
 
+import com.google.common.collect.Ordering;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
 import com.saidian.web.bean.*;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/1/5.
@@ -22,8 +26,8 @@ public class BTiemService {
 
     private static String MER_GET_ITEM_LIST = "mer/getMerItemList";
 
-  //http://test.weixin.bestdo.com/mer/lists?mer_id=1020457&latitude=39.929985&longitude=116.395645&city=52&sport=life&show_price_id=1845&default_price_id=1845&radius=10000&price_sort=&district=510
-   private static String LISTS = "mer/lists";
+    //http://test.weixin.bestdo.com/mer/lists?mer_id=1020457&latitude=39.929985&longitude=116.395645&city=52&sport=life&show_price_id=1845&default_price_id=1845&radius=10000&price_sort=&district=510
+    private static String LISTS = "mer/lists";
 
     private static String MER_GET_MERCHANDISE_DETAIL = "mer/getMerchandiseDetail";
 
@@ -35,6 +39,13 @@ public class BTiemService {
 
     //获取八天价格汇总以及库存汇总(乒羽篮网）
     private static String ITEM_PRICE_INVENTORY_SUMMARY_COMMON = "item/priceAndInventorySummaryCommon";
+
+    //获取一天商品明细的价格和库存信息（日期、时段、小时）
+    private static String ITEM_ONE_DAY_IMEM_PRICE = "item/getOneDayItemPrice";
+
+    //获取小时型库存
+    private static String ITEM_ONE_DAY_MER_ITEM_PRICE = "item/getOneDayMerItemPrice";
+
 
     /**
      * 根据卡种id 获取商品信息（运动类型）
@@ -113,20 +124,20 @@ public class BTiemService {
         if (200 == resultBean.getCode()) {
             List<GoogDetail> lists = new ArrayList<GoogDetail>();
             JSONObject resultJsonObject = new JSONObject(resultBean.getData());
-
             resultBean.setPage(resultJsonObject.getInt("page"));
             resultBean.setPageSize(resultJsonObject.getInt("pageSize"));
-            resultBean.setTotal(resultJsonObject.getInt("total"));
+            int total = resultJsonObject.getInt("total");
+            resultBean.setTotal(total);
             resultBean.setTotalPage(resultJsonObject.getInt("totalPage"));
-
-            JSONObject items = resultJsonObject.getJSONObject("items");
-
-            for (String key : items.keySet()) {
-                GoogDetail googDetail = new GoogDetail();
-                googDetail.setId(key);
-                JSONObject goodDetailJsonObject = items.getJSONObject(key);
-                HttpResultUtil.item2GoodDetail(googDetail, goodDetailJsonObject);
-                lists.add(googDetail);
+            if (resultJsonObject.has("items") && total > 0) {
+                JSONObject items = resultJsonObject.getJSONObject("items");
+                for (String key : items.keySet()) {
+                    GoogDetail googDetail = new GoogDetail();
+                    googDetail.setId(key);
+                    JSONObject goodDetailJsonObject = items.getJSONObject(key);
+                    HttpResultUtil.item2GoodDetail(googDetail, goodDetailJsonObject);
+                    lists.add(googDetail);
+                }
             }
             resultBean.setLists(lists);
         }
@@ -134,12 +145,9 @@ public class BTiemService {
     }
 
 
-
-
-
-
     /**
-     *  获取商品信息
+     * 获取商品信息
+     *
      * @param merid 商品ID
      * @return
      * @throws Exception
@@ -218,19 +226,38 @@ public class BTiemService {
     public ResultBean showBookDays(String mer_item_id) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_item_id", mer_item_id);
-
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_SHOW_BOOK_DAYS, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJsonObject = new JSONObject(resultBean.getData());
             List<BookDay> bookDays = new ArrayList<BookDay>();
+
+            DateTime todayDateTime = new DateTime();
+            String today = todayDateTime.toString("yyyy-MM-dd");
             for (String key : dataJsonObject.keySet()) {
                 BookDay bookDay = new BookDay();
-                bookDay.setDay(dataJsonObject.getJSONObject(key).getString("day"));
+                String day = dataJsonObject.getJSONObject(key).getString("day");
+                bookDay.setDay(day);
                 bookDay.setStatus(dataJsonObject.getJSONObject(key).getInt("status"));
+                DateTime dateTime = new DateTime(day);
+                if (today.equals(day)) {
+                    bookDay.setWeek("今日");
+                } else {
+                    bookDay.setWeek(dateTime.toString("EE", Locale.CHINESE));
+                }
+                bookDay.setFormatDay(dateTime.toString("MM月dd日"));
                 bookDays.add(bookDay);
             }
+
+            Ordering<BookDay> ordering = new Ordering<BookDay>() {
+                public int compare(BookDay left, BookDay right) {
+                    return left.getDay().compareTo(right.getDay());
+                }
+            };
+            bookDays = ordering.sortedCopy(bookDays);
+
             resultBean.setLists(bookDays);
+            resultBean.setData(StringUtils.EMPTY);
         }
         return resultBean;
     }
@@ -269,16 +296,15 @@ public class BTiemService {
 
 
     /**
-     *获取商品明细的基本信息(商品、商品明细、场地、场馆)
+     * 获取商品明细的基本信息(商品、商品明细、场地、场馆)
+     *
      * @param mer_item_id 商品明细ID
      * @return
      */
     public String itemGetMerchandiseItemInfo(String mer_item_id) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_item_id", mer_item_id);
-
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_GET_MERCHANDISE_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-
         return result;
     }
 
@@ -286,10 +312,11 @@ public class BTiemService {
     /**
      * ?mer_id=1020457&
      * latitude=39.929985&longitude=116.395645&city=52&sport=life&show_price_id=1845&default_price_id=1845&radius=10000&price_sort=&district=510
+     *
      * @return
      */
-    public ResultBean lists(String mer_id,String latitude,String longitude,String city,String sport,String show_price_id,
-                            String default_price_id,String radius,String price_sort,String district, int page,
+    public ResultBean lists(String mer_id, String latitude, String longitude, String city, String sport, String show_price_id,
+                            String default_price_id, String radius, String price_sort, String district, int page,
                             int pagesize) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_id", mer_id);
@@ -314,11 +341,12 @@ public class BTiemService {
 
     /**
      * 获取八天价格汇总以及库存汇总(乒羽篮网）
+     *
      * @param mer_item_id
      * @param mer_price_id
      * @return
      */
-    public ResultBean priceAndInventorySummaryCommon(String mer_item_id,String mer_price_id) throws Exception {
+    public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
@@ -335,7 +363,55 @@ public class BTiemService {
     }
 
 
+    /**
+     * 获取一天商品明细的价格和库存信息（日期、时段、小时）
+     *
+     * @param mer_item_id
+     * @param mer_price_id
+     * @param date
+     * @return
+     */
+    public ResultBean getOneDayItemPrice(String mer_item_id, String mer_price_id, String date) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+        jsonObject.put("mer_price_id", mer_price_id);
+        jsonObject.put("date", date);
 
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_IMEM_PRICE, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+            for (String key : dataJSONObject.keySet()) {
+
+            }
+        }
+        return resultBean;
+    }
+
+    /**
+     * 获取小时型库存
+     *
+     * @param mer_item_id
+     * @param mer_price_id
+     * @param date
+     * @return
+     * @throws Exception
+     */
+    public ResultBean getOneDayMerItemPrice(String mer_item_id, String mer_price_id, String date) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+        jsonObject.put("mer_price_id", mer_price_id);
+        jsonObject.put("date", date);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_MER_ITEM_PRICE, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+            for (String key : dataJSONObject.keySet()) {
+
+            }
+        }
+        return resultBean;
+    }
 
 
 }

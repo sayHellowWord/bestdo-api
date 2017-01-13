@@ -98,7 +98,7 @@ public class HttpResultUtil {
             googDetail.setTitle(goodDetailJsonObject.getString("title"));
         }
         if (goodDetailJsonObject.has("is_book")) {
-            googDetail.setIs_book(goodDetailJsonObject.getString("is_book"));
+            googDetail.setIs_book(goodDetailJsonObject.getInt("is_book") + "");
         }
         if (goodDetailJsonObject.has("is_show")) {
             googDetail.setIs_book(goodDetailJsonObject.getString("is_show"));
