@@ -1,6 +1,6 @@
 <div class="venuesInfo">
 <#-- <#if detail.cid?number == 101 || detail.cid?number == 108 >-->
-<#if detail.venue.stadium.stadium_services??>
+<#if stadium_services??>
     <h1 class="font15">场馆服务</h1>
 <ul>
     <li class="moreinfo box font14">

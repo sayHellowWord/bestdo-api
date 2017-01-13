@@ -18,7 +18,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,6 @@ public class VenueBookingController {
      */
     @RequestMapping(value = "index")
     public String index(ModelMap map) {
-
         //运动类型
         ResultBean goodsResultBean = null;
         try {
@@ -57,10 +55,8 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取运动类型出错");
             e.printStackTrace();
         }
-
         //todo 运动类型为空 是否默认
         List<GoodsType> goodsTypes = goodsResultBean.getLists();
-
         //行政区
         ResultBean regionsResultBean = null;
         try {
@@ -69,7 +65,6 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取运动类型出错");
             e.printStackTrace();
         }
-
         //获取经纬度
         ResultBean lntAndLatResultBean = null;
         try {
@@ -78,25 +73,9 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取距离出错出错");
             e.printStackTrace();
         }
-//        HttpParams.cityId
-
-      /*  ResultBean goodsDetailResultBean = null;
-        try {
-            goodsDetailResultBean = bTiemService.getMerItemList("", "", "", HttpParams.cityId, "", HttpParams.cardId,
-                    "", "", "", "", "", HttpParams.DEFAULT_PAGE, HttpParams.DEFAULT_PAGE_SIZE, 0);
-        } catch (Exception e) {
-            logger.error(LOG_PRE + "获取场馆类型出错");
-            e.printStackTrace();
-        }
-*/
-        //讲接口返回jsondata 置空
-       // goodsDetailResultBean.setData(StringUtils.EMPTY);
-
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         map.addAttribute("lng", lntAndLatResultBean);
-        //map.addAttribute("goodsDetailResultBean", goodsDetailResultBean);
-
         return "site/index";
     }
 
@@ -125,13 +104,26 @@ public class VenueBookingController {
     public Object search(String merid, String mer_item_ids, String mer_price_id, String city, String q, String card_type_id,
                          String radius, String longitude, String latitude, String sort, String price_sort, Integer page,
                          Integer pagesize, Integer district) throws Exception {
-        ResultBean goodsDetailResultBean = bTiemService.getMerItemList(HttpParams.merid, "", "", HttpParams.cityId, "", HttpParams.cardId,
+      /*  ResultBean goodsDetailResultBean = bTiemService.getMerItemList(HttpParams.merid, "", "", HttpParams.cityId, "", HttpParams.cardId,
                 "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+
+        ResultBean goodsDetailResultBean1 = bTiemService.getMerItemList("", "", "", HttpParams.cityId, "", HttpParams.cardId,
+                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+
+        ResultBean goodsDetailResultBean2 = bTiemService.getMerItemList(HttpParams.merid, "", "", "", "", HttpParams.cardId,
+                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+
+        ResultBean goodsDetailResultBean3 = bTiemService.getMerItemList(HttpParams.merid, "", "", HttpParams.cityId, "", "",
+                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+*/
+
+        ResultBean goodsDetailResultBean = bTiemService.getMerItemList("", "", "", "", "", "",
+                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+
         //讲接口返回jsondata 置空
         goodsDetailResultBean.setData(StringUtils.EMPTY);
         return goodsDetailResultBean;
     }
-
 
     @RequestMapping(value = "toDetail")
     public String toDetail(String mer_item_id, String mer_price_id, ModelMap map) throws Exception {
@@ -142,7 +134,7 @@ public class VenueBookingController {
 
         //场馆服务
         JSONObject stadium = dataJsonObject.getJSONObject("venue").getJSONObject("stadium");
-        if (stadium.has("stadium_services")) {
+        if (stadium.has("stadium_services") && stadium.optJSONObject("stadium_services") != null) {
             List<Map> stadium_services = new ArrayList<Map>();
             JSONObject stadiumServices = stadium.getJSONObject("stadium_services");
             for (String key : stadiumServices.keySet()) {
@@ -209,5 +201,16 @@ public class VenueBookingController {
         modelMap.addAttribute("mer_price_id", mer_price_id);
         return "/site/onedaymeritemprice.ftl";
     }
+
+    /**
+     * 跳转到小时型库存页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "oneday")
+    public String oneday() {
+        return "/site/onedaymeritemprice.ftl";
+    }
+
 
 }

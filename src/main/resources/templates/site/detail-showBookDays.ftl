@@ -13,49 +13,18 @@
         loadBookDays(mer_item_id);
 
         //订场日期选中
-        $("#showBookDays-list").on("click","#showBookDays-list > span",function () {
-
+        $(".scrolldate").on("click","#showBookDays-list span",function () {
             //下面所有a移除 class="on"
             $("#showBookDays-list a").removeClass("on");
             $(this).find("a").addClass("on");
-
             var date = $(this).data("day");
             predeterminedPriceInformation(mer_item_id,mer_price_id,date);
-
         })
 
-
-      /*  $.ajax({
-            type: "POST",
-            url: "/site/showBookDays",
-            data: {
-                "mer_item_id": mer_item_id
-            },
-            success: function (result) {
-                if (200 === result.code) {
-                    var source = $("#template").html();
-                    var template = Handlebars.compile(source);
-                    Handlebars.registerHelper('if_status', function(value, options) {
-                        if(value  == 0) {
-                            return "gray";
-                        } else if (value  == 1){
-                            return "";
-                        }else {
-                            return "";
-                        }
-                    });
-                    var html = template(result.lists);
-                    $("#showBookDays-list").append(html);
-                }else{
-                    alert(result.msg);
-                }
-            }
-        })*/
     })
 
     //获取此场馆可预订的日期
     function loadBookDays(mer_item_id){
-
         $.ajax({
             type: "POST",
             url: "/site/showBookDays",
@@ -92,7 +61,7 @@
     function predeterminedPriceInformation (mer_item_id,mer_price_id,date){
         $.ajax({
             type: "POST",
-            url: "/site/showBookDays",
+            url: "/site/getOneDayItemPrice",
             data: {
                 "mer_item_id": mer_item_id,
                 "mer_price_id": mer_price_id,

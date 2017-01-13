@@ -33,7 +33,6 @@ public class PublicService {
     public ResultBean regionGetChildren(String region_id) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("region_id", region_id);
-
         String result = HttpUtil.doPost(AccessServices.PUBLIC_SERVICE_URL + REGION_GET_CHILDREN, jsonObject.toString(), AccessServices.PUBLIC_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);
     }
@@ -64,9 +63,6 @@ public class PublicService {
         jsonObject.put("city_id", city_id);
         String result = HttpUtil.doPost(AccessServices.PUBLIC_SERVICE_URL + REGION_CITY_LND_ANDLAT, jsonObject.toString(), AccessServices.PUBLIC_SERVICE_KEY);
         ResultBean resultBean = HttpResultUtil.result2Bean(result);
-        if (200 == resultBean.getCode()) {
-
-        }
         return resultBean;
     }
 

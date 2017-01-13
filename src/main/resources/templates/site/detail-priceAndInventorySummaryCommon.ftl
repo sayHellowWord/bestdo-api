@@ -35,7 +35,7 @@
             },
             success: function (result) {
                 if (200 === result.code) {
-
+                    console.info(result);
                 } else {
                     alert(result.msg);
                 }
@@ -45,7 +45,7 @@
 </script>
 
 
-<script src="../js/handlebars-v4.0.5.js"></script>
+<script src="/js/handlebars-v4.0.5.js"></script>
 
 <script id="priceAndInventorySummaryCommon-template" type="text/x-handlebars-template">
     {{#each this}}
