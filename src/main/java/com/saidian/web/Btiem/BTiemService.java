@@ -49,7 +49,7 @@ public class BTiemService {
     private static String ITEM_ONE_DAY_IMEM_PRICE = "item/getOneDayItemPrice";
 
     //获取小时型库存
-    private static String MER_ONE_DAY_MER_ITEM_PRICE = "mer/getOneDayMerItemPrice";
+    private static String MER_ONE_DAY_MER_ITEM_PRICE = "item/getOneDayMerItemPrice";
 
 
     /**
@@ -482,7 +482,7 @@ public class BTiemService {
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
         jsonObject.put("date", date);
-        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_ONE_DAY_MER_ITEM_PRICE, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        String result = HttpUtil.doPost(AccessServices.PLATFORM_SERVICE_URL + MER_ONE_DAY_MER_ITEM_PRICE, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
         ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());

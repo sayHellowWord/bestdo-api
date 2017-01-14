@@ -3,9 +3,7 @@ package com.saidian.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.saidian.bean.Result;
-import com.saidian.bean.ResultBean;
 import com.saidian.config.RESTClient;
-import com.saidian.web.bean.cms.Train;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.io.IOException;
 
 /**
  * Created by Administrator on 2017/1/11.
@@ -37,13 +33,6 @@ public class CMSTrainController {
     @RequestMapping("/toDetail")
     public String toDetail(String id, ModelMap modelMap) {
         String result = restClient.trainDetail(id);
-     /*   ObjectMapper objectMapper = new ObjectMapper();
-        ResultBean<Train> trainResultBean = null;
-        try {
-            trainResultBean = objectMapper.readValue(result, ResultBean.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         modelMap.addAttribute("train", new JSONObject(result));
         return "/train/detail";
     }
@@ -63,12 +52,6 @@ public class CMSTrainController {
     public Object ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows, String time_sort) throws Exception {
         String resultStr = restClient.ycTrainhList(name, project, district, signState, shelves, state,
                 null == page ? 1 : page, null == rows ? 10 : rows, Strings.isNullOrEmpty(time_sort) ? "asc" : time_sort);
-        //ObjectMapper objectMapper = new ObjectMapper();
-      /*  try {
-            matchResult = objectMapper.readValue(result, Result.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         Result result = new Result();
         result.setData(new JSONArray(resultStr));
         result.setCode(200);
