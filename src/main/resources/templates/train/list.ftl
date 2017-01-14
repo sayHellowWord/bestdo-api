@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<title>体育赛事</title>
+<title>体育列表</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <!--忽略页面中的数字识别为电话号码-->  
 <meta name="format-detection" content="telephone=no" />
@@ -58,7 +58,7 @@
 	<!--赛事列表-->
 	<div class="venueslist">
 		<ul class="list">
-			<li class="box vip">
+			<#--<li class="box vip">
 				<div class="venuesimg"><img src="images/2.png"></div>
 				<div class="venuesdetial boxflex">
 					<h2 class="font16">盐城羽毛球培训班 </h2>
@@ -73,7 +73,7 @@
 					</div>
 				</div>
 				<div class="xiajia"><p class="font14">报名中</p></div>
-			</li>
+			</li>-->
 		</ul>
 	</div>
 </div>

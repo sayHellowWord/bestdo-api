@@ -28,9 +28,9 @@
 <div class="lunbo">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-        <#list tenMinSite.showImg?split(";") as image>
-            <div class="swiper-slide" style="background-image: url(${image});"></div>
-        </#list>
+            <#list tenMinSite.showImg?split(";") as image>
+                <div class="swiper-slide" style="background-image: url(${image});"></div>
+            </#list>
         </div>
         <div class="textready">
             <span class="left font15">亭湖健身社区</span>
