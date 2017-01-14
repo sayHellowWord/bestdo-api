@@ -198,11 +198,11 @@ public class VenueBookingController {
     @RequestMapping(value = "toOneDayMerItemPrice")
     public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, String day, ModelMap modelMap) throws Exception {
 
-        //获取一天商品明细的价格和库存信息（日期、时段、小时）
-        ResultBean oneDayMerItemPrice =  bTiemService.getOneDayItemPrice(mer_item_id, mer_price_id, day);
-
         //获取八天价格汇总以及库存汇总(乒羽篮网）
         ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
+
+        //获取一天商品明细的价格和库存信息（日期、时段、小时）
+        ResultBean oneDayMerItemPrice =  bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
 
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);

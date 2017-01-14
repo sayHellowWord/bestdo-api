@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.saidian.bean.Result;
 import com.saidian.config.RESTClient;
+import com.saidian.web.bean.cms.Coach;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/1/11.
  */
@@ -19,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class CMSTrainController {
 
-    private  ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     RESTClient restClient;
@@ -33,7 +38,28 @@ public class CMSTrainController {
     @RequestMapping("/toDetail")
     public String toDetail(String id, ModelMap modelMap) {
         String result = restClient.trainDetail(id);
-        modelMap.addAttribute("train", new JSONObject(result));
+        JSONObject trainJSON = new JSONObject(result);
+
+        //获取教练 TODO
+        List<Coach> coaches = new ArrayList<Coach>();
+        Coach coach = new Coach();
+        coach.setId(1l);
+        coach.setName("老王");
+        coach.setGender((byte)1);
+        coach.setBirthday(new Date());
+        coach.setEducationalBg("中");
+        coach.setExperience("3年");
+        coach.setIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126439624/84Z58PICuRE_1024.jpg;");
+        coach.setProject("网球");
+        coach.setRank("高级");
+        coach.setSiteName("网球中心;网球馆;");
+        coach.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126442142/2.jpg;");
+        coach.setCreateDate(new Date());
+        coach.setUpdateDate(new Date());
+        coaches.add(coach);
+        coaches.add(coach);
+        modelMap.addAttribute("train", trainJSON);
+
         return "/train/detail";
     }
 
@@ -69,9 +95,9 @@ public class CMSTrainController {
     }
 
     @RequestMapping("/coach/toDetail")
-    public String list(String id,ModelMap modelMap) {
+    public String list(String id, ModelMap modelMap) {
         String result = restClient.coachDetail(id);
-        modelMap.addAttribute("coach",new JSONObject(result));
+        modelMap.addAttribute("coach", new JSONObject(result));
         return "/train/coachdetail";
     }
 

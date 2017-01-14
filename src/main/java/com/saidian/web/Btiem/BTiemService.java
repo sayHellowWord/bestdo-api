@@ -426,6 +426,7 @@ public class BTiemService {
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
             OneDayItemPrice oneDayItemPrice = new OneDayItemPrice();
+
             if (dataJSONObject.has("inventory_info")) {
                 JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
                 List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
@@ -493,5 +494,51 @@ public class BTiemService {
         return resultBean;
     }
 
+
+
+    /**
+     * 获取一天商品明细的价格和库存信息（日期、时段、小时） ------时段
+     *
+     * @param mer_item_id
+     * @param mer_price_id
+     * @param date
+     * @return
+     */
+    public ResultBean getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String date) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_item_id", mer_item_id);
+        jsonObject.put("mer_price_id", mer_price_id);
+        jsonObject.put("date", date);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_IMEM_PRICE, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<OneDayItemPrice> resultBean = HttpResultUtil.result2Bean(result);
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+            OneDayItemPrice oneDayItemPrice = new OneDayItemPrice();
+
+            if (dataJSONObject.has("inventory_info")) {
+                JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
+                List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
+                for (String key : inventoryJSONObject.keySet()) {
+                    OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.new InventoryInfo();
+                    inventoryInfo.setDay(key);
+                    inventoryInfo.setNumber(inventoryJSONObject.getInt(key));
+                    inventoryInfos.add(inventoryInfo);
+                }
+                oneDayItemPrice.setInventoryInfos(inventoryInfos);
+            }
+
+            if (oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0) {
+                oneDayItemPrice.setDestine((byte) 1);
+            } else {
+                oneDayItemPrice.setDestine((byte) 0);
+            }
+
+            resultBean.setObject(oneDayItemPrice);
+            //置空减少数据传输
+            resultBean.setData(StringUtils.EMPTY);
+        }
+        return resultBean;
+    }
 
 }
