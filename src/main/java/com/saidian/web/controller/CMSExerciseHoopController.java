@@ -42,7 +42,7 @@ public class CMSExerciseHoopController {
     }
 
     /**
-     * 体育赛事列表 接口
+     * 十分钟健身圈列表 接口
      *
      * @param keyword
      * @param page
