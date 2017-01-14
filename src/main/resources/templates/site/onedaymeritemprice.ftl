@@ -28,13 +28,13 @@
         <div class="dateselfixed">
             <div style="height:3.625rem;overflow:hidden;">
                 <div class="scrolldateCont box font12">
-                    <span><a href="javascript:void(0)" class="on">11月13日<br>今日</a></span>
-                    <span><a href="javascript:void(0)">11月13日<br>今日</a></span>
-                    <span><a href="javascript:void(0)">11月13日<br>今日</a></span>
-                    <span><a href="javascript:void(0)">11月13日<br>今日</a></span>
-                    <span><a href="javascript:void(0)">11月13日<br>今日</a></span>
-                    <span><a href="javascript:void(0)">11月13日<br>今日</a></span>
-                    <span><a href="javascript:void(0)">11月13日<br>今日</a></span>
+                <#list priceAndInventorySummaryCommon as summary>
+                    <#if day == summary.priceSummaray.day>
+                        <span><a href="javascript:void(0)" class="on">${summary.formatDay}<br>${summary.week}</a></span>
+                    <#else >
+                        <span><a href="javascript:void(0)">${summary.formatDay}<br>${summary.week}</a></span>
+                    </#if>
+                </#list>
                 </div>
             </div>
         </div>

@@ -495,7 +495,6 @@ public class BTiemService {
     }
 
 
-
     /**
      * 获取一天商品明细的价格和库存信息（日期、时段、小时） ------时段
      *
@@ -504,7 +503,7 @@ public class BTiemService {
      * @param date
      * @return
      */
-    public ResultBean getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String date) throws Exception {
+    public ResultBean<OneDayItemPrice> getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String date) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
@@ -528,12 +527,12 @@ public class BTiemService {
                     inventoryInfo.setStatus(inventoryInfoJson.getString("status"));
 
                     JSONObject hourJSONObject = inventoryInfoJson.getJSONObject("hour");
-                    List< OneDayItemPrice.HourInfo> hours = new ArrayList<OneDayItemPrice.HourInfo>();
+                    List<OneDayItemPrice.HourInfo> hours = new ArrayList<OneDayItemPrice.HourInfo>();
                     for (String houorKey : hourJSONObject.keySet()) {
-                        JSONObject hourJSON = hourJSONObject.getJSONObject(key);
+                        JSONObject hourJSON = hourJSONObject.getJSONObject(houorKey);
                         OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
-                        hourInfo.setHour(hourJSON.getInt("hour "));
-                        hourInfo.setStatus(hourJSON.getInt("status "));
+                        hourInfo.setHour(hourJSON.getInt("hour"));
+                        hourInfo.setStatus(hourJSON.getInt("status"));
                         hours.add(hourInfo);
                     }
                     inventoryInfo.setHourInfos(hours);
