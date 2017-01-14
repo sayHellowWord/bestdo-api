@@ -520,20 +520,27 @@ public class BTiemService {
                 JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
                 List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
                 for (String key : inventoryJSONObject.keySet()) {
+                    JSONObject inventoryInfoJson = inventoryJSONObject.getJSONObject(key);
                     OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.new InventoryInfo();
-                    inventoryInfo.setDay(key);
-                    inventoryInfo.setNumber(inventoryJSONObject.getInt(key));
+                    inventoryInfo.setPiece_id(inventoryInfoJson.getString("piece_id"));
+                    inventoryInfo.setVenue_id(inventoryInfoJson.getString("venue_id"));
+                    inventoryInfo.setName(inventoryInfoJson.getString("name"));
+                    inventoryInfo.setStatus(inventoryInfoJson.getString("status"));
+
+                    JSONObject hourJSONObject = inventoryInfoJson.getJSONObject("hour");
+                    List< OneDayItemPrice.HourInfo> hours = new ArrayList<OneDayItemPrice.HourInfo>();
+                    for (String houorKey : hourJSONObject.keySet()) {
+                        JSONObject hourJSON = hourJSONObject.getJSONObject(key);
+                        OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
+                        hourInfo.setHour(hourJSON.getInt("hour "));
+                        hourInfo.setStatus(hourJSON.getInt("status "));
+                        hours.add(hourInfo);
+                    }
+                    inventoryInfo.setHourInfos(hours);
                     inventoryInfos.add(inventoryInfo);
                 }
                 oneDayItemPrice.setInventoryInfos(inventoryInfos);
             }
-
-            if (oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0) {
-                oneDayItemPrice.setDestine((byte) 1);
-            } else {
-                oneDayItemPrice.setDestine((byte) 0);
-            }
-
             resultBean.setObject(oneDayItemPrice);
             //置空减少数据传输
             resultBean.setData(StringUtils.EMPTY);
