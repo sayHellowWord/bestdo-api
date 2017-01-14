@@ -43,6 +43,16 @@ public class OneDayItemPrice {
 
         private int number;
 
+        private String piece_id;
+
+        private String venue_id;
+
+        private String name;
+
+        private String status;
+
+        private List<HourInfo> hourInfos;
+
         public String getDay() {
             return day;
         }
@@ -57,6 +67,69 @@ public class OneDayItemPrice {
 
         public void setNumber(int number) {
             this.number = number;
+        }
+
+        public String getPiece_id() {
+            return piece_id;
+        }
+
+        public void setPiece_id(String piece_id) {
+            this.piece_id = piece_id;
+        }
+
+        public String getVenue_id() {
+            return venue_id;
+        }
+
+        public void setVenue_id(String venue_id) {
+            this.venue_id = venue_id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public List<HourInfo> getHourInfos() {
+            return hourInfos;
+        }
+
+        public void setHourInfos(List<HourInfo> hourInfos) {
+            this.hourInfos = hourInfos;
+        }
+    }
+
+    public class HourInfo {
+
+        private int hour;
+
+        private int status;
+
+        public int getHour() {
+            return hour;
+        }
+
+        public void setHour(int hour) {
+            this.hour = hour;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
         }
     }
 
