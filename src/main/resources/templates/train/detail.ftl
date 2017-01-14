@@ -28,7 +28,7 @@
 <div class="lunbo">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <#list tenMinSite.showImg?split(";") as image>
+            <#list train.shortIcon?split(";") as image>
                 <div class="swiper-slide" style="background-image: url(${image});"></div>
             </#list>
         </div>
@@ -52,20 +52,21 @@
 
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">教练风采</h3>
-            <div class="scrolldateCont box font12">
-				<#--<span >
+            <div id="scrolldateCont" class="scrolldateCont box font12">
+                 <#list coaches as item>
+                 <span >
 					<a href="javascript:void(0)" class="sai">
 						<div class="box">
-							<img src="images/2.png">
+							<img src="${item.photoIcon}">
 							<div >
-								<h2 class="font16">姓名</h2>
-								<P class="font12 now">高级游泳教练</P>
-								<P class="font12">擅长蛙泳</P>
+								<h2 class="font16">${item.name}</h2>
+								<P class="font12 now">${item.rank}</P>
+								<P class="font12">${item.experience}</P>
 							</div>
 						</div>
-
 					</a>
-				</span>-->span
+				 </span>
+                 </#list>
             </div>
         </div>
 
@@ -73,7 +74,7 @@
             <h1 class="font15">培训介绍</h1>
             <ul>
                 <li class="moreinfo box font14">
-                    <span class="tit">${train.description}</span>
+                    <span class="tit">${train.phone}</span>
                 </li>
             </ul>
         </div>
@@ -99,32 +100,6 @@
         // 如果需要分页器
         pagination: '.swiper-pagination',
     })
-
-
-    // 处理 coaches 教练数据
-    var source = $("#template").html();
-    var template = Handlebars.compile(source);
-    var html = template(coaches);
-    $("#scrolldateCont").append(html);
-
-</script>
-<script src="/js/handlebars-v4.0.5.js"></script>
-
-<script id="template" type="text/x-handlebars-template">
-    {{#each this}}
-    <span>
-        <a href="javascript:void(0)" class="sai">
-            <div class="box">
-                <img src="{{photoIcon}}">
-                <div >
-                    <h2 class="font16">{{name}}</h2>
-                    <P class="font12 now">{{rank}}</P>
-                    <P class="font12">{{introduction}}</P>
-                </div>
-            </div>
-        </a>
-    </span>
-    {{/each}}
 </script>
 </body>
 </html>

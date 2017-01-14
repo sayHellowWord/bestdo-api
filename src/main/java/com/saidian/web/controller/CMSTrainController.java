@@ -54,11 +54,11 @@ public class CMSTrainController {
         coach.setBirthday(new Date());
         coach.setEducationalBg("中");
         coach.setExperience("3年");
-        coach.setIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126439624/84Z58PICuRE_1024.jpg;");
+        coach.setIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126439624/84Z58PICuRE_1024.jpg");
         coach.setProject("网球");
         coach.setRank("高级");
         coach.setSiteName("网球中心;网球馆;");
-        coach.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126442142/2.jpg;");
+        coach.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126442142/2.jpg");
         coach.setCreateDate(new Date());
         coach.setUpdateDate(new Date());
         coaches.add(coach);

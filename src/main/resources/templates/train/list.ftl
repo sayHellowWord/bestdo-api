@@ -57,7 +57,7 @@
 <div class="wrapper">
 	<!--赛事列表-->
 	<div class="venueslist">
-		<ul class="list">
+		<ul id="list" class="list">
 			<#--<li class="box vip">
 				<div class="venuesimg"><img src="images/2.png"></div>
 				<div class="venuesdetial boxflex">
@@ -97,10 +97,6 @@ $(function(){
     // 初始化加载数据
     search(area, order, 1, 15);
 
-	// 点击行政区
-
-	// 点击排序
-
 
 	/*var xmlhttp=new XMLHttpRequest();
 	if (xmlhttp.readyState <4 || xmlhttp.status != 200){
@@ -132,6 +128,9 @@ $(function(){
 
             //替换title
 			var ind = $(this).parent().parent().data('tab');
+			if ($(this).text() === '全部区域') {
+                $(this).text() = '行政区';
+			}
 			$('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
 
 			$("body").click();
@@ -157,6 +156,9 @@ $(function(){
 			//替换title
 			//$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
             var ind = $(this).parent().parent().data('tab');
+			if ($(this).text() === '按照时间排序') {
+				$(this).text() = '排序';
+			}
             $('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
 			
 			$("body").click();
@@ -218,7 +220,7 @@ $(function(){
 		if (200 === result.code) {
 			var source = $("#template").html();
 			var template = Handlebars.compile(source);
-			Handlebars.registerHelper('if_status', function(value, options) {
+			Handlebars.registerHelper('if_signState', function(value, options) {
 				if(value  == 0) {
 					return "报名关闭";
 				} else if (value  == 1){
@@ -238,22 +240,26 @@ $(function(){
 <script src="/js/handlebars-v4.0.5.js"></script>
 
 <script id="template" type="text/x-handlebars-template">
+	{{#each this}}
     <li class="box vip">
-		<div class="venuesimg"><img src="images/2.png"></div>
+		<div class="venuesimg"><img src="{{icon}}"></div>
+        <a href="/cms/train//toDetail?id={{id}}">
 		<div class="venuesdetial boxflex">
-			<h2 class="font16">盐城羽毛球培训班 </h2>
+			<h2 class="font16">{{name}} </h2>
 			<div class="address add3 font12">
-			<span class="p">报名时间：1月1日-1月3日</span>
+			<span class="p">报名时间：{{signStartTime}}-{{signEndTime}}</span>
 			</div>
 			<div class="address add3 font12">
-					<span class="p">课程时间：1月1日-1月3日</span>
+					<span class="p">课程时间：{{trainTime}}</span>
 			</div>
 			<div class="address add3 font12">
-					<span class="p">培训地点：西直门西直门西直门西直门西直门西直门西直门</span>
+					<span class="p">培训地点：{{adress}}</span>
 			</div>
 		</div>
-		<div class="xiajia"><p class="font14">报名中</p></div>
+        </a>
+		<div class="xiajia"><p class="font14">{{#if_signState signState}} {{signState}} {{else}} {{signState}} {{/if_signState}}</p></div>
 	</li>
+    {{/each}}
 </script>
 </body>
 </html>
