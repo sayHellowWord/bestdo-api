@@ -126,7 +126,7 @@ public class VenueBookingController {
     }
 
     @RequestMapping(value = "toDetail")
-    public String toDetail(String mer_item_id, String mer_price_id, ModelMap map) throws Exception {
+    public String toDetail(String mer_item_id, String mer_price_id, String cid,ModelMap map) throws Exception {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
         dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
@@ -145,6 +145,7 @@ public class VenueBookingController {
 
         map.addAttribute("mer_item_id", mer_item_id);
         map.addAttribute("mer_price_id", Strings.isNullOrEmpty(mer_price_id) ? "" : mer_price_id);
+        map.addAttribute("cid", Strings.isNullOrEmpty(cid) ? "" : cid);
         return "site/detail";
     }
 
@@ -187,8 +188,7 @@ public class VenueBookingController {
     @ResponseBody
     @RequestMapping(value = "getOneDayItemPrice")
     public ResultBean getOneDayItemPrice(String mer_item_id, String mer_price_id, String date) throws Exception {
-        ResultBean resultBean =  bTiemService.getOneDayItemPrice(mer_item_id, mer_price_id, date);
-        return resultBean;
+        return bTiemService.getOneDayItemPrice(mer_item_id, mer_price_id, date);
     }
 
     /**

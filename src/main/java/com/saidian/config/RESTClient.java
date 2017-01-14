@@ -44,6 +44,7 @@ public class RESTClient {
 
     /**
      * 赛事动态
+     *
      * @param matchId
      * @param page
      * @param rows
@@ -57,10 +58,11 @@ public class RESTClient {
 
     /**
      * 动态详情
+     *
      * @param id
      * @return
      */
-    public String matchDynamicDetail(String id){
+    public String matchDynamicDetail(String id) {
         String result = restTemplate.postForObject(HttpParams.CMS_URL + "matchDynamic/detail?id={id}",
                 null, String.class, id);
         return result;
@@ -68,6 +70,7 @@ public class RESTClient {
 
     /**
      * 体育培训
+     *
      * @param name
      * @param project
      * @param district
@@ -78,11 +81,25 @@ public class RESTClient {
      * @param rows
      * @return
      */
-    public String ycTrainhList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows){
+    public String ycTrainhList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows) {
         String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listTrainWX?name={name}&",
                 null, String.class, name);
         return result;
     }
 
+
+    //十分钟健身圈列表
+    public String excrciseHoodList(String keyword, Integer page, Integer rows) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "tenminsite/front_list?keyword={keyword}&page={page}&rows={rows}",
+                null, String.class, keyword, page, rows);
+        return result;
+    }
+
+    //十分钟健身圈详情
+    public String excrciseHoodDetail(String id) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "tenminsite/front_findById?id={keyword}",
+                null, String.class, id);
+        return result;
+    }
 
 }
