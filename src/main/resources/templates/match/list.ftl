@@ -107,6 +107,7 @@
         //点击搜索按钮
         var btnSearch = $('#btn-search');
         btnSearch.on("click", function() {
+            $("#list").html('');
             searchKeyword = $('#search-keyword').val();
             search(searchKeyword, 1, 15);
         })

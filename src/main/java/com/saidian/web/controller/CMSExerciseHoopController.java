@@ -31,14 +31,14 @@ public class CMSExerciseHoopController {
     public String toDetail(String id, ModelMap modelMap) {
         String result = restClient.excrciseHoodDetail(id);
         ObjectMapper objectMapper = new ObjectMapper();
-        TenMinSite tenMinSite = null;
+        Result<TenMinSite> tenMinSite = null;
         try {
-            tenMinSite = objectMapper.readValue(result, TenMinSite.class);
+            tenMinSite = objectMapper.readValue(result, Result.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        modelMap.addAttribute("tenMinSite",tenMinSite);
-        return "/exercisehoop/list";
+        modelMap.addAttribute("tenMinSite",tenMinSite.getData());
+        return "/exercisehoop/detail";
     }
 
     /**

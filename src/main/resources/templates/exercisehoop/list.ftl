@@ -118,6 +118,7 @@
         //点击搜索按钮
         var btnSearch = $('#btn-search');
         btnSearch.on("click", function() {
+            $("#list").html('');
             searchKeyword = $('#search-keyword').val();
             search(searchKeyword, 1, 15);
         })
@@ -201,7 +202,7 @@
     function search(keyword, page, rows) {
         $.ajax({
             type: "POST",
-            url: "",
+            url: "/cms/exercisehoop/list/yc",
             data: {
                 "keyword": keyword,
                 "page": page,
@@ -218,6 +219,9 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
+            Handlebars.registerHelper('if_showImg', function(value, options) {
+                return value.slice(0, -1);
+            });
             var html = template(result.data);
             $("#list").append(html);
         } else {
@@ -231,8 +235,8 @@
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
     <li class="box vip">
-        <div class="venuesimg"><img src="{{thumbnail}}"></div>
-        <a href="/cms/match/detail?id={{id}}">
+        <div class="venuesimg"><img src="{{#if_showImg showImg}} {{showImg}} {{/if_showImg}}"></div>
+        <a href="/cms/exercisehoop/toDetail?id={{id}}">
             <div class="venuesdetial boxflex">
                 <h2 class="font16">{{name}}</h2>
 
