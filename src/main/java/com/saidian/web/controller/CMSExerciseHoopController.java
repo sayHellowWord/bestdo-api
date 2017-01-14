@@ -38,7 +38,7 @@ public class CMSExerciseHoopController {
             e.printStackTrace();
         }
         modelMap.addAttribute("tenMinSite",tenMinSite);
-        return "/exercisehoop/list";
+        return "/exercisehoop/detail";
     }
 
     /**

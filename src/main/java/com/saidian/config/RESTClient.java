@@ -87,6 +87,13 @@ public class RESTClient {
         return result;
     }
 
+    //体育培训详情
+    public String trainDetail(String id){
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/findTrain?id={id)}",
+                null, String.class, id);
+        return result;
+    }
+
 
     //十分钟健身圈列表
     public String excrciseHoodList(String keyword, Integer page, Integer rows) {
@@ -97,7 +104,7 @@ public class RESTClient {
 
     //十分钟健身圈详情
     public String excrciseHoodDetail(String id) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "tenminsite/front_findById?id={keyword}",
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "tenminsite/front_findById?id={id)}",
                 null, String.class, id);
         return result;
     }

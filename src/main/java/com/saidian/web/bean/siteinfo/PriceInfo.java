@@ -1,4 +1,4 @@
-package com.saidian.web.bean;
+package com.saidian.web.bean.siteinfo;
 
 /**
  * 日期型价格信息

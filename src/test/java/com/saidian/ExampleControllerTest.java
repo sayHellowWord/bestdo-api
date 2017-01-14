@@ -55,8 +55,8 @@ public class ExampleControllerTest {
     @Test
     public void btiemController() {
        // String result = restTemplate.getForObject("http://localhost:" + port + "/test", String.class);
-        String result = restTemplate.getForObject("http://localhost:" + port + "/site/getOneDayItemPrice?" +
-                "mer_item_id=10200001000838&mer_price_id=962&date=2017-01-14", String.class);
+        String result = restTemplate.getForObject("http://localhost:" + port + "/siteinfo/priceAndInventorySummaryCommon?" +
+                "mer_item_id=10200001000731&mer_price_id=1429", String.class);
         // String result = restTemplate.getForObject("http://localhost:" + port + "/order/test", String.class);
         assertNotNull(result);
         System.out.println("*******************************************************");

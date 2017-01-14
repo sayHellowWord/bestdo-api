@@ -35,7 +35,7 @@
     function loadBookDays(mer_item_id) {
         $.ajax({
             type: "POST",
-            url: "/site/showBookDays",
+            url: "/siteinfo/showBookDays",
             data: {
                 "mer_item_id": mer_item_id
             },
@@ -69,7 +69,7 @@
     function predeterminedPriceInformation(mer_item_id, mer_price_id, date) {
         $.ajax({
             type: "POST",
-            url: "/site/getOneDayItemPrice",
+            url: "/siteinfo/getOneDayItemPrice",
             data: {
                 "mer_item_id": mer_item_id,
                 "mer_price_id": mer_price_id,

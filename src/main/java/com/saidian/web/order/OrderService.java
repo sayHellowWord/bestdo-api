@@ -4,7 +4,7 @@ import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
-import com.saidian.web.bean.BookDay;
+import com.saidian.web.bean.siteinfo.BookDay;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 

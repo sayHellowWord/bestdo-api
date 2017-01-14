@@ -31,7 +31,7 @@ public class VenueBookingController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private String LOG_PRE = "site-error:";
+    private String LOG_PRE = "siteinfo-error:";
 
     @Autowired
     BTiemService bTiemService;//场馆
@@ -76,7 +76,7 @@ public class VenueBookingController {
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         map.addAttribute("lng", lntAndLatResultBean);
-        return "site/index";
+        return "siteinfo/index";
     }
 
 
@@ -146,7 +146,7 @@ public class VenueBookingController {
         map.addAttribute("mer_item_id", mer_item_id);
         map.addAttribute("mer_price_id", Strings.isNullOrEmpty(mer_price_id) ? "" : mer_price_id);
         map.addAttribute("cid", Strings.isNullOrEmpty(cid) ? "" : cid);
-        return "site/detail";
+        return "siteinfo/detail";
     }
 
     /**
@@ -159,7 +159,6 @@ public class VenueBookingController {
     @ResponseBody
     @RequestMapping(value = "priceAndInventorySummaryCommon")
     public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id) throws Exception {
-        System.out.println("================    获取八天价格汇总以及库存汇总(乒羽篮网）    =======================");
         ResultBean resultBean = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
         return bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
     }
@@ -200,7 +199,7 @@ public class VenueBookingController {
     public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, ModelMap modelMap) {
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);
-        return "/site/onedaymeritemprice";
+        return "/siteinfo/onedaymeritemprice";
     }
 
 

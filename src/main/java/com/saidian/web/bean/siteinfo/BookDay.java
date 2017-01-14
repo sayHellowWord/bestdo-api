@@ -1,4 +1,4 @@
-package com.saidian.web.bean;
+package com.saidian.web.bean.siteinfo;
 
 /**
  * Created by Administrator on 2017/1/5.

@@ -1,4 +1,4 @@
-package com.saidian.web.bean;
+package com.saidian.web.bean.siteinfo;
 
 import java.util.List;
 

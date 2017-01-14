@@ -7,6 +7,7 @@ import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
 import com.saidian.web.bean.*;
+import com.saidian.web.bean.siteinfo.*;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -359,9 +360,24 @@ public class BTiemService {
         ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+            List<PriceAndInventorySummaryCommon> priceAndInventorySummaryCommons = new ArrayList<PriceAndInventorySummaryCommon>();
             for (String key : dataJSONObject.keySet()) {
+                JSONObject json = dataJSONObject.getJSONObject(key);
+                PriceAndInventorySummaryCommon priceAndInventorySummaryCommon = null;
 
+                priceAndInventorySummaryCommon.setInventory_summaray(json.getString("inventory_summaray"));
+                JSONObject priceSummarayJSONObject = json.getJSONObject("price_summaray");
+                PriceSummaray priceSummaray = null;
+                try {
+                    priceSummaray = objectMapper.readValue(json.toString(), PriceSummaray.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
+                priceAndInventorySummaryCommons.add(priceAndInventorySummaryCommon);
             }
+            resultBean.setLists(priceAndInventorySummaryCommons);
+            resultBean.setData(StringUtils.EMPTY);
         }
         return resultBean;
     }
@@ -415,10 +431,10 @@ public class BTiemService {
                 oneDayItemPrice.setPriceInfos(priceInfos);
             }
 
-            if(oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0){
-                oneDayItemPrice.setDestine((byte)1);
-            }else{
-                oneDayItemPrice.setDestine((byte)0);
+            if (oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0) {
+                oneDayItemPrice.setDestine((byte) 1);
+            } else {
+                oneDayItemPrice.setDestine((byte) 0);
             }
 
             resultBean.setObject(oneDayItemPrice);

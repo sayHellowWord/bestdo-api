@@ -45,7 +45,7 @@ public class OrderController {
             throw new Exception("运动类型不能为空");
 
         JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-        String telephone = jsonObject.getString("jsonObject");
+        String telephone = jsonObject.getString("telephone");
         modelMap.addAttribute("telephone", telephone);
 
         String mer_id = HttpParams.merid;
