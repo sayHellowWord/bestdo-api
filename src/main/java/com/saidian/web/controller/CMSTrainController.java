@@ -1,11 +1,13 @@
 package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.saidian.bean.Result;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.RESTClient;
-import com.saidian.web.bean.cms.TenMinSite;
 import com.saidian.web.bean.cms.Train;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,8 +23,11 @@ import java.io.IOException;
 @Controller
 public class CMSTrainController {
 
+    private  ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     RESTClient restClient;
+
 
     @RequestMapping("/list")
     public String list(ModelMap modelMap) {
@@ -32,14 +37,14 @@ public class CMSTrainController {
     @RequestMapping("/toDetail")
     public String toDetail(String id, ModelMap modelMap) {
         String result = restClient.trainDetail(id);
-        ObjectMapper objectMapper = new ObjectMapper();
+     /*   ObjectMapper objectMapper = new ObjectMapper();
         ResultBean<Train> trainResultBean = null;
         try {
             trainResultBean = objectMapper.readValue(result, ResultBean.class);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        modelMap.addAttribute("train", trainResultBean.getData());
+        }*/
+        modelMap.addAttribute("train", new JSONObject(result));
         return "/train/detail";
     }
 
@@ -55,16 +60,36 @@ public class CMSTrainController {
 
     @RequestMapping("/list/yc")
     @ResponseBody
-    public Result ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows) throws Exception {
-        String result = restClient.ycTrainhList(name, project, district, signState, shelves, state, null == page ? 1 : page, null == rows ? 10 : rows);
-        ObjectMapper objectMapper = new ObjectMapper();
-        Result matchResult = null;
-        try {
+    public Object ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows, String time_sort) throws Exception {
+        String resultStr = restClient.ycTrainhList(name, project, district, signState, shelves, state,
+                null == page ? 1 : page, null == rows ? 10 : rows, Strings.isNullOrEmpty(time_sort) ? "asc" : time_sort);
+        //ObjectMapper objectMapper = new ObjectMapper();
+      /*  try {
             matchResult = objectMapper.readValue(result, Result.class);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        return matchResult;
+        }*/
+        Result result = new Result();
+        result.setData(new JSONArray(resultStr));
+        result.setCode(200);
+        return result;
+    }
+
+    @RequestMapping("/coach/list")
+    @ResponseBody
+    public Object coachList(String name, String project, String rank, String state, Integer page, Integer rows) throws Exception {
+        String resultStr = restClient.coachList(name, project, rank, state, null == page ? 1 : page, null == rows ? 10 : rows);
+        Result result = new Result();
+        result.setData(new JSONArray(resultStr));
+        result.setCode(200);
+        return result;
+    }
+
+    @RequestMapping("/coach/toDetail")
+    public String list(String id,ModelMap modelMap) {
+        String result = restClient.coachDetail(id);
+        modelMap.addAttribute("coach",new JSONObject(result));
+        return "/train/coachdetail";
     }
 
 }

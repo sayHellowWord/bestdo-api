@@ -31,7 +31,7 @@ public class VenueBookingController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private String LOG_PRE = "siteinfo-error:";
+    private String LOG_PRE = "site-error:";
 
     @Autowired
     BTiemService bTiemService;//场馆
@@ -76,7 +76,7 @@ public class VenueBookingController {
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         map.addAttribute("lng", lntAndLatResultBean);
-        return "siteinfo/index";
+        return "site/index";
     }
 
 
@@ -126,7 +126,7 @@ public class VenueBookingController {
     }
 
     @RequestMapping(value = "toDetail")
-    public String toDetail(String mer_item_id, String mer_price_id, String cid,ModelMap map) throws Exception {
+    public String toDetail(String mer_item_id, String mer_price_id, String cid, ModelMap map) throws Exception {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
         dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
@@ -146,7 +146,7 @@ public class VenueBookingController {
         map.addAttribute("mer_item_id", mer_item_id);
         map.addAttribute("mer_price_id", Strings.isNullOrEmpty(mer_price_id) ? "" : mer_price_id);
         map.addAttribute("cid", Strings.isNullOrEmpty(cid) ? "" : cid);
-        return "siteinfo/detail";
+        return "site/detail";
     }
 
     /**
@@ -196,10 +196,20 @@ public class VenueBookingController {
      * @return
      */
     @RequestMapping(value = "toOneDayMerItemPrice")
-    public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, ModelMap modelMap) {
+    public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, String day, ModelMap modelMap) throws Exception {
+
+        //获取八天价格汇总以及库存汇总(乒羽篮网）
+        ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
+        //获取小时型库存
+        ResultBean oneDayMerItemPrice = bTiemService.getOneDayMerItemPrice(mer_item_id, mer_price_id, day);
+
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);
-        return "/siteinfo/onedaymeritemprice";
+        modelMap.addAttribute("day", day);
+        modelMap.addAttribute("priceAndInventorySummaryCommon", priceAndInventorySummaryCommon.getLists());
+        modelMap.addAttribute("oneDayMerItemPrice", oneDayMerItemPrice.getLists());
+
+        return "/site/onedaymeritemprice";
     }
 
 
