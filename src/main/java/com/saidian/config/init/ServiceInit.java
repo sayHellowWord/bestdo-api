@@ -58,23 +58,23 @@ public class ServiceInit implements CommandLineRunner {
                 "'externalIp':'" + env.getProperty("application.externalIp") + "','externalPort':'" + env.getProperty("application.externalPort") + "' }";
 
         String AUTH_URL = "config/v1/api/service/getKeys";
-        ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data, HttpParams.key));
-        JSONObject jsonObject = new JSONObject(resultBean.getData());
-        Map accessServices = new HashMap();
-        if (jsonObject.has("list")) {
-            JSONArray jsonArray = jsonObject.getJSONArray("list");
-            int length = jsonArray.length();
-            for (int i = 0; i < length; i++) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                ServiceBean serviceBean = new ServiceBean();
-                serviceBean.setFromServiceUrl(object.getString("fromServiceUrl"));
-                serviceBean.setGoalServiceUrl(object.getString("goalServiceUrl"));
-                serviceBean.setSercertKey(object.getString("sercertKey"));
-                serviceBean.setGoalServiceId(object.getString("goalServiceId"));
-                accessServices.put(serviceBean.getGoalServiceId(), serviceBean);
-            }
-        }
-        AccessServices.init(accessServices);
+//        ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data, HttpParams.key));
+//        JSONObject jsonObject = new JSONObject(resultBean.getData());
+//        Map accessServices = new HashMap();
+//        if (jsonObject.has("list")) {
+//            JSONArray jsonArray = jsonObject.getJSONArray("list");
+//            int length = jsonArray.length();
+//            for (int i = 0; i < length; i++) {
+//                JSONObject object = jsonArray.getJSONObject(i);
+//                ServiceBean serviceBean = new ServiceBean();
+//                serviceBean.setFromServiceUrl(object.getString("fromServiceUrl"));
+//                serviceBean.setGoalServiceUrl(object.getString("goalServiceUrl"));
+//                serviceBean.setSercertKey(object.getString("sercertKey"));
+//                serviceBean.setGoalServiceId(object.getString("goalServiceId"));
+//                accessServices.put(serviceBean.getGoalServiceId(), serviceBean);
+//            }
+//        }
+//        AccessServices.init(accessServices);
 
         System.out.println(">>>>>>>>>>>>>>>服务启动，结束执行加载数据等操作<<<<<<<<<<<<<");
     }

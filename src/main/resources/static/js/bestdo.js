@@ -8,7 +8,9 @@
 * dateControl 日期时间控件
 * promptEve 提示弹层
 */
-(function($){	
+(function($){
+	// 定义全局变量 Rows: 列表页每页加载数量
+	// var Rows = 15;
 	//阻止浏览器默认行为
 	var stopWindowDefault = {
 		windowdefaultEvent: function(windowflag){

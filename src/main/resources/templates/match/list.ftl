@@ -12,7 +12,7 @@
 </head>
 <body>
 <!--头部公用-->
-<div id="header">
+<#--<div id="header">
     <div class="header">
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
@@ -21,9 +21,25 @@
             </div>
         </div>
     </div>
+</div>-->
+<div id="header">
+    <div class="header">
+        <div class="headerCont box">
+            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerC boxflex">
+                <div class="search box font14">
+                    <div class="searchInput boxflex">
+                        <span class="icon"></span>
+                        <input id="search-keyword" type="text" class="font14" placeholder="输入场地名称或行政区" >
+                    </div>
+                    <a id="btn-search" href="javascript:void(0)" class="btn">搜索</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-<div class="chooseTab www25 font13">
+
+<#--<div class="chooseTab font13">
     <div class="chooseTabCont">
         <a href="javascript:void(0)" data-tab="0">
             行政区<span></span>
@@ -35,24 +51,29 @@
             距离<span></span>
         </a>
     </div>
-</div>
+</div>-->
 <!--区域-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 nearby">
-        <a href="javascript:void(0)" class="on">亭湖区</a>
-        <a href="javascript:void(0)">盐都区</a>
-        <a href="javascript:void(0)">大丰区</a>
+        <a href="javascript:void(0)" class="on">全部区域</a>
+        &lt;#&ndash;todo 测试数据待删除&ndash;&gt;
+        <a href="javascript:void(0)" data-value="1935">亭湖区</a>
+        <#if regions??>
+            <#list regions as regions>
+                <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+            </#list>
+        </#if>
     </div>
 </div>
-<!--排序-->
+<!--排序&ndash;&gt;
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 sort">
         <a href="javascript:void(0)" class="on">按时间排序</a>
     </div>
 </div>
-<!--距离-->
+<!--距离&ndash;&gt;
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 distance">
@@ -61,7 +82,7 @@
         <a href="javascript:void(0)">附近5km</a>
         <a href="javascript:void(0)">附近10km</a>
     </div>
-</div>
+</div>-->
 <!--赛事列表-->
 <div class="wrapper">
     <!--赛事列表-->
@@ -77,11 +98,21 @@
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script type="text/javascript">
     $(function () {
+        // 获取搜索关键词
+        var searchKeyword = $('#search-keyword').val();
 
         //初始化加载数据
-        search();
+        search(searchKeyword, 1, 15);
 
-        var xmlhttp = new XMLHttpRequest();
+        //点击搜索按钮
+        var btnSearch = $('#btn-search');
+        btnSearch.on("click", function() {
+            $("#list").html('');
+            searchKeyword = $('#search-keyword').val();
+            search(searchKeyword, 1, 15);
+        })
+
+        /*var xmlhttp = new XMLHttpRequest();
         if (xmlhttp.readyState < 4 || xmlhttp.status != 200) {
             $(" .loading").hide();
         }
@@ -90,7 +121,7 @@
             if (document.readyState == "complete") {
                 $(".loading").hide();
             }
-        }
+        }*/
 
         /*筛选条件*/
         $(".slidemenuCont a").on("click", function () {
@@ -131,7 +162,7 @@
         });
 
         //距离
-        $("div.distance a").click(function () {
+        /*$("div.distance a").click(function () {
             //替换title
             $("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
             $("body").click();
@@ -141,7 +172,7 @@
             $(this).addClass('on');
             scope.district = $(this).attr('data-tag');
             againReload();
-        });
+        });*/
 
     })
 

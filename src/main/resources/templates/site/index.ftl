@@ -52,11 +52,11 @@
     <div class="slidebg"></div>
     <div id="administrative-area" class="slidemenuCont font14">
         <a href="javascript:void(0)" class="on">全部区域</a>
-    <#if regions??>
-        <#list regions as regions>
-            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
-        </#list>
-    </#if>
+        <#if regions??>
+            <#list regions as regions>
+                <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+            </#list>
+        </#if>
     </div>
 </div>
 <!--距离-->
@@ -122,6 +122,7 @@
             empty: "gray",
             typing: "slidemenu"
         });
+
         //筛选列表点击
         $(".slidemenu").on("click", "#sport-type > a,#administrative-area > a,#distance > a", function () {
             alert($("#sport-type").find(".on").data("merid"));
@@ -185,7 +186,7 @@
 </script>
 
 
-<script src="../js/handlebars-v4.0.5.js"></script>
+<script src="/js/handlebars-v4.0.5.js"></script>
 
 <script id="googDetail-template" type="text/x-handlebars-template">
     {{#each this}}
