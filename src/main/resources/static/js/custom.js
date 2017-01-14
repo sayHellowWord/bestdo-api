@@ -6,7 +6,7 @@ function venueSearch(merid, mer_item_ids, mer_price_id, city, q, card_type_id, r
 
     $.ajax({
         type: "POST",
-        url: "../siteinfo/search",
+        url: "../site/search",
         data: {
             "merid": merid,
             "mer_item_ids": mer_item_ids,

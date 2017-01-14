@@ -1,11 +1,13 @@
 package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.saidian.bean.Result;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.RESTClient;
-import com.saidian.web.bean.cms.TenMinSite;
 import com.saidian.web.bean.cms.Train;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -55,8 +57,9 @@ public class CMSTrainController {
 
     @RequestMapping("/list/yc")
     @ResponseBody
-    public Result ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows) throws Exception {
-        String result = restClient.ycTrainhList(name, project, district, signState, shelves, state, null == page ? 1 : page, null == rows ? 10 : rows);
+    public Result ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows, String time_sort) throws Exception {
+        String result = restClient.ycTrainhList(name, project, district, signState, shelves, state,
+                null == page ? 1 : page, null == rows ? 10 : rows, Strings.isNullOrEmpty(time_sort) ? "asc" : time_sort);
         ObjectMapper objectMapper = new ObjectMapper();
         Result matchResult = null;
         try {
@@ -67,4 +70,24 @@ public class CMSTrainController {
         return matchResult;
     }
 
+    @RequestMapping("/coach/list")
+    @ResponseBody
+    public Object coachList(String name, String project, String rank, String state, Integer page, Integer rows) throws Exception {
+        String result = restClient.coachList(name, project, rank, state, null == page ? 1 : page, null == rows ? 10 : rows);
+        /*ObjectMapper objectMapper = new ObjectMapper();
+        Result coachResult = null;
+        try {
+            coachResult = objectMapper.readValue(result, Result.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        return new JSONArray(result);
+    }
+
+    @RequestMapping("/coach/detail")
+    @ResponseBody
+    public Object coachDetail(String id) throws Exception {
+        String result = restClient.coachDetail(id);
+        return new JSONObject(result);
+    }
 }

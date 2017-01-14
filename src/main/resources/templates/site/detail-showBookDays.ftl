@@ -35,7 +35,7 @@
     function loadBookDays(mer_item_id) {
         $.ajax({
             type: "POST",
-            url: "/siteinfo/showBookDays",
+            url: "/site/showBookDays",
             data: {
                 "mer_item_id": mer_item_id
             },
@@ -69,7 +69,7 @@
     function predeterminedPriceInformation(mer_item_id, mer_price_id, date) {
         $.ajax({
             type: "POST",
-            url: "/siteinfo/getOneDayItemPrice",
+            url: "/site/getOneDayItemPrice",
             data: {
                 "mer_item_id": mer_item_id,
                 "mer_price_id": mer_price_id,
@@ -117,9 +117,9 @@
             <div class="venuesBookInfo boxflex2">
                 <div class="price box2">
                     {{#if destine}}
-                    {{#each priceInfos}}
-                    <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
-                    {{/each}}
+                        {{#each priceInfos}}
+                        <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
+                        {{/each}}
                     {{else}}
                     <div class="service box2"><p class="font12">不可预订</p></div>
                     {{/if}}

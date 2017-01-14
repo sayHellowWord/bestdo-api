@@ -49,7 +49,7 @@ public class BTiemService {
     private static String ITEM_ONE_DAY_IMEM_PRICE = "item/getOneDayItemPrice";
 
     //获取小时型库存
-    private static String ITEM_ONE_DAY_MER_ITEM_PRICE = "item/getOneDayMerItemPrice";
+    private static String MER_ONE_DAY_MER_ITEM_PRICE = "mer/getOneDayMerItemPrice";
 
 
     /**
@@ -363,19 +363,43 @@ public class BTiemService {
             List<PriceAndInventorySummaryCommon> priceAndInventorySummaryCommons = new ArrayList<PriceAndInventorySummaryCommon>();
             for (String key : dataJSONObject.keySet()) {
                 JSONObject json = dataJSONObject.getJSONObject(key);
-                PriceAndInventorySummaryCommon priceAndInventorySummaryCommon = null;
+                PriceAndInventorySummaryCommon priceAndInventorySummaryCommon = new PriceAndInventorySummaryCommon();
 
-                priceAndInventorySummaryCommon.setInventory_summaray(json.getString("inventory_summaray"));
+                priceAndInventorySummaryCommon.setInventory_summaray(json.getInt("inventory_summaray"));
+
                 JSONObject priceSummarayJSONObject = json.getJSONObject("price_summaray");
                 PriceSummaray priceSummaray = null;
                 try {
-                    priceSummaray = objectMapper.readValue(json.toString(), PriceSummaray.class);
+                    priceSummaray = objectMapper.readValue(priceSummarayJSONObject.toString(), PriceSummaray.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                //日期处理
+                DateTime todayDateTime = new DateTime();
+                String today = todayDateTime.toString("yyyy-MM-dd");
+                DateTime dateTime = new DateTime(priceSummaray.getDay());
+                if (today.equals(priceSummaray.getDay())) {
+                    priceAndInventorySummaryCommon.setWeek("今日");
+                } else {
+                    priceAndInventorySummaryCommon.setWeek(dateTime.toString("EE", Locale.CHINESE));
+                }
+                priceAndInventorySummaryCommon.setFormatDay(dateTime.toString("MM月dd日"));
+
                 priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
+                priceAndInventorySummaryCommon.setMer_item_id(mer_item_id);
+                priceAndInventorySummaryCommon.setMer_price_id(mer_price_id);
+
                 priceAndInventorySummaryCommons.add(priceAndInventorySummaryCommon);
             }
+
+            //排序
+            Ordering<PriceAndInventorySummaryCommon> ordering = new Ordering<PriceAndInventorySummaryCommon>() {
+                public int compare(PriceAndInventorySummaryCommon left, PriceAndInventorySummaryCommon right) {
+                    return left.getPriceSummaray().getDay().compareTo(right.getPriceSummaray().getDay());
+                }
+            };
+            priceAndInventorySummaryCommons = ordering.sortedCopy(priceAndInventorySummaryCommons);
+
             resultBean.setLists(priceAndInventorySummaryCommons);
             resultBean.setData(StringUtils.EMPTY);
         }
@@ -458,7 +482,7 @@ public class BTiemService {
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
         jsonObject.put("date", date);
-        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_MER_ITEM_PRICE, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_ONE_DAY_MER_ITEM_PRICE, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
         ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());

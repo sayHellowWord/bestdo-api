@@ -144,7 +144,7 @@
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
             var cid = $(this).data("cid");
-            window.location.href = "/siteinfo/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id+"&cid="+cid;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id+"&cid="+cid;
         });
 
     });
@@ -155,7 +155,7 @@
         //$(".load-container").show();
         $.ajax({
             type: "POST",
-            url: "/siteinfo/search",
+            url: "/site/search",
             data: {
                 "merid": merid,
                 "radius": radius,
