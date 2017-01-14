@@ -36,6 +36,8 @@ public class CMSMatchController {
     @Autowired
     PublicService publicService;//公共服务
 
+    private  ObjectMapper objectMapper = new ObjectMapper();
+
     @RequestMapping("/list")
     public String matchList(ModelMap modelMap) {
         //行政区
@@ -49,8 +51,6 @@ public class CMSMatchController {
         modelMap.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         return "/match/list";
     }
-
-    private   ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 体育赛事详情

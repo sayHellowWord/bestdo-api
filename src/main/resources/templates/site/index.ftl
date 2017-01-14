@@ -75,30 +75,7 @@
     <!--场馆列表-->
     <div class="venueslist">
         <ul id="googDetail-list" class="list">
-        <#--   <#list goodsDetailResultBean.lists as googDetail>
-            <li class="box vip" data-mer_item_id="${googDetail.mer_item_id}" data-mer_price_id="${googDetail.mer_price_id}" >
-                <div class="venuesimg"><img src="${googDetail.thumb}"/></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">${googDetail.name}</h2>
-                    <div class="price font12">
-                        <span class="font18">￥${googDetail.min_price!0}</span>起<i>门市价￥${googDetail.price!0}</i>
-                    </div>
-                    <div class="address font12">
-                        <span class="d">${googDetail.geodist}</span>
-                        <#list googDetail.region?split(";") as region>
-                            <#if region_index == 2>
-                                <span class="q">${region}</span>
-                            </#if>
-                            <#if region_index == 1>
-                                <span class="p">${googDetail.region}</span>
-                            </#if>
-                        </#list>
-                    &lt;#&ndash; <span class="q">${googDetail.region}</span>
-                     <span class="p">${googDetail.region}</span>&ndash;&gt;
-                    </div>
-                </div>
-            </li>
-        </#list>-->
+
         </ul>
     <#-- <div id="data-loading" class="load-container font12">
          <div class="loader"></div>
@@ -165,7 +142,8 @@
         $("#googDetail-list").on("click", "li", function () {
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id;
+            var cid = $(this).data("cid");
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id+"&cid="+cid;
         });
 
     });
@@ -176,7 +154,7 @@
         //$(".load-container").show();
         $.ajax({
             type: "POST",
-            url: "../site/search",
+            url: "/site/search",
             data: {
                 "merid": merid,
                 "radius": radius,
@@ -211,7 +189,7 @@
 
 <script id="googDetail-template" type="text/x-handlebars-template">
     {{#each this}}
-    <li class="box vip" data-mer_item_id="{{mer_item_id}}" data-mer_price_id="{{mer_price_id}} ">
+    <li class="box vip" data-mer_item_id="{{mer_item_id}}" data-mer_price_id="{{mer_price_id}}" data-cid="{{cid}}">
         <div class="venuesimg"><img src="{{thumb}}"/></div>
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>

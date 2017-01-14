@@ -75,21 +75,18 @@
     <#if detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122>
     <!--预订按钮-->
         <div id="venuesBook">
-            <div class="venuesBook">
+           <#-- <div class="venuesBook">
                 <div class="venuesBookCont box">
                     <div class="venuesBookInfo boxflex2">
                         <div class="price box2">
                             <p class="p1 font20"><span>￥350</span><i class="font12">起</i></p>
                             <P class="p2 font12">门市价￥180</P>
                         </div>
-                        <div class="service box2">
-                            <p class="font12">18洞72杆</p>
-                            <p class="font12">(价格包含)</p>
-                        </div>
+                        <div class="service box2"><p class="font12">2小时畅游</p></div>
                     </div>
                     <a href="javascript:void(0)" class="venuesBookBtn boxflex font18">预订</a>
                 </div>
-            </div>
+            </div>-->
         </div>
         </#if>
     </div>

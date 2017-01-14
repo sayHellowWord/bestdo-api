@@ -34,6 +34,12 @@ ul,ol,li,dl,dd{
 }
 input,textarea{
 	outline:none;
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	border:none;
+	border-radius:0;
+	padding:0;
+	margin:0;
 }
 
 
@@ -133,8 +139,21 @@ body{
 .img{
 	width:100%;
 	height:151px;
+	overflow:hidden;
 	margin-top:-1.95rem;
 	background:#000;
+}
+.swiper-container{
+	width:100%;
+	height:100%;
+	text-align:center;
+	overflow:hidden;
+}
+.swiper-slide{
+	display:block;
+}
+.img img{
+	width:100%;
 }
 .searchform{
 	padding:0 1.325rem;
@@ -144,6 +163,7 @@ body{
 	height:1.95rem;
 	margin:0 auto;
 	position:relative;
+	z-index:99999;
 	top:0.4rem;
 	background:#ffffff;
 	opacity:0.94;
@@ -214,99 +234,47 @@ body{
 	float:left;
 	width:33%;
 }
-.sportitem .sportitemcont.www2 div{
-	width: 25%;
-	float:left;
-}
 .sportitem div a{
 	display:block;
+	width:2.5rem;
 	margin:0 auto;
 	margin-bottom:0.65rem;
+	overflow:auto;
 	text-align:center;
 	color:#5e6366;
-	white-space: nowrap;
-    text-overflow: ellipsis;
 }
 .sportitem div a span{
 	display:block;
 	width:2.5rem;
 	height:2.5rem;
 	line-height:2.5rem;
-	margin-bottom:0.5rem;
+	margin-bottom:0.3rem;
 	border-radius:1.25rem;
 	overflow:hidden;
 	position:relative;
 	line-height:2.5rem;
 	background-size:50px 50px;
-	margin:0 auto;
+	
+}
 
-}
-.sportitem div a i{
-	display: block;
-	width: 2.5rem;
-	height: 0.3rem;
-}
 .sportitem div .i1 span{
-	background-image:url(../images/home/home1.png);
+	background-image:url(../images/home/img_tennis.png);
 }
 .sportitem div .i2 span{
-background-image:url(../images/home/home2.png);
+background-image:url(../images/home/img_badminton.png);
 }
 .sportitem div .i3 span{
-background-image:url(../images/home/home3.png);
+background-image:url(../images/home/img_swim.png);
 }
 .sportitem div .i4 span{
-background-image:url(../images/home/home4.png);
+background-image:url(../images/home/img_golf.png);
 }
 .sportitem div .i5 span{
-background-image:url(../images/home/home5.png);
+background-image:url(../images/home/img_golf2.png);
 }
 .sportitem div .i6 span{
-background-image:url(../images/home/home6.png);
+background-image:url(../images/home/img_fitness.png);
 }
-.sportitem div .i7 span{
-background-image:url(../images/home/home7.png);
-}
-.sportitem div .i8 span{
-background-image:url(../images/home/home8.png);
-}
-
-.lunbo{
-	width: 100%;
-	height: 10rem;
-
-}
-.lunbo .swiper-container{
-	width: 100%;
-	height: 10rem;
-}
-.lunbo .swiper-container .swiper-slide{
-	opacity: 1;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-position: 0 0;
-}
-.swiper-pagination-bullet{
-	background: #fff;
-	opacity: 0.5;
-}
-.swiper-pagination-bullet-active{
-	background: #fff;
-	opacity: 1;
-}
-
-.biaoyu{
-	width: 90%;
-	height: 2.575rem;
-	margin-top: 1.5rem;
-	margin-left: 5%;
-}
-.biaoyu img{
-	width: 100%;
-	height: auto;
-	margin: 0 auto;
-}
-
 
 /*首页-推荐场地*/
 .recommend{
@@ -347,10 +315,11 @@ background-image:url(../images/home/home8.png);
 	bottom:0;
 	border-bottom:1px solid #e6e6e6;
 }
-
+.venueslist,
 .venueslist ul{
 	width:100%;
 	overflow:auto;
+	padding-bottom:20px;
 	background:#fff;
 }
 .venueslist li{
@@ -364,6 +333,7 @@ background-image:url(../images/home/home8.png);
 	height:3rem;
 	margin-left:0.625rem;
 	overflow:hidden;
+	border-radius:4px;
 }
 .venueslist li .venuesimg img{
 	width:100%;
@@ -376,18 +346,6 @@ background-image:url(../images/home/home8.png);
 	border-bottom:1px solid #e6e6e6;
 }
 
-.venueslist li .xiajia{
-	height: 100%;
-	padding-right:0.575rem;
-	padding-bottom:9px;
-	border-bottom:1px solid #e6e6e6;
-}
-.venueslist li .xiajia p{
-	color: #fc821b;
-}
-.venueslist li .xiajia p.on{
-	color: #999;
-}
 .venueslist li:last-child .venuesdetial{
 	border:none;
 }
@@ -403,7 +361,11 @@ background-image:url(../images/home/home8.png);
 	color:#FF5500;
 }
 .venueslist .vip .venuesdetial .price{
-	
+	padding-left:1.2rem;
+	background-image:url(../images/img_vip.png);
+	background-size:20px 10px;
+	background-position:left center;
+	background-repeat:no-repeat;
 }
 .venueslist li .venuesdetial .price i{
 	margin-left:0.325rem;
@@ -415,93 +377,11 @@ background-image:url(../images/home/home8.png);
 	margin-right:0.575rem;
 	color:#999;
 }
-
 .venueslist li .address .q{
 	color:#666;
 }
 .venueslist li .address .p{
 	color:#999;
-}
-.venueslist li .address.add3 .p{
-	width: 100%;
-	display: block;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow: hidden;
-}
-.venueslist li .address.add2{
-	margin-top: 0.5rem;
-}
-
-
-.bodylist,
-.bodylist .list2{
-	width: 100%;
-	overflow: auto;
-}
-.bodylist .list2 li{
-	width: 100%;
-	height: 3.5rem;
-	background: #fff;
-	margin-bottom: 0.5rem;
-	padding:0.5rem 0;
-	overflow:hidden;
-}
-.bodylist .list2.list3 li{
-	margin-bottom: 0px;
-	border-bottom: 1px solid #e6e6e6;
-}
-.bodylist .list2.list3 li.short{
-	height: 2.5rem;
-}
-.bodylist .list2 li .bodyimg{
-	width:5.5rem;
-	height:3.5rem;
-	margin-left:0.85rem;
-	overflow:hidden;
-	border-radius: 4px;
-}
-.bodylist .list2 li .bodyimg img{
-	width: 5.5rem;
-}
-.bodylist .list2 li .bodydetail{
-	margin-left: 0.85rem;
-}
-.bodylist .list2 li .bodydetail h2{
-	width:100%;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
-	font-weight:100;
-	color:#333;
-}
-.bodylist .list2 li .bodydetail .address{
-	margin-top: 0.8rem;
-}
-.bodylist .list2 li .bodydetail .address .d{
-	float: right;
-	margin-right:0.575rem;
-	color:#999;
-}
-.bodylist .list2 li .bodydetail .address .p{
-	color: #999;
-}
-.textready{
-	position: absolute;
-	bottom: 10px;
-	z-index: 9999;
-	width: 100%;
-}
-.textready span{
-	color: #999;
-}
-.textready span.left{
-	margin-left: 0.8rem;
-	float: left;
-}
-.textready span.right{
-	float: right;
-	margin-right: 0.8rem;
 }
 /*首页-导航*/
 #nav{
@@ -522,6 +402,7 @@ background-image:url(../images/home/home8.png);
 }
 .nav a{
 	display:block;
+	padding-top:0.3rem;
 	text-align:center;
 	color:#999;
 }
@@ -530,54 +411,30 @@ background-image:url(../images/home/home8.png);
 	width:1.2rem;
 	height:1.2rem;
 	margin:0 auto;
-	margin-top:0.3rem;
 	position:relative;
 	background-size:24px 24px;
 }
 .nav a:nth-child(1) span{
-	background-image:url(../images/home/home_normal.png);
+	background-image:url(../images/home/tabbar_home_normal.png);
 	
 }
 .nav a:nth-child(2) span{
-	background-image:url(../images/home/tehui_normal.png);
+	background-image:url(../images/home/tabbar_star_normal.png);
 }
 .nav a:nth-child(3) span{
-	background-image:url(../images/home/mine_normal.png);
+	background-image:url(../images/home/tabbar_mine_normal.png);
 }
 .nav .on{
 	color:#3EA1DF;
 }
 .nav .on:nth-child(1) span{
-	background-image:url(../images/home/home_selected.png);
+	background-image:url(../images/home/tabbar_home_selected.png);
 }
 .nav .on:nth-child(2) span{
-	background-image:url(../images/home/tehui_selected.png);
+	background-image:url(../images/home/tabbar_star_selected.png);
 }
 .nav .on:nth-child(3) span{
-	background-image:url(../images/home/mine_selected.png);
-}
-.xuangou{
-	width: 100%;
-	height: 2rem;
-	border-top: 1px solid #e5e5e5;
-	background: #fff;
-	margin-bottom: 0.5rem;
-}
-.xuangou p{
-	color: #b3b3b3;
-	line-height: 2rem;
-	margin-left: 0.625rem;
-}
-.xuangou a{
-	display: block;
-	background: #fc821b;
-	color: #fff;
-	height: 1.25rem;
-	line-height: 1.25rem;
-	padding: 0rem 0.5rem;
-	margin-right: 0.625rem;
-	margin-top: 0.375rem;
-	border-radius: 4px;
+	background-image:url(../images/home/tabbar_mine_seleted.png);
 }
 /*头部公用*/
 #header{
@@ -611,10 +468,6 @@ background-image:url(../images/home/home8.png);
 	height:2.2rem;
 	line-height:2.2rem;
 	position:relative;
-}
-.headerR a.txt{
-	width: auto;
-	margin-right: 0.625rem;
 }
 .headerL a:after,.headerR a:after{
 	content:'';
@@ -688,6 +541,10 @@ background-image:url(../images/home/home8.png);
 	background-image:url(../images/topbar_ic_more.png);	
 }
 .headerR .txt{
+	display:block;
+	width:auto;
+	margin-right:0.6rem;
+	float:none;
 	color:#3EA1DF;
 }
 .headerR .txt2{
@@ -723,7 +580,12 @@ background-image:url(../images/home/home8.png);
 .imgshow .imglist{
 	width:100%;
 	height:100%;
+	text-align:center;
 	overflow:hidden;
+}
+.imgshow .imglist img{
+	width:100%;
+	height:100%;
 }
 .imgshow .imgtxt{
 	width:100%;
@@ -790,23 +652,11 @@ background-image:url(../images/home/home8.png);
 	margin:0 0.2rem;
 	font-style:normal;
 }
-.venuesInfo li.ede p{
-	padding-left:0; 
-}
-.venuesInfo li.ede p:after{
-	background-image: none;
-}
-.venuesInfo li.ede p i{
-	color: #999999;
-}
 .venuesInfo .other{
 	overflow:auto;
 }
 .venuesInfo .address p{
 	background-image:url(../images/ic_location_2.png);
-}
-.venuesInfo .tou p{
-	background-image:url(../images/home/mine_normal.png);
 }
 .venuesInfo .tel p{
 	background-image:url(../images/ic_phone.png);
@@ -814,30 +664,18 @@ background-image:url(../images/home/home8.png);
 .venuesInfo .date p{
 	background-image:url(../images/ic_time.png);
 }
-.venuesInfo li.date p:after{
-	background-image:none;
-}
-.venuesInfo li.tou p:after{
-	background-image:none;
-}
 .scrolldate{
 	height:4rem;
 	overflow:hidden;
 	margin-bottom:0.625rem;
-	padding:0.5rem 0 0.5rem 0.625rem;
+	padding:0.5rem 0 0.5rem 0rem;
 	background:#fff;
-}
-.scrolldate.yu{
-	height: 5rem;
-}
-.biaotiyong{
-	color: #999;
-	font-weight: 500;
 }
 .scrolldateCont{
 	padding-left:0.625rem;
-	height:10rem;
+
 	overflow:auto;
+
 }
 .scrolldateCont span{
 	display:block;
@@ -896,45 +734,6 @@ background-image:url(../images/home/home8.png);
 	line-height:1.9rem;
 	color:#ccc;
 }
-.scrolldateCont span a.sai{
-	border: 0px;
-	border-radius: 0px;
-	width: 10.625rem;
-	height: 3.25rem;
-}
-.scrolldateCont span a.sai div img{
-	width: 3.25rem;
-	height: 3.25rem;
-	margin-right: 0.375rem;
-}
-.scrolldateCont span a.sai div div{
-	width: 7rem;
-}
-.scrolldateCont span a.sai div div h2{
-	width: 7rem;
-	height: 1rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-weight: 100;
-    color: #333;
-    display: block;
-    text-align: left;
-}
-.scrolldateCont span a.sai div div p{
-	width: 7rem;
-	height: 1rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    color: #999;
-    display: block;
-    text-align: left;
-}
-.scrolldateCont span a.sai div div p.now{
-	margin-top: 0.4rem;
-}
-
 .venuesInfo h1{
 	width:100%;
 	padding:0.625rem 0;
@@ -991,52 +790,7 @@ background-image:url(../images/home/home8.png);
 	display:block;
 	padding:0.625rem 0.625rem 0.625rem 0;
 	color:#666;
-}
-.ditel{
-	width: 100%;
-	height: 2.8rem;
-	background: #fff;
-	border-top: 1px solid #b0b0b0; 
-	position: fixed;
-	bottom: 0px;
-}
-.ditel p{
-	height: 2.8rem;
-	line-height: 2.8rem;
-	margin-left: 0.875rem;
-	color: #333333;
-}
-.ditel a{
-	display: block;
-	color: #fff;
-	background: #fc821b;
-	width: 4.5rem;
-	height: 1.65rem;
-	line-height: 1.65rem;
-	text-align: center;
-	border-radius: 5px;
-	margin-top: 0.575rem;
-	margin-right: 0.875rem;
-}
-.jianju{
-	width: 100%;
-	height: 3rem;
-}
-.saishi{
-	width: 94%;
-	height: auto;
-	padding: 0.8rem 0;
-	margin-left: 3%;
-}
-.saishi img{
-	width: 100%;
-	height: auto;
-}
-.saishi span{
-	color: #999;
-	display: block;
-	margin-top: 0.8rem;
-	margin-bottom: 1rem;
+	word-wrap:break-word;
 }
 /*场馆详情-场馆设施*/
 .venuesInfo .icon span{
@@ -1063,110 +817,69 @@ background-image:url(../images/home/home8.png);
 	background-size:445.5px 298px;
 }
 .venuesInfo .icon .i1:after{
-	background-position:-3px 0px;
-}
-.venuesInfo .icon .i2:after{
-	background-position:-59px 0px;
-}
-.venuesInfo .icon .i3:after{
-	background-position:-110px 0px;
-}
-.venuesInfo .icon .i4:after{
-	background-position:-176px 0px;
-}
-.venuesInfo .icon .i5:after{
-	background-position:-233px 0px;
-}
-.venuesInfo .icon .i6:after{
-	background-position:-289px 0px;
-}
-.venuesInfo .icon .i7:after{
-	background-position:-346px 0px;
-}
-.venuesInfo .icon .i8:after{
-	background-position:-402px -3px;
-}
-.venuesInfo .icon .i9:after{
-	background-position:-3px -58px;
-}
-.venuesInfo .icon .i10:after{
-	background-position:-59px -58px;
-}
-.venuesInfo .icon .i11:after{
-	background-position:-116px -58px;
-}
-.venuesInfo .icon .i12:after{
-	background-position:-174px -58px;
-}
-.venuesInfo .icon .i13:after{
-	background-position:-228px -58px;
-}
-.venuesInfo .icon .i14:after{
-	background-position:-289px -58px;
-}
-.venuesInfo .icon .i15:after{
-	background-position:-346px -58px;
-}
-.venuesInfo .icon .i16:after{
-	background-position:-405px -58px;
-}
-.venuesInfo .icon .i17:after{
-	background-position:0px -117px;
-}
-.venuesInfo .icon .i18:after{
-	background-position:-58px -117px;
-}
-.venuesInfo .icon .i19:after{
-	background-position:-116px -116px;
-}
-.venuesInfo .icon .i20:after{
-	background-position:-174px -117px;
-}
-.venuesInfo .icon .i21:after{
-	background-position:-232px -116px;
-}
-.venuesInfo .icon .i22:after{
-	background-position:-289px -116px;
-}
-.venuesInfo .icon .i23:after{
-	background-position:-346px -117px;
-}
-.venuesInfo .icon .i24:after{
-	background-position:-405px -116px;
-}
-.venuesInfo .icon .i25:after{
-	background-position:0px -165px;
-}
-.venuesInfo .icon .i26:after{
-	background-position:-55px -168px;
-}
-.venuesInfo .icon .i27:after{
-	background-position:-105px -166px;
-}
-.venuesInfo .icon .i28:after{
-	background-position:-163px -166px;
-}
-.venuesInfo .icon .i29:after{
-	background-position:-221px -168px;
-}
-.venuesInfo .icon .i30:after{
-	background-position:-275px -165px;
-}
-.venuesInfo .icon .i31:after{
 	background-position:-331px -165px;
 }
-.venuesInfo .icon .i32:after{
+.venuesInfo .icon .i2:after{
+	background-position:-405px -116px;
+}
+.venuesInfo .icon .i3:after{
+	background-position:-105px -166px;
+}
+.venuesInfo .icon .i4:after{
+	background-position:-110px 0px;
+}
+.venuesInfo .icon .i5:after{
 	background-position:-386px -165px;
 }
-.venuesInfo .icon .i33:after{
+.venuesInfo .icon .i6:after{
+	background-position:-346px 0px;
+}
+.venuesInfo .icon .i7:after{
+	background-position:0px -165px;
+}
+.venuesInfo .icon .i8:after{
+	background-position:-346px -58px;
+}
+.venuesInfo .icon .i9:after{
+	background-position:-163px -166px;
+}
+.venuesInfo .icon .i10:after{
+	background-position:-174px -117px;
+}
+.venuesInfo .icon .i11:after{
 	background-position:2px -222px;
 }
-.venuesInfo .icon .i34:after{
+.venuesInfo .icon .i12:after{
 	background-position:-54px -222px;
 }
-.venuesInfo .icon .i35:after{
+.venuesInfo .icon .i13:after{
 	background-position:-108px -222px;
 }
+.venuesInfo .icon .i14:after{
+	background-position:-402px -3px;
+}
+.venuesInfo .icon .i15:after{
+	background-position:-233px 0px;
+}
+.venuesInfo .icon .i16:after{
+	background-position:-289px -116px;
+}
+.venuesInfo .icon .i17:after{
+	background-position:-58px -117px;
+}
+.venuesInfo .icon .i18:after{
+	background-position:-289px 0px;
+}
+.venuesInfo .icon .i19:after{
+	background-position:0px 0px;
+}
+.venuesInfo .icon .i20:after{
+	background-position:-174px -58px;
+}
+.venuesInfo .icon .i21:after{
+	background-position:-176px 0px;
+}
+
 /**/
 #venuesBook{
 	width:100%;
@@ -1247,6 +960,7 @@ background-image:url(../images/home/home8.png);
 }
 .venuesBook .venuesBookBtn{
 	display:block;
+	width:5rem;
 	height:2.7rem;
 	line-height:2.7rem;
 	background-color:#FC821B;
@@ -1330,6 +1044,21 @@ background-image:url(../images/home/home8.png);
 .citylist a:last-child:after{
 	display:none;
 }
+.hotcity span{
+	float:left;
+	width:19%;
+	margin:0.25rem 0;
+	padding:0 3%;
+}
+.hotcity span:first-child{
+	padding-left:0;
+}
+.hotcity span a{
+	width:100%;
+	margin:0;
+	padding:0;
+	text-align:center;
+}
 /*搜索-搜索框*/
 #search{
 	width:100%;
@@ -1341,7 +1070,7 @@ background-image:url(../images/home/home8.png);
 }
 .search{
 	width:100%;
-	margin-top:0.25rem;
+	padding-top:0.25rem;
 }
 .search .searchInput{
 	height:1.6rem;
@@ -1376,9 +1105,10 @@ background-image:url(../images/home/home8.png);
 }
 
 .search .searchInput input{
+	width:80%;
 	height:100%;
-	padding-left:1.4rem;
-	padding-right:0.4rem;
+	padding-left:12%;
+	padding-right:8%;
 	padding-top:0;
 	border:none;
 }
@@ -1492,13 +1222,7 @@ background-image:url(../images/home/home8.png);
 	position:relative;
 	color:#666;
 }
-.chooseTab.www25 a{
-	width: 33.3%;
-}
-.chooseTab a:last-child:after{
-	border:0;
-}
-.chooseTab a:after{
+.chooseTab a:first-child:after{
 	content:'';
 	width:0;
 	height:0.85rem;
@@ -1590,6 +1314,9 @@ background-image:url(../images/home/home8.png);
 	z-index:998;
 	background:#000;
 	opacity:0.2;
+}
+.sportsel{
+	top:2.2rem;
 }
 /*场馆列表-定位*/
 .position{
@@ -1710,6 +1437,7 @@ background-image:url(../images/home/home8.png);
 	padding:0;
 	padding-bottom:0.625rem;
 	background-color:#fff;
+
 }
 .dateselfixed{
 	width:100%;
@@ -1811,7 +1539,8 @@ background-image:url(../images/home/home8.png);
 	background-color:#3EA1DF;
 	color:#fff;
 }
-.blockinfoCont::-webkit-scrollbar{
+.blockinfoCont::-webkit-scrollbar,
+.scrolldateCont::-webkit-scrollbar{
 	opacity:0;
 }
 .venuesBook .venuesBookInfo .txt{
@@ -1849,7 +1578,7 @@ background-image:url(../images/home/home8.png);
 }
 .orderStadiusCont ul li{
 	float:left;
-	width:25%;
+	width:20%;
 	height:2.2rem;
 	line-height:2.2rem;
 	padding:0;
@@ -1867,8 +1596,9 @@ background-image:url(../images/home/home8.png);
 	height:0;
 	overflow:hidden;
 	position:absolute;
-	left:0.8rem;
+	left:50%;
 	bottom:0;
+	margin-left:-1.375rem;
 	border-bottom:2px solid #3ea1df;
 }
 /*订单列表-运动类型切换*/
@@ -2032,6 +1762,9 @@ background-image:url(../images/home/home8.png);
 .orderList .codelist .cont .s1{
 	width:100%;
 }
+.orderList .codelist .cont .gray{
+	color:#999;
+}
 /*创建订单*/
 .creatInfo{
 	margin-top:0.8rem;
@@ -2070,6 +1803,7 @@ background-image:url(../images/home/home8.png);
 }
 .blockinput li{
 	width:100%;
+	overflow:auto;
 	border-bottom:1px solid #f0f0f0;
 }
 .blockinput li:last-child{
@@ -2081,9 +1815,11 @@ background-image:url(../images/home/home8.png);
 	padding:0.6rem 0;
 	color:#333;
 }
+
 .blockinput li .tit2{
 	display:block;
-	width:3rem;
+	/*width:3rem;*/
+	width:3.8rem;
 	height:2.2rem;
 	line-height:2.2rem;
 	color:#333;
@@ -2105,7 +1841,7 @@ background-image:url(../images/home/home8.png);
 	color:#333;
 }
 .blockinput li .cont2 input{
-	height:100%;
+	height:2.1rem;
 	font-size:0.7rem;
 }
 .close{
@@ -2121,6 +1857,9 @@ background-image:url(../images/home/home8.png);
 	background-size:12px 12px;
 	background-repeat:no-repeat;
 	background-position:center center;
+}
+.search .searchInput .close{
+	height:1.6rem;
 }
 .blockinput li input{
 	width:100%;
@@ -2201,29 +1940,31 @@ background-image:url(../images/home/home8.png);
 }
 
 .blockinput li .buycount{
-	height:1rem;
+	overflow:auto;
 	margin-right:0.8rem;
 	padding-top:0.5rem;
 	text-align:right;
 }
 .blockinput .buycount a{
-	display:inline-block;
+	float:right;
 	width:1rem;
 	height:1rem;
+	line-height:1rem;
 	border:1px solid #979797;
 	text-align:center;
 	color:#999;
 }
 .blockinput .buycount input{
-	display:inline-block;
+	float:right;
 	width:1rem;
-	height:0.9rem;
-	margin:0 -0.2rem;
+	height:1rem;
 	border:none;
 	border-top:1px solid #979797;
 	border-bottom:1px solid #979797;
 	text-align:center;
 	color:#333;
+
+	overflow:hidden;
 }
 .creatTit{
 	height:1.5rem;
@@ -2275,7 +2016,7 @@ background-image:url(../images/home/home8.png);
 	position:fixed;
 	left:0;
 	bottom:0;
-	z-index:9998;
+	z-index:9999;
 }
 .paystyleBg{
 	width:100%;
@@ -2290,7 +2031,7 @@ background-image:url(../images/home/home8.png);
 }
 .paystyleCont{
 	width:100%;
-	height:17.5rem;
+	height:12.5rem;
 	position:relative;
 	z-index:9998;
 	background-color:#fff;
@@ -2304,6 +2045,19 @@ background-image:url(../images/home/home8.png);
 	text-align:center;
 	font-weight:100;
 	color:#333;
+}
+.paystyleCont .tit a{
+	display:block;
+	width:2.2rem;
+	height:2.2rem;
+	position:absolute;
+	left:0;
+	top:0;
+	background-image:url(../images/ic_cancel.png);
+	background-size:1.2rem 1.2rem;
+	background-position:center center;
+	background-repeat:no-repeat;
+
 }
 .paystylelist{
 	padding-left:0.5rem;
@@ -2511,8 +2265,8 @@ background-image:url(../images/home/home8.png);
 /*我的*/
 .centerTop{
 	position:relative;
-	padding:1rem 0.75rem;
-	background-image:url(../images/jiaolian.jpg);
+	padding:1.875rem 0.75rem;
+	background-image:url(../images/center/background.jpg);
 	background-size:100% 100%;
 }	
 .centerTop:after{
@@ -2522,13 +2276,10 @@ background-image:url(../images/home/home8.png);
 	position:absolute;
 	right:0.5rem;
 	top:0;
-	background-image:url(../images/arrow_3_white.png);
+	background-image:url(../images/center/arrow_3_white.png);
 	background-size:14px 14px;
 	background-repeat:no-repeat;
 	background-position:center center;
-}
-.centerTop.no:after{
-	background-image: none;
 }
 .centerTopCont{
 	width:100%;
@@ -2548,10 +2299,6 @@ background-image:url(../images/home/home8.png);
 .centerTop .cont{
 	margin-left:0.6rem;
 	color:#fff;
-}
-.centerTop .cont p.wit{
-	color: #c5deee;
-	margin-top: 0.6rem;
 }
 .centerTop .cont a{
 	color:#fff;
@@ -2618,36 +2365,26 @@ background-image:url(../images/home/home8.png);
 }
 .centerOrder .part a{
 	float:left;
-	width:25%;
-	height:2.5rem;
+	width:50%;
+	height:1.6rem;
+	line-height:1.6rem;
 	padding:0.5rem 0;
 	text-align:center;
 }
 .centerOrder .part a span{
 	display:inline-block;
-	height:1.4rem;
-	padding-left:1.3rem;
-	background-size:25px 25px;
+	height:1.6rem;
+	padding-left:1.8rem;
+	background-size:32px 32px;
 	background-repeat:no-repeat;
 	color:#666;
 }
-.centerOrder .part a p{
-	color: #666666;
+.centerOrder .part a:first-child span{
+	background-image:url(../images/center/ic_mine_pay.png);
 }
-.centerOrder .part a:nth-child(1) span{
-	background-image:url(../images/center/daifu.png);
-
+.centerOrder .part a:last-child span{
+	background-image:url(../images/center/ic_mine_pending_fate.png);
 }
-.centerOrder .part a:nth-child(2) span{
-	background-image:url(../images/center/queren.png);
-}
-.centerOrder .part a:nth-child(3) span{
-	background-image:url(../images/center/daixia.png);
-}
-.centerOrder .part a:nth-child(4) span{
-	background-image:url(../images/center/jieshu.png);
-}
-
 .centerOther{
 	margin-top:0.8rem;
 }
@@ -3171,6 +2908,16 @@ background-image:url(../images/home/home8.png);
 .datelist .perc span{
 	text-align:center;
 }
+.datelist .per100{
+	width:100%;
+}
+.datelist .per50{
+	width:50%;
+}
+.datelist .per50 span,
+.datelist .per100 span{
+	text-align:center;
+}
 /*无数据*/
 .empty{
 	display:none;
@@ -3216,6 +2963,9 @@ background-image:url(../images/home/home8.png);
 	background-image:url(../images/center/ic_none_star.png);
 }
 /*弹层提示*/
+#layer{
+	display:none;
+}
 .layer{
 	width:100%;
 	height:100%;
@@ -3244,7 +2994,7 @@ background-image:url(../images/home/home8.png);
 	z-index:9999;
 }
 .layerCont .cont{
-	padding:1.65rem 0;
+	padding:1.2rem 0;
 	overflow:auto;
 	border-bottom:1px solid #f0f0f0;
 	text-align:center;
@@ -3298,13 +3048,113 @@ background-image:url(../images/home/home8.png);
 	opacity:1;
 	color:#fff;
 }
+/*百动介绍*/
+.aboutbanner{
+	width:100%;
+}
+.aboutcont,.bdcard{
+	padding:0 1.5rem;
+}
+.aboutcont p{
+	margin-bottom:0.5rem;
+	line-height:1.4rem;
+	text-indent:1.4rem;
+	color:#fff;
+}
+.bdcard{
+	margin-top:-0.4rem;
+}
+.bdcard .tit{
+	margin-top:0.6rem;
+	font-weight:100;
+	color:#fff;
+}
+.bdcard p{
+	line-height:1rem;
+	color:#fff;
+}
+.bdcard .tit:first-child{
+	margin-top:0;
+}
+.bdcard table{
+	width:100%;
+	margin-top:0.45rem;
+	margin-bottom:0.2rem;
+	border-right:1px solid #fff;
+	border-bottom:1px solid #fff;
+}
+.bdcard th{
+	height:1.7rem;
+	background-color:#78bde9;
+	border-left:1px solid #fff;
+	border-top:1px solid #fff;
+	color:#fff;
+}
+.bdcard td{
+	width:50%;
+	height:1.7rem;
+	border-left:1px solid #fff;
+	border-top:1px solid #fff;
+	text-align:center;
+	color:#fff;
+}
+.bdcard .buytel{
+	display:block;
+	width:100%;
+	height:2.2rem;
+	line-height:2.2rem;
+	margin-bottom:1rem;
+	margin-top:1.5rem;
+	background-color:#fc821b;
+	border-radius:4px;
+	text-align:center;
+	color:#fff;
+}
+.bdcard .buytel em{
+	margin-left:0.4rem;
+}
+.tj{
+	width:100%;
+	margin-bottom:-0.6rem;
+	border-bottom:9px solid #f2f2f2;
+}
 /*加载中效果*/
+.loading{
+	width:100%;
+	height:100%;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:99999;
+	
+}
+.loading .loadCont{
+	width:100%;
+	height:100%;
+	position:relative;
+	z-index:99999;
+	background-image:url(../images/loading.gif);
+	background-size:1.6rem 1.6rem;
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+.loading .loadBg{
+	width:100%;
+	height:100%;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:9998;
+	opacity:0.5;
+	background-color:#fff;
+}
 .load-container{
 	width:100%;
 	height:20px;
 	margin:0 auto;
 	margin-bottom:20px;
 	text-align:center;
+	visibility:hidden;
 }
 .loader{
   width: 15px;
@@ -3355,12 +3205,6 @@ background-image:url(../images/home/home8.png);
 	} 
 }
 
-/**
-add by wub  需同步
- */
-.scrolldateCont a.on{
-	border:1px solid #43a2dd;
-}
 
 
 

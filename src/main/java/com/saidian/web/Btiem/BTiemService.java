@@ -1,5 +1,6 @@
 package com.saidian.web.Btiem;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Ordering;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
@@ -12,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +23,8 @@ import java.util.Locale;
  */
 @Service
 public class BTiemService {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     private static String MER_LISTS = "mer/lists";
 
@@ -378,12 +382,48 @@ public class BTiemService {
         jsonObject.put("date", date);
 
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_IMEM_PRICE, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
+        ResultBean<OneDayItemPrice> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
-            for (String key : dataJSONObject.keySet()) {
-
+            OneDayItemPrice oneDayItemPrice = new OneDayItemPrice();
+            if (dataJSONObject.has("inventory_info")) {
+                JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
+                List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
+                for (String key : inventoryJSONObject.keySet()) {
+                    OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.new InventoryInfo();
+                    inventoryInfo.setDay(key);
+                    inventoryInfo.setNumber(inventoryJSONObject.getInt(key));
+                    inventoryInfos.add(inventoryInfo);
+                }
+                oneDayItemPrice.setInventoryInfos(inventoryInfos);
             }
+
+            if (dataJSONObject.has("price_info")) {
+                JSONArray priceinfoJSONArray = dataJSONObject.getJSONArray("price_info");
+                List<PriceInfo> priceInfos = new ArrayList<PriceInfo>();
+                int length = priceinfoJSONArray.length();
+                for (int i = 0; i < length; i++) {
+                    JSONObject priceInfoJSONObject = priceinfoJSONArray.getJSONObject(i);
+                    PriceInfo priceInfo = null;
+                    try {
+                        priceInfo = objectMapper.readValue(priceInfoJSONObject.toString(), PriceInfo.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    priceInfos.add(priceInfo);
+                }
+                oneDayItemPrice.setPriceInfos(priceInfos);
+            }
+
+            if(oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0){
+                oneDayItemPrice.setDestine((byte)1);
+            }else{
+                oneDayItemPrice.setDestine((byte)0);
+            }
+
+            resultBean.setObject(oneDayItemPrice);
+            //置空减少数据传输
+            resultBean.setData(StringUtils.EMPTY);
         }
         return resultBean;
     }
