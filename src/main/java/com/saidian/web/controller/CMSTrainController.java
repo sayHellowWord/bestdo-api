@@ -58,7 +58,10 @@ public class CMSTrainController {
         coach.setUpdateDate(new Date());
         coaches.add(coach);
         coaches.add(coach);
+
+
         modelMap.addAttribute("train", trainJSON);
+        modelMap.addAttribute("coaches", coaches);
 
         return "/train/detail";
     }
