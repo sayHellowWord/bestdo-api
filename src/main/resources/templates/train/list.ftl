@@ -19,13 +19,13 @@
 		<div class="headerCont box">
 			<div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
 			<div class="headerC boxflex">
-				<p class="font17">体育赛事</p>
+				<p class="font17">体育培训</p>
 			</div>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="chooseTab www25 font13">
+<div class="chooseTab font13">
 	<div class="chooseTabCont">
 		<a href="javascript:void(0)" data-tab="0">
 			行政区<span></span>
@@ -33,37 +33,26 @@
 		<a href="javascript:void(0)" data-tab="1">
 			排序<span></span>
 		</a>
-		<a href="javascript:void(0)" data-tab="2">
-			距离<span></span>
-		</a>
 	</div>
 </div>
 <!--区域-->
-<div class="slidemenu">
+<div class="slidemenu" data-tab="0">
 	<div class="slidebg"></div>
 	<div class="slidemenuCont font14 nearby">
-		<a href="javascript:void(0)" class="on">亭湖区</a>
-		<a href="javascript:void(0)">盐都区</a>
-		<a href="javascript:void(0)">大丰区</a>
+        <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
+        <#--todo 测试数据待删除-->
+        <a href="javascript:void(0)" data-value="1935">亭湖区</a>
 	</div>
 </div>
 <!--排序-->
-<div class="slidemenu">
+<div class="slidemenu" data-tab="1">
 	<div class="slidebg"></div>
 	<div class="slidemenuCont font14 sort">
-		<a href="javascript:void(0)" class="on">按时间排序</a>
+		<a href="javascript:void(0)" class="on" data-value="asc">按时间排序</a>
 	</div>
 </div>
 <!--距离-->
-<div class="slidemenu">
-	<div class="slidebg"></div>
-	<div class="slidemenuCont font14 distance">
-		<a href="javascript:void(0)" class="on">不限距离</a>
-		<a href="javascript:void(0)">距离最近</a>
-		<a href="javascript:void(0)">附近5km</a>
-		<a href="javascript:void(0)">附近10km</a>
-	</div>
-</div>
+
 <!--赛事列表-->
 <div class="wrapper">
 	<!--赛事列表-->
@@ -85,22 +74,6 @@
 				</div>
 				<div class="xiajia"><p class="font14">报名中</p></div>
 			</li>
-			<li class="box vip">
-				<div class="venuesimg"><img src="images/2.png"></div>
-				<div class="venuesdetial boxflex">
-					<h2 class="font16">盐城羽毛球培训班 </h2>
-					<div class="address add3 font12">
-						<span class="p">报名时间：1月1日-1月3日</span>
-					</div>
-					<div class="address add3 font12">
-						<span class="p">课程时间：1月1日-1月3日</span>
-					</div>
-					<div class="address add3 font12">
-						<span class="p">培训地点：西直门西直门西直门西直门西直门西直门西直门</span>
-					</div>
-				</div>
-				<div class="xiajia"><p class="font14 on">报名关闭</p></div>
-			</li>
 		</ul>
 	</div>
 </div>
@@ -114,7 +87,22 @@
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
 $(function(){
-	var xmlhttp=new XMLHttpRequest();
+
+    // 获取行政区字段
+	var area = $('.nearby .on').data('value');
+	// 获取排序字段
+	var order = '';
+	// var order = $('.sort .on').data('value');
+
+    // 初始化加载数据
+    search(area, order, 1, 15);
+
+	// 点击行政区
+
+	// 点击排序
+
+
+	/*var xmlhttp=new XMLHttpRequest();
 	if (xmlhttp.readyState <4 || xmlhttp.status != 200){
 	   $(".loading").hide(); 
 	}
@@ -123,11 +111,11 @@ $(function(){
         if (document.readyState == "complete") {
            $(".loading").hide(); 
         }
-    }
+    }*/
 	/*筛选条件*/
-	$(".slidemenuCont a").on("click",function(){
+	/*$(".slidemenuCont a").on("click",function(){
 		var ix = $(".slidemenuCont a").index($(this));
-	})
+	})*/
 	
 	$(".chooseTab a").tabEve({
 		cls:".slidemenu",
@@ -139,9 +127,13 @@ $(function(){
 	//区域
 		$("div.nearby a").click(function(){
 
-			//替换title
-			$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
-			
+
+			//$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
+
+            //替换title
+			var ind = $(this).parent().parent().data('tab');
+			$('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
+
 			$("body").click();
 
 			$("div.nearby").children('a').each(function(index, item){
@@ -150,16 +142,22 @@ $(function(){
 
 			$(this).addClass('on');
 
-			scope.district = $(this).attr('data-tag');
+            area = $('.nearby .on').data('value');
+            order = $('.sort .on').data('value');
+            search(area, order, 1, 15);
 
-		    againReload();
+			//scope.district = $(this).attr('data-tag');
+
+		    //againReload();
 		});
 
 		//排序
 		$("div.sort a").click(function(){
 
 			//替换title
-			$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
+			//$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
+            var ind = $(this).parent().parent().data('tab');
+            $('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
 			
 			$("body").click();
 
@@ -169,13 +167,17 @@ $(function(){
 
 			$(this).addClass('on');
 
-			scope.district = $(this).attr('data-tag');
+            area = $('.nearby .on').data('value');
+            order = $('.sort .on').data('value');
+            search(area, order, 1, 15);
 
-		    againReload();
+			//scope.district = $(this).attr('data-tag');
+
+		    //againReload();
 		});
 	//距离
 		
-		$("div.distance a").click(function(){
+		/*$("div.distance a").click(function(){
 
 			//替换title
 			$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
@@ -191,10 +193,67 @@ $(function(){
 			scope.district = $(this).attr('data-tag');
 
 		    againReload();
-		});
-
-	
+		});*/
 })
+
+	function search(area, order, page, rows) {
+		$.ajax({
+			type: "POST",
+			url: "/cms/train/list/yc",
+			data: {
+				"district": area,
+				"time_sort": order,
+				"page": page,
+				"rows": rows
+			},
+			success: function (resultData) {
+				console.info(resultData);
+
+				resultHandler(resultData);
+			}
+		});
+	}
+
+	function resultHandler(result) {
+		if (200 === result.code) {
+			var source = $("#template").html();
+			var template = Handlebars.compile(source);
+			Handlebars.registerHelper('if_status', function(value, options) {
+				if(value  == 0) {
+					return "报名关闭";
+				} else if (value  == 1){
+					return "报名中";
+				}else {
+					return "";
+				}
+			});
+			var html = template(result.data);
+			$("#list").append(html);
+		} else {
+			alert(result.data);
+		}
+	}
+</script>
+
+<script src="/js/handlebars-v4.0.5.js"></script>
+
+<script id="template" type="text/x-handlebars-template">
+    <li class="box vip">
+		<div class="venuesimg"><img src="images/2.png"></div>
+		<div class="venuesdetial boxflex">
+			<h2 class="font16">盐城羽毛球培训班 </h2>
+			<div class="address add3 font12">
+			<span class="p">报名时间：1月1日-1月3日</span>
+			</div>
+			<div class="address add3 font12">
+					<span class="p">课程时间：1月1日-1月3日</span>
+			</div>
+			<div class="address add3 font12">
+					<span class="p">培训地点：西直门西直门西直门西直门西直门西直门西直门</span>
+			</div>
+		</div>
+		<div class="xiajia"><p class="font14">报名中</p></div>
+	</li>
 </script>
 </body>
 </html>
