@@ -6,6 +6,7 @@ import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
 import com.saidian.web.bean.GoodsType;
+import com.saidian.web.bean.siteinfo.OneDayItemPrice;
 import com.saidian.web.platform.PublicService;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -202,15 +204,43 @@ public class VenueBookingController {
         ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
 
         //获取一天商品明细的价格和库存信息（日期、时段、小时）
-        ResultBean oneDayMerItemPrice =  bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
+        //ResultBean oneDayMerItemPrice =  bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
 
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);
         modelMap.addAttribute("day", day);
         modelMap.addAttribute("priceAndInventorySummaryCommon", priceAndInventorySummaryCommon.getLists());
-        modelMap.addAttribute("oneDayMerItemPrice", oneDayMerItemPrice.getLists());
+        // modelMap.addAttribute("oneDayMerItemPrice", oneDayMerItemPrice.getObject());
 
         return "/site/onedaymeritemprice";
+    }
+
+    //获取日期型 某一天各片场信息
+    @RequestMapping(value = "toOneDayMerItemPrice")
+    public Object getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String day) throws Exception {
+        ResultBean<OneDayItemPrice> oneDayMerItemPrice = bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
+
+        List<String> nameList = new ArrayList<String>();//片场名称
+        List<String> timeList = new ArrayList<String>();//时间段
+
+        OneDayItemPrice oneDayItemPrice = oneDayMerItemPrice.getObject();
+        List<OneDayItemPrice.InventoryInfo> inventoryInfos = oneDayItemPrice.getInventoryInfos();
+
+        //初始化片场名称和时间段
+        if( null != inventoryInfos && inventoryInfos.size() > 0 ){
+
+        }
+
+        for (OneDayItemPrice.InventoryInfo inventoryInfo : inventoryInfos){
+            nameList.add(inventoryInfo.getName());
+            List<OneDayItemPrice.HourInfo> hourInfos = inventoryInfo.getHourInfos();
+
+            //排序
+
+        }
+
+
+        return null;
     }
 
 

@@ -125,4 +125,19 @@ public class RESTClient {
         return result;
     }
 
+    //组织列表
+    public String organizationList(String name, String district, String state, Integer page, Integer rows) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "orgn/listOrganizationWX?name={name}" +
+                        "&district={district}&state={state}&page={page}&rows={rows}",
+                null, String.class, name, district, state, page, rows);
+        return result;
+    }
+
+    //查找组织
+    public String findOrganization(String id) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "orgn/findOrganization?id={id}",
+                null, String.class, id);
+        return result;
+    }
+
 }
