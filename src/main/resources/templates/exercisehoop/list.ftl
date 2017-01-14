@@ -22,16 +22,16 @@
                 <div class="search box font14">
                     <div class="searchInput boxflex">
                         <span class="icon"></span>
-                        <input type="text" class="font14" placeholder="输入场馆名称、场地名称">
+                        <input id="search-keyword" type="text" class="font14" placeholder="输入场馆名称或行政区">
                     </div>
-                    <a href="javascript:void(0)" class="btn">搜索</a>
+                    <a id="btn-search" href="javascript:void(0)" class="btn">搜索</a>
                 </div>
             </div>
 
         </div>
     </div>
 </div>
-<div class="chooseTab www25 font13">
+<#--<div class="chooseTab www25 font13">
     <div class="chooseTabCont">
         <a href="javascript:void(0)" data-tab="0" class="gray">
             区域<span></span>
@@ -43,9 +43,9 @@
             距离<span></span>
         </a>
     </div>
-</div>
+</div>-->
 <!--区域-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14">
         <a href="javascript:void(0)" class="on">不限距离</a>
@@ -55,7 +55,7 @@
         <a href="javascript:void(0)">附近10km</a>
     </div>
 </div>
-<!--排序-->
+<!--排序&ndash;&gt;
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14">
@@ -66,7 +66,7 @@
         <a href="javascript:void(0)">附近10km</a>
     </div>
 </div>
-<!--距离-->
+<!--距离&ndash;&gt;
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14">
@@ -76,79 +76,18 @@
         <a href="javascript:void(0)">附近5km</a>
         <a href="javascript:void(0)">附近10km</a>
     </div>
-</div>
+</div>-->
 <!--场馆列表-->
 <div class="wrapper">
     <!--场馆列表-->
     <div class="venueslist">
-        <ul class="list">
-            <li class="box vip">
-                <div class="venuesimg"><img src="images/2.png"></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">蓝岛大厦健身所 </h2>
-
-                    <div class="address add2 font12">
-                        <span class="d">1.0km</span>
-
-                        <span class="p">西直门西直门西直门西直门西直门西直门西直门西直门西直门</span>
-                    </div>
-                </div>
-            </li>
-            <li class="box vip">
-                <div class="venuesimg"><img src="images/2.png"></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">蓝岛大厦健身所 </h2>
-
-                    <div class="address add2 font12">
-                        <span class="d">1.0km</span>
-
-                        <span class="p">西直门西直门西直门西直门西直门西直门西直门西直门西直门</span>
-                    </div>
-                </div>
-            </li>
-            <li class="box vip">
-                <div class="venuesimg"><img src="images/2.png"></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">蓝岛大厦健身所 </h2>
-
-                    <div class="address add2 font12">
-                        <span class="d">1.0km</span>
-
-                        <span class="p">西直门西直门西直门西直门西直门西直门西直门西直门西直门</span>
-                    </div>
-                </div>
-            </li>
-            <li class="box vip">
-                <div class="venuesimg"><img src="images/2.png"></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">蓝岛大厦健身所 </h2>
-
-                    <div class="address add2 font12">
-                        <span class="d">1.0km</span>
-
-                        <span class="p">西直门西直门西直门西直门西直门西直门西直门西直门西直门</span>
-                    </div>
-                </div>
-            </li>
-            <li class="box vip">
-                <div class="venuesimg"><img src="images/2.png"></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">蓝岛大厦健身所 </h2>
-
-                    <div class="address add2 font12">
-                        <span class="d">1.0km</span>
-
-                        <span class="p">西直门西直门西直门西直门西直门西直门西直门西直门西直门</span>
-                    </div>
-                </div>
-            </li>
-
+        <ul id="list" class="list">
 
         </ul>
-        <div class="load-container font12">
+        <#--<div class="load-container font12">
             <div class="loader"></div>
             数据加载中...
-        </div>
+        </div>-->
     </div>
     <!--场馆列表结束-->
     <div class="empty">
@@ -158,10 +97,10 @@
 </div>
 <!--城市地位-->
 
-<div class="loading">
+<#--<div class="loading">
     <div class="loadCont"></div>
     <div class="loadBg"></div>
-</div>
+</div>-->
 
 
 <!--地图图标-->
@@ -169,7 +108,21 @@
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
     $(function () {
-        var xmlhttp = new XMLHttpRequest();
+
+        // 获取搜索关键词
+        var searchKeyword = $('#search-keyword').val();
+
+        //初始化加载数据
+        search(searchKeyword, 1, 15);
+
+        //点击搜索按钮
+        var btnSearch = $('#btn-search');
+        btnSearch.on("click", function() {
+            searchKeyword = $('#search-keyword').val();
+            search(searchKeyword, 1, 15);
+        })
+
+        /*var xmlhttp = new XMLHttpRequest();
         if (xmlhttp.readyState < 4 || xmlhttp.status != 200) {
             $(".loading").hide();
         }
@@ -178,7 +131,7 @@
             if (document.readyState == "complete") {
                 $(".loading").hide();
             }
-        }
+        }*/
 
         /*筛选条件*/
         $(".chooseTab a").tabEve({
@@ -189,7 +142,7 @@
         })
         /*下拉加载更多*/
 
-        var i = 0;
+        /*var i = 0;
         $(".list").loadmore({
             getData: function (obj) {
                 var sh = $(window).height();
@@ -240,8 +193,58 @@
                 }, 3000)
             }
             beforeST = afterST;
-        })
+        })*/
     })
+
+
+    //只负责查询和追加数据，如果需要刷新页面（如查询）请执行前自己情况list数据
+    function search(keyword, page, rows) {
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: {
+                "keyword": keyword,
+                "page": page,
+                "rows": rows
+            },
+            success: function (resultData) {
+                console.info(resultData);
+                resultHandler(resultData);
+            }
+        });
+    }
+
+    function resultHandler(result) {
+        if (200 === result.code) {
+            var source = $("#template").html();
+            var template = Handlebars.compile(source);
+            var html = template(result.data);
+            $("#list").append(html);
+        } else {
+            alert(result.data);
+        }
+    }
+</script>
+
+<script src="/js/handlebars-v4.0.5.js"></script>
+
+<script id="template" type="text/x-handlebars-template">
+    {{#each this}}
+    <li class="box vip">
+        <div class="venuesimg"><img src="{{thumbnail}}"></div>
+        <a href="/cms/match/detail?id={{id}}">
+            <div class="venuesdetial boxflex">
+                <h2 class="font16">{{name}}</h2>
+
+                <div class="address add2 font12">
+                    <span class="d">1.0km</span>
+
+                    <span class="p">{{address}}</span>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{/each}}
 </script>
 </body>
 </html>
