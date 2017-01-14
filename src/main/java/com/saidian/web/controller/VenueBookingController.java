@@ -187,7 +187,8 @@ public class VenueBookingController {
     @ResponseBody
     @RequestMapping(value = "getOneDayItemPrice")
     public ResultBean getOneDayItemPrice(String mer_item_id, String mer_price_id, String date) throws Exception {
-        return bTiemService.getOneDayItemPrice(mer_item_id, mer_price_id, date);
+        ResultBean resultBean =  bTiemService.getOneDayItemPrice(mer_item_id, mer_price_id, date);
+        return resultBean;
     }
 
     /**
@@ -199,17 +200,7 @@ public class VenueBookingController {
     public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, ModelMap modelMap) {
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);
-        return "/site/onedaymeritemprice.ftl";
-    }
-
-    /**
-     * 跳转到小时型库存页面
-     *
-     * @return
-     */
-    @RequestMapping(value = "oneday")
-    public String oneday() {
-        return "/site/onedaymeritemprice.ftl";
+        return "/site/onedaymeritemprice";
     }
 
 

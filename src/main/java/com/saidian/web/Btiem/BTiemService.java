@@ -351,7 +351,7 @@ public class BTiemService {
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
 
-        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_PRICE_INVENTORY_SUMMARY_COMMON, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_PRICE_INVENTORY_SUMMARY_COMMON, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
@@ -377,7 +377,7 @@ public class BTiemService {
         jsonObject.put("mer_price_id", mer_price_id);
         jsonObject.put("date", date);
 
-        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_IMEM_PRICE, jsonObject.toString(), AccessServices.PLATFORM_SERVICE_KEY);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ITEM_ONE_DAY_IMEM_PRICE, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         ResultBean<PriceAndInventorySummaryCommon> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());

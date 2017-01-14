@@ -2,9 +2,15 @@ package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saidian.bean.Result;
+import com.saidian.bean.ResultBean;
+import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.Match;
 import com.saidian.web.bean.cms.MatchDynamic;
+import com.saidian.web.platform.PublicService;
+import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,11 +26,27 @@ import java.io.IOException;
 @Controller
 public class CMSMatchController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private String LOG_PRE = "match-error:";
+
     @Autowired
     RESTClient restClient;
 
+    @Autowired
+    PublicService publicService;//公共服务
+
     @RequestMapping("/list")
     public String matchList(ModelMap modelMap) {
+        //行政区
+        ResultBean regionsResultBean = null;
+        try {
+            regionsResultBean = publicService.regionGetChildren(HttpParams.cityId);
+        } catch (Exception e) {
+            logger.error(LOG_PRE + "获取运动类型出错");
+            e.printStackTrace();
+        }
+        modelMap.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         return "/match/list";
     }
 
