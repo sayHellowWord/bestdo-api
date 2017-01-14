@@ -40,7 +40,7 @@ public class CMSTrainController {
             e.printStackTrace();
         }
         modelMap.addAttribute("train", trainResultBean.getData());
-        return "/exercisehoop/list";
+        return "/train/detail";
     }
 
     /**
