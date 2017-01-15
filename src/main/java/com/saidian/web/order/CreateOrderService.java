@@ -88,7 +88,7 @@ public class CreateOrderService {
      * 组织创建订单请求参数
      *
      * @param service_id       服务ID
-     * @param source           订单来源
+     * @param source           订单来源 [1] =>微信 [2] =>Android [3] =>IOS [4] =>PC [5]=>电话 [6]=>pos [7]=>B端标准预定
      * @param uid              用户ID
      * @param card_type_id     卡种ID
      * @param card_id          卡ID

@@ -31,8 +31,28 @@ public class LoginController {
 
     @ResponseBody
     @RequestMapping(value = "/accountLogin")
-    public ResultBean accountLogin(String account, String password) throws Exception {
-        return userService.accountLogin(account, password);
+    public ResultBean accountLogin(String account, String password, HttpSession httpSession) throws Exception {
+        ResultBean resultBean = userService.accountLogin(account, password);
+
+        if (200 == resultBean.getCode()) {
+            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+
+            User user = new User();
+            user.setId(dataJSONObject.getInt("id"));
+            user.setSid(dataJSONObject.getString("sid"));
+            user.setUid(dataJSONObject.getString("uid"));
+            user.setLoginAccount(dataJSONObject.getString("loginAccount"));
+            user.setAccountType(dataJSONObject.getString("accountType"));
+            user.setLoginType(dataJSONObject.getString("loginType"));
+            user.setScopeTime(dataJSONObject.getInt("scopeTime"));
+            //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
+
+            httpSession.setAttribute("user", user);
+
+            resultBean.setData(StringUtils.EMPTY);
+        }
+
+        return resultBean;
     }
 
 
@@ -71,9 +91,9 @@ public class LoginController {
      */
     @ResponseBody
     @RequestMapping(value = "fastlogin")
-    public ResultBean fastlogin(String account, String identifying, String validId,HttpSession httpSession) throws Exception {
+    public ResultBean fastlogin(String account, String identifying, String validId, HttpSession httpSession) throws Exception {
         ResultBean resultBean = userService.accountValidLoginRegister(account, validId, identifying);
-        if(200 == resultBean.getCode()){
+        if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
 
             User user = new User();
@@ -85,9 +105,9 @@ public class LoginController {
             user.setAccountType(dataJSONObject.getString("accountType"));
             user.setLoginType(dataJSONObject.getString("loginType"));
             user.setScopeTime(dataJSONObject.getInt("scopeTime"));
-          //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
+            //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
 
-            httpSession.setAttribute("user",user);
+            httpSession.setAttribute("user", user);
 
             resultBean.setData(StringUtils.EMPTY);
         }

@@ -120,6 +120,8 @@ public class OneDayItemPrice {
 
         private int canbook; //1可预订 0 不可预订
 
+        private PriceInfo priceInfo;
+
         public int getHour() {
             return hour;
         }
@@ -150,6 +152,14 @@ public class OneDayItemPrice {
 
         public void setCanbook(int canbook) {
             this.canbook = canbook;
+        }
+
+        public PriceInfo getPriceInfo() {
+            return priceInfo;
+        }
+
+        public void setPriceInfo(PriceInfo priceInfo) {
+            this.priceInfo = priceInfo;
         }
     }
 

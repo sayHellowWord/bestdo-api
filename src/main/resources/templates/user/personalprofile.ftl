@@ -27,11 +27,11 @@
 	<div class="set">
 		<ul class="blockinput">
 			<li class="font14">
-				<span class="count">${nickName}</span>
+				<span class="count">${nickName!}</span>
 				<span class="tit">昵称</span>
 			</li>
 			<li class="font14">
-				<span class="count">${(userinfo.realName)!}</span>
+				<span class="count">${name!}</span>
 				<span class="tit">姓名</span>
 			</li>
 			<li class="sex font14">

@@ -29,7 +29,7 @@
 		<div class="centerTopCont box">
 			<div class="imgtxt"><img src="../images/2.png" ></div>
 			<div class="cont box2 boxflex">
-				<p>${(userinfo.realName)!}</p>
+				<p>${name!}</p>
 			</div>
 		</div>
 	</div>

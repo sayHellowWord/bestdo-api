@@ -19,6 +19,8 @@ public class PriceAndInventorySummaryCommon {
 
     private String mer_price_id;
 
+    private String cid;
+
 
     public int getInventory_summaray() {
         return inventory_summaray;
@@ -74,5 +76,13 @@ public class PriceAndInventorySummaryCommon {
 
     public void setMer_price_id(String mer_price_id) {
         this.mer_price_id = mer_price_id;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }

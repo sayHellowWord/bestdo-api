@@ -26,7 +26,7 @@
         //预定点击
         $("body").on("click", ".venuesBookBtn", function () {
             var book_day = $("#showBookDays-list .on").data("day");
-            window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&book_day=" + book_day + "&cid=" + cid;
+            window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&mer_price_id=" + mer_price_id + "&book_day=" + book_day + "&cid=" + cid;
         })
 
     })
@@ -91,6 +91,7 @@
                     var html = template(result.object);
                     $("#venuesBook").append(html);
 
+                    $("#price_info").html($("#venuesBook").data("info"));
                 } else {
                     alert(result.msg);
                 }
@@ -117,19 +118,18 @@
             <div class="venuesBookInfo boxflex2">
                 <div class="price box2">
                     {{#if destine}}
-                        {{#each priceInfos}}
-                        <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
-                        {{/each}}
+                    {{#each priceInfos}}
+                    <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
+                    {{/each}}
                     {{else}}
                     <div class="service box2"><p class="font12">不可预订</p></div>
                     {{/if}}
                 </div>
-                <div class="service box2"><p class="font12">2小时畅游</p></div>
+            <#-- todo 提示信息 获取-->
+                <div class="service box2"><p id="price_info" class="font12"></p></div>
             </div>
             {{#if destine}}
             <a href="javascript:void(0)" class="venuesBookBtn boxflex font18">预订</a>
-        <#--<a href="{url action='orders/base/createOrder'}?mer_item_id={$mer_item_id}&mer_id={$mer_item['merid']}
-        &book_day={$choose_day}&cid={$mer_item['cid']}" class="venuesBookBtn boxflex font18">预订</a>-->
             {{/if}}
         </div>
     </div>

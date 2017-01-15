@@ -349,7 +349,7 @@ public class BTiemService {
      * @param mer_price_id
      * @return
      */
-    public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id) throws Exception {
+    public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id, String cid) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
@@ -386,6 +386,7 @@ public class BTiemService {
                 priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
                 priceAndInventorySummaryCommon.setMer_item_id(mer_item_id);
                 priceAndInventorySummaryCommon.setMer_price_id(mer_price_id);
+                priceAndInventorySummaryCommon.setCid(cid);
 
                 priceAndInventorySummaryCommons.add(priceAndInventorySummaryCommon);
             }
@@ -413,7 +414,7 @@ public class BTiemService {
      * @param date
      * @return
      */
-    public ResultBean getOneDayItemPrice(String mer_item_id, String mer_price_id, String date) throws Exception {
+    public ResultBean<OneDayItemPrice> getOneDayItemPrice(String mer_item_id, String mer_price_id, String date) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("mer_price_id", mer_price_id);
@@ -515,13 +516,22 @@ public class BTiemService {
 
             //时间片价格 key时间起点 value prepay_price
             Map<Integer, Double> timePrice = new HashMap();
-
+            Map<Integer, PriceInfo> timePriceInfo = new HashMap();
             //价格解析  >>>>>>> 填充timePrice>>>>>>填充Hour的price>>>> 判断是否可预订(有价格 状态为1)
             if (dataJSONObject.has("price_info") && dataJSONObject.optJSONObject("price_info") != null) {
                 JSONObject priceInfoJSONObject = dataJSONObject.getJSONObject("price_info");
                 for (String key : priceInfoJSONObject.keySet()) {
                     JSONObject priceinfo = priceInfoJSONObject.getJSONObject(key);
                     timePrice.put(priceinfo.getInt("start_hour"), priceinfo.getDouble("prepay_price"));
+
+                    PriceInfo priceInfo = null;
+                    try {
+                        priceInfo = objectMapper.readValue(priceinfo.toString(), PriceInfo.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    timePriceInfo.put(priceinfo.getInt("start_hour"), priceInfo);
+
                 }
             }
 
@@ -561,6 +571,9 @@ public class BTiemService {
                         } else {
                             hourInfo.setCanbook(0);
                         }
+
+                        PriceInfo priceInfo = timePriceInfo.get(hour);
+                        hourInfo.setPriceInfo(priceInfo);
 
                         hours.add(hourInfo);
                     }

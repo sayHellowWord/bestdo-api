@@ -141,7 +141,7 @@ $(function(){
 
         $.ajax({
             type: "POST",
-            url: "../login/registerAccount",
+            url: "../login/setAccountFindPassword",
             data: {
                 "telephone": telphone,
                 "validId": validId,
