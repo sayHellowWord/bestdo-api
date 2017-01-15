@@ -220,6 +220,9 @@ $(function(){
 		if (200 === result.code) {
 			var source = $("#template").html();
 			var template = Handlebars.compile(source);
+            Handlebars.registerHelper('if_showImg', function(value, options) {
+                return value.split(';')[0];
+            });
 			Handlebars.registerHelper('if_signState', function(value, options) {
 				if(value  == 0) {
 					return "报名关闭";
@@ -242,8 +245,10 @@ $(function(){
 <script id="template" type="text/x-handlebars-template">
 	{{#each this}}
     <li class="box vip">
-		<div class="venuesimg"><img src="{{icon}}"></div>
-        <a href="/cms/train//toDetail?id={{id}}">
+		<div class="venuesimg">
+            <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+		</div>
+        <a href="/cms/train/toDetail?id={{id}}">
 		<div class="venuesdetial boxflex">
 			<h2 class="font16">{{name}} </h2>
 			<div class="address add3 font12">

@@ -96,7 +96,7 @@
 <!-- 底部电话 -->
 <div class="ditel box">
     <p class="boxflex font15">电话号码：${detail.hotline}</p>
-    <a class="font15" href="tel:010-56546466">立即咨询</a>
+    <a class="font15" href="tel:${detail.hotline}">立即咨询</a>
 </div>
 
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
