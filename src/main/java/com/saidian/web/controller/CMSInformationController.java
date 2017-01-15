@@ -1,6 +1,7 @@
 package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.saidian.bean.Result;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.News;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,10 @@ public class CMSInformationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return newsList;
+        Result result = new Result();
+        result.setCode(200);
+        result.setData(newsList);
+        return result;
     }
 
     @RequestMapping("/toDetail")

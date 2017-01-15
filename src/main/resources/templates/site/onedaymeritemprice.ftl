@@ -91,10 +91,10 @@
             <div class="venuesBookCont box">
                 <div class="venuesBookInfo boxflex2">
                     <div class="price box2">
-                        <p class="p1 font20"><span>￥350000</span></p>
+                        <p class="p1 font20"><span id="has-choose-money">￥0</span></p>
                     </div>
                     <div class="service box2">
-                        <p class="font12">已选<span>2个</span>场次</p>
+                        <p class="font12">已选<span id="has-choose-num">0个</span>场次</p>
                     </div>
                 </div>
                 <a href="javascript:void(0)" class="venuesBookBtn boxflex font18">预订</a>
@@ -127,24 +127,37 @@
 
         /*<td class="true"><span><i>￥</i>50</span></td> <td><span></span></td> <td class="true on"><span><i>￥</i>50</span></td>*/
         //时间段选择
-        $("#row-table").on("click",".true",function () {
+        $("#row-table").on("click", ".true", function () {
 
             //是否已选中
-            if(!$(this).hasClass("on")){
+            if ($(this).hasClass("on")) {
+                $(this).removeClass("on");
+                countChoose();
+            }else{
                 //选中个数是否超过5个
-                if($("#row-table").find(".on").length > 5){
+                if ($("#row-table").find(".on").length > 4) {
                     alert("每次最多只能预定5片场地");
                     return;
-                }else{
+                } else {
                     $(this).addClass("on");
-
+                    countChoose();
                 }
             }
+
+
         })
 
     })
 
-
+    function countChoose() {
+        $("#has-choose-num").html($("#row-table").find(".on").length  + "个");
+        var money = 0;
+        $("#row-table").find(".on").each(function () {
+            var thisMoney = $(this).text().replace("￥","");
+            money = money + thisMoney * 1;
+        })
+        $("#has-choose-money").html("￥" + money);
+    }
 
 
     //加载数据
@@ -154,6 +167,10 @@
         $("#time-interval-list").html('');
         $("#name-list").html('');
         $("#row-table").html('');
+
+        //订单计数初始化
+        $("#has-choose-num").html( "0个");
+        $("#has-choose-money").html("￥0");
 
         $.ajax({
             type: "POST",
@@ -213,11 +230,11 @@
     {{#each this}}
     <tr>
         {{#each row}}
-            {{#if canbook}}
-                 <td class="true"><span><i>￥</i>{{prepay_price}}</span></td>
-            {{else}}
-                <td ><span></span></td>
-            {{/if}}
+        {{#if canbook}}
+        <td class="true"><span><i>￥</i>{{prepay_price}}</span></td>
+        {{else}}
+        <td><span></span></td>
+        {{/if}}
         {{/each}}
     </tr>
     {{/each}}

@@ -529,6 +529,10 @@ public class BTiemService {
             if (dataJSONObject.has("inventory_info")) {
                 JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
                 List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
+
+                //todo 方便测试
+                double priceTest = 1;
+
                 for (String key : inventoryJSONObject.keySet()) {
                     JSONObject inventoryInfoJson = inventoryJSONObject.getJSONObject(key);
                     OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.new InventoryInfo();
@@ -547,8 +551,12 @@ public class BTiemService {
                         int status = hourJSON.getInt("status");
                         hourInfo.setStatus(status);
                         double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
+
+                        //todo 方便测试
+                        price = priceTest;
+
                         hourInfo.setPrepay_price(price);
-                        if (1 == status && price > 0) {
+                        if (1 == status && price > 2) {
                             hourInfo.setCanbook(1);
                         } else {
                             hourInfo.setCanbook(0);
@@ -556,6 +564,9 @@ public class BTiemService {
 
                         hours.add(hourInfo);
                     }
+                    //todo 方便测试
+                    priceTest += 1;
+
                     inventoryInfo.setHourInfos(hours);
                     inventoryInfos.add(inventoryInfo);
                 }
