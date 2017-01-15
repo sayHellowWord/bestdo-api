@@ -164,9 +164,11 @@ public class RESTClient {
 
     //体育信息列表
     public String informationiList(String title, String label, String state, Integer page, Integer rows, String startDate, String endDate) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?&title={title}&label={label}&state={state}" +
-                        "&page={page}&rows={rows}&startDate={startDate}&endDate={endDate}",
-                null, String.class, title, label, state, page, rows, startDate, endDate);
+//        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?title={title}&label={label}&state={state}" +
+//                        "&page={page}&rows={rows}&startDate={startDate}&endDate={endDate}",
+//                null, String.class, title, label, state, page, rows, startDate, endDate);
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?page={page}&rows={rows}",
+                null, String.class,page, rows);
         return result;
     }
 

@@ -59,11 +59,8 @@
                     <table id="row-table" cellpadding="0" cellspacing="0">
                     <#--  <tr>
                             <td class="true"><span><i>￥</i>50</span></td>
-                            <td class="true"><span><i>￥</i>50</span></td>
-                            <td class="true"><span><i>￥</i>50</span></td>
                             <td><span></span></td>
                             <td class="true on"><span><i>￥</i>50</span></td>
-                            <td><span></span></td>
                         </tr>-->
                     </table>
                 </div>
@@ -126,7 +123,29 @@
             var day = $(this).data("day");
             loadData(mer_item_id, mer_price_id, day);
         })
+
+
+        /*<td class="true"><span><i>￥</i>50</span></td> <td><span></span></td> <td class="true on"><span><i>￥</i>50</span></td>*/
+        //时间段选择
+        $("#row-table").on("click",".true",function () {
+
+            //是否已选中
+            if(!$(this).hasClass("on")){
+                //选中个数是否超过5个
+                if($("#row-table").find(".on").length > 5){
+                    alert("每次最多只能预定5片场地");
+                    return;
+                }else{
+                    $(this).addClass("on");
+
+                }
+            }
+        })
+
     })
+
+
+
 
     //加载数据
     function loadData(mer_item_id, mer_price_id, day) {
@@ -199,17 +218,6 @@
             {{else}}
                 <td ><span></span></td>
             {{/if}}
-
-      <#--  <td class="{{#if_canbook status}} {{status}} {{/if_canbook}}">{{#if_priceshow prepay_price}}
-            {{prepay_price}}{{/if_priceshow}}
-        </td>-->
-    <#--     <td class="true"><span><i>￥</i>50</span></td>
-         <td class="true"><span><i>￥</i>50</span></td>
-         <td><span></span></td>
-         <td class="true on"><span><i>￥</i>50</span></td>
-         <td><span></span></td>
-         <td><span></span></td>
-         <td><span></span></td>-->
         {{/each}}
     </tr>
     {{/each}}
