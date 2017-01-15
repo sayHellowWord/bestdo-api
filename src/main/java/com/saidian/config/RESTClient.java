@@ -140,4 +140,11 @@ public class RESTClient {
         return result;
     }
 
+    //查找组织冬天
+    public String findDynamic(String id){
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "orgn/findDynamic?id={id}",
+                null, String.class, id);
+        return result;
+    }
+
 }

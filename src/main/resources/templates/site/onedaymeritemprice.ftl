@@ -27,12 +27,15 @@
     <div class="scrolldate datesel">
         <div class="dateselfixed">
             <div style="height:3.625rem;overflow:hidden;">
-                <div class="scrolldateCont box font12">
+                <div id="summary-day-list" class="scrolldateCont box font12">
                 <#list priceAndInventorySummaryCommon as summary>
                     <#if day == summary.priceSummaray.day>
-                        <span><a href="javascript:void(0)" class="on">${summary.formatDay}<br>${summary.week}</a></span>
+                        <span><a href="javascript:void(0)" class="on"
+                                 data-day="${summary.priceSummaray.day}">${summary.formatDay}
+                            <br>${summary.week}</a></span>
                     <#else >
-                        <span><a href="javascript:void(0)">${summary.formatDay}<br>${summary.week}</a></span>
+                        <span><a href="javascript:void(0)" data-day="${summary.priceSummaray.day}">${summary.formatDay}
+                            <br>${summary.week}</a></span>
                     </#if>
                 </#list>
                 </div>
@@ -42,170 +45,26 @@
     <!--场地选择-->
     <div class="block">
         <div class="blockcont box">
-            <div class="time font12">
-                <div>10:00</div>
-                <div>11:00</div>
-                <div>12:00</div>
-                <div>13:00</div>
-                <div>14:00</div>
-                <div>15:00</div>
-                <div>16:00</div>
-                <div>17:00</div>
-                <div>18:00</div>
-                <div>19:00</div>
-                <div>20:00</div>
-                <div>21:00</div>
-                <div>22:00</div>
+            <div id="time-interval-list" class="time font12">
+
             </div>
 
             <div class="blockinfo boxflex">
                 <div class="blockinfoCont">
                     <div class="blockinfoTit font12">
-                        <div class="blockinfoTitCont box">
-                            <span>1号场</span>
-                            <span>2号场</span>
-                            <span>3号场</span>
-                            <span>4号场</span>
-                            <span>5号场</span>
-                            <span>6号场</span>
-                            <span>7号场</span>
-                            <span>8号场</span>
-                            <span>9号场</span>
+                        <div id="name-list" class="blockinfoTitCont box">
+
                         </div>
                     </div>
-                    <table cellpadding="0" cellspacing="0">
-                        <tr>
+                    <table id="row-table" cellpadding="0" cellspacing="0">
+                    <#--  <tr>
                             <td class="true"><span><i>￥</i>50</span></td>
                             <td class="true"><span><i>￥</i>50</span></td>
                             <td class="true"><span><i>￥</i>50</span></td>
                             <td><span></span></td>
                             <td class="true on"><span><i>￥</i>50</span></td>
                             <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td class="true"><span><i>￥</i>50</span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
-                        <tr>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                            <td><span></span></td>
-                        </tr>
+                        </tr>-->
                     </table>
                 </div>
             </div>
@@ -249,5 +108,96 @@
 <script type="text/javascript" language="javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="/js/myproject.js"></script>
 <script type="text/javascript" language="javascript" src="/js/choose.js"></script>
+
+<script>
+    $(function () {
+
+        var mer_item_id = '${mer_item_id}';
+        var mer_price_id = '${mer_price_id}';
+        var day = $("#summary-day-list .on").data("day");
+
+        //页面初始化
+        loadData(mer_item_id, mer_price_id, day);
+
+        //某天点击
+        $('body').on("click", "#summary-day-list a", function () {
+            $("#summary-day-list .on").removeClass("on");
+            $(this).addClass("on");
+            var day = $(this).data("day");
+            loadData(mer_item_id, mer_price_id, day);
+        })
+    })
+
+    function loadData(mer_item_id, mer_price_id, day) {
+        $.ajax({
+            type: "POST",
+            url: "/site/getOneDayItemPriceForTimeinterval",
+            data: {
+                "mer_item_id": mer_item_id,
+                "mer_price_id": mer_price_id,
+                "day": day
+            },
+            success: function (resultData) {
+                console.info(resultData);
+                drawTimeInterval(resultData.timeList);
+                drawName(resultData.nameList);
+                drawRow(resultData.rows);
+            }
+        });
+    }
+
+    //时段绘制
+    function drawTimeInterval(data) {
+        var source = $("#time-interval-template").html();
+        var template = Handlebars.compile(source);
+        var html = template(data);
+        $("#time-interval-list").html(html);
+    }
+
+    //片场名称绘制
+    function drawName(data) {
+        var source = $("#name-template").html();
+        var template = Handlebars.compile(source);
+        var html = template(data);
+        $("#name-list").html(html);
+    }
+
+    //绘制方格
+    function drawRow(data) {
+        var source = $("#row-template").html();
+        var template = Handlebars.compile(source);
+        var html = template(data);
+        $("#row-table").html(html);
+    }
+
+</script>
+
+<script src="/js/handlebars-v4.0.5.js"></script>
+<script id="time-interval-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <div>{{this}}</div>
+    {{/each}}
+</script>
+<script id="name-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <span>{{this}}</span>
+    {{/each}}
+</script>
+<script id="row-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <tr>
+        {{#each row}}
+        <td class="true"><span><i>￥</i>{{hour}}</span></td>
+    <#--     <td class="true"><span><i>￥</i>50</span></td>
+         <td class="true"><span><i>￥</i>50</span></td>
+         <td><span></span></td>
+         <td class="true on"><span><i>￥</i>50</span></td>
+         <td><span></span></td>
+         <td><span></span></td>
+         <td><span></span></td>-->
+        {{/each}}
+    </tr>
+    {{/each}}
+</script>
 </body>
 </html>

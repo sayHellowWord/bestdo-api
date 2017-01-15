@@ -57,7 +57,7 @@ public class ServiceInit implements CommandLineRunner {
         String data = "{'internalIp':'" + env.getProperty("application.internalIp") + "','internalPort':'" + env.getProperty("application.internalPort") + "'," +
                 "'externalIp':'" + env.getProperty("application.externalIp") + "','externalPort':'" + env.getProperty("application.externalPort") + "' }";
 
-        /*String AUTH_URL = "config/v1/api/service/getKeys";
+        String AUTH_URL = "config/v1/api/service/getKeys";
         ResultBean resultBean = HttpResultUtil.result2Bean(HttpUtil.doPost(HttpParams.url + AUTH_URL, data, HttpParams.key));
         JSONObject jsonObject = new JSONObject(resultBean.getData());
         Map accessServices = new HashMap();
@@ -74,7 +74,7 @@ public class ServiceInit implements CommandLineRunner {
                 accessServices.put(serviceBean.getGoalServiceId(), serviceBean);
             }
         }
-        AccessServices.init(accessServices);*/
+        AccessServices.init(accessServices);
 
         System.out.println(">>>>>>>>>>>>>>>服务启动，结束执行加载数据等操作<<<<<<<<<<<<<");
     }

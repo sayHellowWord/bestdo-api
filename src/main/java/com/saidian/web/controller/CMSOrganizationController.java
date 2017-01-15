@@ -83,8 +83,15 @@ public class CMSOrganizationController {
 
     @RequestMapping("/toDynamicDetail")
     public String toDynamicDetail(String id, ModelMap modelMap) {
+        String resultStr = restClient.findDynamic(id);
+        Dynamic dynamic = null;
+        try {
+            dynamic = objectMapper.readValue(resultStr, Dynamic.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Dynamic dynamic = new Dynamic();
+       /* Dynamic dynamic = new Dynamic();
         dynamic.setId(6l);
         dynamic.setTitle("赛事动态标题1");
         dynamic.setOrgnName("网球协会");
@@ -95,7 +102,7 @@ public class CMSOrganizationController {
         dynamic.setIsShow((byte)0);
         dynamic.setAutohome((byte)0);
         dynamic.setState((byte)0);
-        dynamic.setCreateDate(new Date());
+        dynamic.setCreateDate(new Date());*/
         modelMap.addAttribute("dynamic", dynamic);
         return "/organization/detail";
     }
