@@ -140,4 +140,25 @@ public class RESTClient {
         return result;
     }
 
+    //查找组织冬天
+    public String findDynamic(String id) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "orgn/findDynamic?id={id}",
+                null, String.class, id);
+        return result;
+    }
+
+    //健身指导-监测站列表
+    public String guidanceList(Integer page, Integer rows) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "phy/front_list?page={page}&rows={rows}",
+                null, String.class, page, rows);
+        return result;
+    }
+
+    //根据id获取健身指导
+    public String guidance(String id){
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "phy/front_findById?id={id}",
+                null, String.class, id);
+        return result;
+    }
+
 }

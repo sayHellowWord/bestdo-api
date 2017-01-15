@@ -2,6 +2,8 @@ package com.saidian.web.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
@@ -19,10 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/1/7.
@@ -217,30 +216,80 @@ public class VenueBookingController {
 
     //获取日期型 某一天各片场信息
     @RequestMapping(value = "getOneDayItemPriceForTimeinterval")
-    public Object getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String day) throws Exception {
+    @ResponseBody
+    public Object getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String day, ModelMap modelMap) throws Exception {
+
         ResultBean<OneDayItemPrice> oneDayMerItemPrice = bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
-
-        List<String> nameList = new ArrayList<String>();//片场名称
-        List<String> timeList = new ArrayList<String>();//时间段
-
         OneDayItemPrice oneDayItemPrice = oneDayMerItemPrice.getObject();
+
+        //片场库存信息
         List<OneDayItemPrice.InventoryInfo> inventoryInfos = oneDayItemPrice.getInventoryInfos();
 
-        //初始化片场名称和时间段
-        if( null != inventoryInfos && inventoryInfos.size() > 0 ){
+        //安装片场名称排序
+        //排序器
+        Ordering<OneDayItemPrice.InventoryInfo> orderingName = new Ordering<OneDayItemPrice.InventoryInfo>() {
+            public int compare(OneDayItemPrice.InventoryInfo left, OneDayItemPrice.InventoryInfo right) {
+                return left.getName().compareTo(right.getName()) ;
+            }
+        };
+        inventoryInfos = orderingName.sortedCopy(inventoryInfos);
 
+        List<String> nameList = new ArrayList<String>();//片场名称
+        List<String> timeList = new ArrayList<String>();//时间段名称
+
+        //初始化时间段
+        if (null != inventoryInfos && inventoryInfos.size() > 0) {
+            OneDayItemPrice.InventoryInfo inventoryInfo = inventoryInfos.get(0);
+            List<OneDayItemPrice.HourInfo> hourInfos = inventoryInfo.getHourInfos();
+            for (OneDayItemPrice.HourInfo hourInfo : hourInfos) {
+                if (hourInfo.getHour() < 10) {
+                    timeList.add("0" + hourInfo.getHour() + ":00");
+                } else {
+                    timeList.add(hourInfo.getHour() + ":00");
+                }
+            }
+            //排序
+            Collections.sort(timeList);
         }
 
-        for (OneDayItemPrice.InventoryInfo inventoryInfo : inventoryInfos){
+        int rowsNum = timeList.size();
+        //一个map为一行数据
+        List<Map<String, List<OneDayItemPrice.HourInfo>>> rows = new ArrayList<Map<String, List<OneDayItemPrice.HourInfo>>>(rowsNum);
+
+        //初始化行
+        for (int i = 0; i < rowsNum; i++) {
+            rows.add(new HashMap<String, List<OneDayItemPrice.HourInfo>>());
+        }
+
+        //排序器
+        Ordering<OneDayItemPrice.HourInfo> orderingHour = new Ordering<OneDayItemPrice.HourInfo>() {
+            public int compare(OneDayItemPrice.HourInfo left, OneDayItemPrice.HourInfo right) {
+                return Ints.compare(left.getHour(), right.getHour());
+            }
+        };
+
+        for (OneDayItemPrice.InventoryInfo inventoryInfo : inventoryInfos) {
+            //初始化片场名称
             nameList.add(inventoryInfo.getName());
+
+            //时间点、可预订状态
             List<OneDayItemPrice.HourInfo> hourInfos = inventoryInfo.getHourInfos();
 
-            //排序
-
+            //排序-按照时间从早到到晚排序好（和时间段名称对应）
+            hourInfos = orderingHour.sortedCopy(hourInfos);
+            int hourInfosLength = hourInfos.size();
+            for (int i = 0; i < hourInfosLength; i++) {
+                Map<String, List<OneDayItemPrice.HourInfo>> row = rows.get(i);
+                List<OneDayItemPrice.HourInfo> hourInfoList = row.get("row");
+                if (null == hourInfoList) {
+                    hourInfoList = new ArrayList<OneDayItemPrice.HourInfo>();
+                }
+                hourInfoList.add(hourInfos.get(i));
+                row.put("row", hourInfoList);
+                rows.set(i, row);
+            }
         }
-
-
-        return null;
+        return ImmutableBiMap.of("timeList", timeList, "nameList", nameList, "rows", rows);
     }
 
 
