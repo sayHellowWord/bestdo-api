@@ -39,7 +39,8 @@
 <div class="slidemenu" data-tab="0">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 nearby">
-        <a href="javascript:void(0)" class="on">亭湖区</a>
+        <a href="javascript:void(0)" class="on">全部区域</a>
+        <a href="javascript:void(0)">亭湖区</a>
         <a href="javascript:void(0)">盐都区</a>
         <a href="javascript:void(0)">大丰区</a>
     </div>
@@ -48,7 +49,7 @@
 <div class="slidemenu" data-tab="1">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 sort">
-        <a href="javascript:void(0)" class="on">按时间排序</a>
+        <a href="javascript:void(0)" data-value="asc" class="on">按时间排序</a>
     </div>
 </div>
 <!--赛事列表-->
@@ -123,6 +124,7 @@
 
             area = $('.nearby .on').data('value');
             order = $('.sort .on').data('value');
+            $('#list').html('');
             search(area, order, 1, 15);
 
             //scope.district = $(this).attr('data-tag');
@@ -138,7 +140,7 @@
 
             var ind = $(this).parent().parent().data('tab');
             var titleTxt = '';
-            if ($(this).text() === '按照时间排序') {
+            if ($(this).text() === '按时间排序') {
                 titleTxt = '排序';
             } else {
                 titleTxt = $(this).text();
@@ -155,6 +157,7 @@
 
             area = $('.nearby .on').data('value');
             order = $('.sort .on').data('value');
+            $('#list').html('');
             search(area, order, 1, 15);
 
             //scope.district = $(this).attr('data-tag');
@@ -165,12 +168,13 @@
     })
 
     //只负责查询和追加数据，如果需要刷新页面（如查询）请执行前自己情况list数据
-    function search(keyword, page, rows) {
+    function search(area, order, page, rows) {
         $.ajax({
             type: "POST",
             url: "/cms/match/list/yc",
             data: {
-                "keyword": keyword,
+                "district": area,
+                "time_sort": order,
                 "page": page,
                 "rows": rows
             },

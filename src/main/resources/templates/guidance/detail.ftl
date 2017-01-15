@@ -26,10 +26,11 @@
 <!--banner-->
 <div class="lunbo">
     <div class="swiper-container">
+        ${phyContext}
         <div class="swiper-wrapper">
-            <#list guidance.headImage?split(";") as image>
+            <#--<#list phyContext.headUrl?split(";") as image>
                 <div class="swiper-slide" style="background-image: url(${image});"></div>
-            </#list>
+            </#list>-->
         </div>
     </div>
 </div>
@@ -52,7 +53,7 @@
             <h1 class="font15">监测站点介绍</h1>
             <ul>
                 <li class="moreinfo box font14">
-                    <span class="tit">${guidance.}</span>
+                    <span class="tit">mmmmmm</span>
 
                 </li>
             </ul>
