@@ -220,7 +220,7 @@
             var source = $("#template").html();
             var template = Handlebars.compile(source);
             Handlebars.registerHelper('if_showImg', function(value, options) {
-                return value.slice(0, -1);
+                return value.split(';')[0];
             });
             var html = template(result.data);
             $("#list").append(html);
@@ -235,7 +235,9 @@
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
     <li class="box vip">
-        <div class="venuesimg"><img src="{{#if_showImg showImg}} {{showImg}} {{/if_showImg}}"></div>
+        <div class="venuesimg">
+            <img src="{{#if_showImg showImg}} {{showImg}} {{/if_showImg}}">
+        </div>
         <a href="/cms/exercisehoop/toDetail?id={{id}}">
             <div class="venuesdetial boxflex">
                 <h2 class="font16">{{name}}</h2>

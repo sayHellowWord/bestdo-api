@@ -47,10 +47,10 @@
     </div>
 </div>
 <!--排序-->
-<div class="slidemenu" data-tab="0">
+<div class="slidemenu" data-tab="1">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 sort">
-        <a href="javascript:void(0)" class="on">按时间排序</a>
+        <a href="javascript:void(0)" data-value="asc" class="on">按时间排序</a>
     </div>
 </div>
 <!--赛事列表-->
@@ -127,10 +127,13 @@
             //替换title
             //$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
             var ind = $(this).parent().parent().data('tab');
+            var titleTxt = '';
             if ($(this).text() === '全部区域') {
-                $(this).text() = '行政区';
+                titleTxt = '行政区';
+            } else {
+                titleTxt = $(this).text();
             }
-            $('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
+            $('div.chooseTabCont a').eq(ind).html(titleTxt + '<span></span>');
             $("body").click();
 
             $("div.nearby").children('a').each(function(index, item){
@@ -138,6 +141,10 @@
             });
 
             $(this).addClass('on');
+
+            area = $('.nearby .on').data('value');
+            order = $('.sort .on').data('value');
+            search(area, order, 1, 15);
 
             //scope.district = $(this).attr('data-tag');
 
@@ -149,10 +156,14 @@
 
             //替换title
             //$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
+            var ind = $(this).parent().parent().data('tab');
+            var titleTxt = '';
             if ($(this).text() === '按照时间排序') {
-                $(this).text() = '排序';
+                titleTxt = '排序';
+            } else {
+                titleTxt = $(this).text();
             }
-            $('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
+            $('div.chooseTabCont a').eq(ind).html(titleTxt + '<span></span>');
 
             $("body").click();
 
@@ -161,6 +172,10 @@
             });
 
             $(this).addClass('on');
+
+            area = $('.nearby .on').data('value');
+            order = $('.sort .on').data('value');
+            search(area, order, 1, 15);
 
             //scope.district = $(this).attr('data-tag');
 
@@ -191,7 +206,7 @@
     function search(area, order, page, rows) {
         $.ajax({
             type: "POST",
-            url: "/cms/train/list/yc",
+            url: "/cms/organization/list/cms",
             data: {
                 "district": area,
                 "time_sort": order,
@@ -210,6 +225,10 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
+            Handlebars.registerHelper('if_showImg', function(value, options) {
+                return value.split(';')[0];
+            });
+            var html = template(result.data);
             $("#list").append(html);
         } else {
             alert(result.data);
@@ -221,15 +240,17 @@
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
     <li class="box vip">
-        <div class="venuesimg"><img src="{{icon}}"></div>
-        <a href="/cms/train//toDetail?id={{id}}">
+        <div class="venuesimg">
+            <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+        </div>
+        <a href="/cms/organization/toDetail?id={{id}}">
             <div class="venuesdetial boxflex">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address add3 font12">
-                    <span class="p">组织名称：{{type}}课程时间:{{name}}</span>
+                    <span class="p">组织名称：{{name}}</span>
                 </div>
                 <div class="address add3 font12">
-                    <span class="p">最新简介：{{name}}</span>
+                    <span class="p">最新简介：{{description}}</span>
                 </div>
             </div>
         </a>

@@ -216,7 +216,7 @@ public class VenueBookingController {
     }
 
     //获取日期型 某一天各片场信息
-    @RequestMapping(value = "toOneDayMerItemPrice")
+    @RequestMapping(value = "getOneDayItemPriceForTimeinterval")
     public Object getOneDayItemPriceForTimeinterval(String mer_item_id, String mer_price_id, String day) throws Exception {
         ResultBean<OneDayItemPrice> oneDayMerItemPrice = bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
 

@@ -39,7 +39,7 @@
 		<div><a href="/cms/match/list" class="i3"><span class="iconfont font16"></span><i></i>体育赛事</a></div>
 		<div><a href="/cms/train/list" class="i4"><span class="iconfont font16"></span><i></i>体育培训</a></div>
 		<div><a href="#" class="i5"><span class="iconfont font16"></span><i></i>健身指导</a></div>
-		<div><a href="#" class="i6"><span class="iconfont font16"></span><i></i>体育组织</a></div>	
+		<div><a href="/cms/organization/list" class="i6"><span class="iconfont font16"></span><i></i>体育组织</a></div>
 		<div><a href="#" class="i7"><span class="iconfont font16"></span><i></i>体育信息</a></div>
 		<div><a href="#" class="i8"><span class="iconfont font16"></span><i></i>联系我们</a></div>
 	</div>

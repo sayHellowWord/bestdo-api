@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>青少年游泳基础培训班</title>
+    <title>监测站点介绍</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!--忽略页面中的数字识别为电话号码-->
     <meta name="format-detection" content="telephone=no" />
@@ -19,8 +19,7 @@
     <div class="header">
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
-            <div class="headerC boxflex"><p class="font17">${train.name}</p></div>
-
+            <div class="headerC boxflex"><p class="font17">监测站点介绍</p></div>
         </div>
     </div>
 </div>
@@ -28,11 +27,10 @@
 <div class="lunbo">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <#list train.shortIcon?split(";") as image>
+            <#list guidance.headImage?split(";") as image>
                 <div class="swiper-slide" style="background-image: url(${image});"></div>
             </#list>
         </div>
-
     </div>
 </div>
 
@@ -43,55 +41,28 @@
         <!--场馆信息-->
         <div class="venuesInfo">
             <ul>
-                <li class="ede font15"><p>${train.name}<i class="font12">(${train.minNum}人开赛)</i></p></li>
-                <li class="address font14"><p>${train.adress}</p></li>
+                <li class="tou font15"><p>全社会公开</p></li>
+                <li class="address font15"><p>交大东路8号</p></li>
+                <li class="date font15"><p>工作日:08:00--21:00 周末:09:00--21:00</p></li>
             </ul>
         </div>
 
 
-
-        <div class="scrolldate yu">
-            <h3 class="biaotiyong font16">教练风采</h3>
-            <div id="scrolldateCont" class="scrolldateCont box font12">
-                 <#list coaches as item>
-                 <span >
-					<a href="/cms/coach/toDetail?id=${item.id}" class="sai">
-						<div class="box">
-							<img src="${item.photoIcon}">
-							<div >
-								<h2 class="font16">${item.name}</h2>
-								<P class="font12 now">${item.rank}</P>
-								<P class="font12">${item.experience}</P>
-							</div>
-						</div>
-					</a>
-				 </span>
-                 </#list>
-            </div>
-        </div>
-
         <div class="venuesInfo">
-            <h1 class="font15">培训介绍</h1>
+            <h1 class="font15">监测站点介绍</h1>
             <ul>
                 <li class="moreinfo box font14">
-                    <span class="tit">${train.phone}</span>
+                    <span class="tit">${guidance.}</span>
+
                 </li>
             </ul>
         </div>
     </div>
+
 </div>
-
-<div class="jianju"></div>
-
-<!-- 底部电话 -->
-<div class="ditel box">
-    <p class="boxflex font15">电话号码：${train.phone}</p>
-    <a class="font15" href="tel:${train.phone}">立即咨询</a>
-</div>
-
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
-<script src="/js/swiper-3.2.7.min.js"></script>
+<script src="js/swiper-3.2.7.min.js"></script>
 <script>
     var mySwiper = new Swiper ('.swiper-container', {
         loop: true,
@@ -99,6 +70,8 @@
 
         // 如果需要分页器
         pagination: '.swiper-pagination',
+
+
     })
 </script>
 </body>

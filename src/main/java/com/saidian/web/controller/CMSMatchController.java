@@ -41,7 +41,7 @@ public class CMSMatchController {
     @RequestMapping("/list")
     public String matchList(ModelMap modelMap) {
         //行政区
-        ResultBean regionsResultBean = null;
+      /*  ResultBean regionsResultBean = null;
         try {
             regionsResultBean = publicService.regionGetChildren(HttpParams.cityId);
         } catch (Exception e) {
@@ -49,6 +49,7 @@ public class CMSMatchController {
             e.printStackTrace();
         }
         modelMap.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
+       */
         return "/match/list";
     }
 

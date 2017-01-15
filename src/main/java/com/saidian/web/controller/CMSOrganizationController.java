@@ -66,8 +66,8 @@ public class CMSOrganizationController {
         dynamic.setTitle("赛事动态标题1");
         dynamic.setOrgnName("网球协会");
         dynamic.setOrgnId(2l);
-        dynamic.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206729390/2.jpg;");
-        dynamic.setShortIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206731046/84Z58PICuRE_1024.jpg;");
+        dynamic.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206729390/2.jpg");
+        dynamic.setShortIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206731046/84Z58PICuRE_1024.jpg");
         dynamic.setDescription("123");
         dynamic.setIsShow((byte)0);
         dynamic.setAutohome((byte)0);
@@ -89,8 +89,8 @@ public class CMSOrganizationController {
         dynamic.setTitle("赛事动态标题1");
         dynamic.setOrgnName("网球协会");
         dynamic.setOrgnId(2l);
-        dynamic.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206729390/2.jpg;");
-        dynamic.setShortIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206731046/84Z58PICuRE_1024.jpg;");
+        dynamic.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206729390/2.jpg");
+        dynamic.setShortIcon("http://ojhwcmd4b.bkt.clouddn.com/1484206731046/84Z58PICuRE_1024.jpg");
         dynamic.setDescription("123");
         dynamic.setIsShow((byte)0);
         dynamic.setAutohome((byte)0);
