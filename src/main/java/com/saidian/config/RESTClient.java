@@ -155,9 +155,25 @@ public class RESTClient {
     }
 
     //根据id获取健身指导
-    public String guidance(String id){
+    public String guidance(String id) {
         String result = restTemplate.postForObject(HttpParams.CMS_URL + "phy/front_findById?id={id}",
                 null, String.class, id);
+        return result;
+    }
+
+
+    //体育信息列表
+    public String informationiList(String title, String label, String state, Integer page, Integer rows, String startDate, String endDate) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?&title={title}&label={label}&state={state}" +
+                        "&page={page}&rows={rows}&startDate={startDate}&endDate={endDate}",
+                null, String.class, title, label, state, page, rows, startDate, endDate);
+        return result;
+    }
+
+
+    //体育信息详情
+    public String informationiDetail(String id) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/findById?&id={id}", null, String.class, id);
         return result;
     }
 
