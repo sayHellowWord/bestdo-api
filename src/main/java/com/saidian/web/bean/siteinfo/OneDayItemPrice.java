@@ -114,7 +114,11 @@ public class OneDayItemPrice {
 
         private int hour;
 
-        private int status;
+        private int status; //1  可以预定 0 不可以预定 2  已经预定出去了
+
+        private double prepay_price;
+
+        private int canbook; //1可预订 0 不可预订
 
         public int getHour() {
             return hour;
@@ -130,6 +134,22 @@ public class OneDayItemPrice {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public double getPrepay_price() {
+            return prepay_price;
+        }
+
+        public void setPrepay_price(double prepay_price) {
+            this.prepay_price = prepay_price;
+        }
+
+        public int getCanbook() {
+            return canbook;
+        }
+
+        public void setCanbook(int canbook) {
+            this.canbook = canbook;
         }
     }
 

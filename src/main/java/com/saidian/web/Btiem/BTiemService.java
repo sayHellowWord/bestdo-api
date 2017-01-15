@@ -15,9 +15,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/1/5.
@@ -515,6 +513,19 @@ public class BTiemService {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
             OneDayItemPrice oneDayItemPrice = new OneDayItemPrice();
 
+            //时间片价格 key时间起点 value prepay_price
+            Map<Integer, Double> timePrice = new HashMap();
+
+            //价格解析  >>>>>>> 填充timePrice>>>>>>填充Hour的price>>>> 判断是否可预订(有价格 状态为1)
+            if (dataJSONObject.has("price_info") && dataJSONObject.optJSONObject("price_info") != null) {
+                JSONObject priceInfoJSONObject = dataJSONObject.getJSONObject("price_info");
+                for (String key : priceInfoJSONObject.keySet()) {
+                    JSONObject priceinfo = priceInfoJSONObject.getJSONObject(key);
+                    timePrice.put(priceinfo.getInt("start_hour"), priceinfo.getDouble("prepay_price"));
+                }
+            }
+
+            //库存解析
             if (dataJSONObject.has("inventory_info")) {
                 JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
                 List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
@@ -531,8 +542,18 @@ public class BTiemService {
                     for (String houorKey : hourJSONObject.keySet()) {
                         JSONObject hourJSON = hourJSONObject.getJSONObject(houorKey);
                         OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
-                        hourInfo.setHour(hourJSON.getInt("hour"));
-                        hourInfo.setStatus(hourJSON.getInt("status"));
+                        Integer hour = hourJSON.getInt("hour");
+                        hourInfo.setHour(hour);
+                        int status = hourJSON.getInt("status");
+                        hourInfo.setStatus(status);
+                        double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
+                        hourInfo.setPrepay_price(price);
+                        if (1 == status && price > 0) {
+                            hourInfo.setCanbook(1);
+                        } else {
+                            hourInfo.setCanbook(0);
+                        }
+
                         hours.add(hourInfo);
                     }
                     inventoryInfo.setHourInfos(hours);

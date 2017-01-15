@@ -128,7 +128,14 @@
         })
     })
 
+    //加载数据
     function loadData(mer_item_id, mer_price_id, day) {
+
+        //TODO  此处应该是加载动画
+        $("#time-interval-list").html('');
+        $("#name-list").html('');
+        $("#row-table").html('');
+
         $.ajax({
             type: "POST",
             url: "/site/getOneDayItemPriceForTimeinterval",
@@ -187,7 +194,15 @@
     {{#each this}}
     <tr>
         {{#each row}}
-        <td class="true"><span><i>￥</i>{{hour}}</span></td>
+            {{#if canbook}}
+                 <td class="true"><span><i>￥</i>{{prepay_price}}</span></td>
+            {{else}}
+                <td ><span></span></td>
+            {{/if}}
+
+      <#--  <td class="{{#if_canbook status}} {{status}} {{/if_canbook}}">{{#if_priceshow prepay_price}}
+            {{prepay_price}}{{/if_priceshow}}
+        </td>-->
     <#--     <td class="true"><span><i>￥</i>50</span></td>
          <td class="true"><span><i>￥</i>50</span></td>
          <td><span></span></td>
