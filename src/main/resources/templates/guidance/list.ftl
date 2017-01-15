@@ -30,7 +30,7 @@
 <!--体测列表-->
 <div class="wrapper">
     <div class="bodylist">
-        <ul class="list2">
+        <ul id="list" class="list2">
 
         </ul>
     </div>
@@ -46,7 +46,7 @@
     function search(page, rows) {
         $.ajax({
             type: "POST",
-            url: "/cms/match/list/yc",
+            url: "/cms/guidance/list/cms",
             data: {
                 "page": page,
                 "rows": rows
@@ -63,10 +63,10 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
-            Handlebars.registerHelper('if_showImg', function(value, options) {
+            Handlebars.registerHelper('if_bodyUrl', function(value, options) {
                 return value.split(';')[0];
             });
-            var html = template(result.data);
+            var html = template(result.data.list);
             $("#list").append(html);
         } else {
             alert(result.data);
@@ -80,9 +80,9 @@
     {{#each this}}
     <li class="box">
         <div class="bodyimg">
-            <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}">
+            <img src="{{#if_bodyUrl bodyUrl}} {{bodyUrl}} {{/if_bodyUrl}}">
         </div>
-        <a href="/cms/match/detail?id={{id}}">
+        <a href="/cms/guidance/toDetail?id={{id}}">
         <div class="bodydetail boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="address font12">
