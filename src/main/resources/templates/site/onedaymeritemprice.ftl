@@ -97,7 +97,7 @@
                         <p class="font12">已选<span id="has-choose-num">0个</span>场次</p>
                     </div>
                 </div>
-                <a href="javascript:void(0)" class="venuesBookBtn boxflex font18">预订</a>
+                <a id="bookink-id" href="javascript:void(0)" class="venuesBookBtn boxflex font18">预订</a>
             </div>
         </div>
     </div>
@@ -112,6 +112,7 @@
         var mer_item_id = '${mer_item_id}';
         var mer_price_id = '${mer_price_id}';
         var day = $("#summary-day-list .on").data("day");
+        var cid = '${cid}';
 
         //页面初始化
         loadData(mer_item_id, mer_price_id, day);
@@ -133,7 +134,7 @@
             if ($(this).hasClass("on")) {
                 $(this).removeClass("on");
                 countChoose();
-            }else{
+            } else {
                 //选中个数是否超过5个
                 if ($("#row-table").find(".on").length > 4) {
                     alert("每次最多只能预定5片场地");
@@ -143,17 +144,27 @@
                     countChoose();
                 }
             }
+        })
 
+        $("#venuesBook").on("click", "#bookink-id", function () {
+
+            if ($("#row-table").find(".on").length < 1) {
+                alert("请选择要预定的场地");
+                return;
+            }
+            var book_day = $("#summary-day-list .on").data("day");
+            window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&book_day=" + book_day + "&cid=" + cid;
 
         })
+
 
     })
 
     function countChoose() {
-        $("#has-choose-num").html($("#row-table").find(".on").length  + "个");
+        $("#has-choose-num").html($("#row-table").find(".on").length + "个");
         var money = 0;
         $("#row-table").find(".on").each(function () {
-            var thisMoney = $(this).text().replace("￥","");
+            var thisMoney = $(this).text().replace("￥", "");
             money = money + thisMoney * 1;
         })
         $("#has-choose-money").html("￥" + money);
@@ -169,7 +180,7 @@
         $("#row-table").html('');
 
         //订单计数初始化
-        $("#has-choose-num").html( "0个");
+        $("#has-choose-num").html("0个");
         $("#has-choose-money").html("￥0");
 
         $.ajax({

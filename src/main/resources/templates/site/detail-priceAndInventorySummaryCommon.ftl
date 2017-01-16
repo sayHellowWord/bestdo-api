@@ -25,18 +25,20 @@
     $(function () {
         var mer_item_id = '${mer_item_id}';
         var mer_price_id = '${mer_price_id}';
+        var cid = '${cid}';
 
-        loadBookDays(mer_item_id,mer_price_id);
+        loadBookDays(mer_item_id,mer_price_id,cid);
     })
 
     //获取此场馆可预订的日期
-    function loadBookDays(mer_item_id,mer_price_id) {
+    function loadBookDays(mer_item_id,mer_price_id,cid) {
         $.ajax({
             type: "POST",
             url: "/site/priceAndInventorySummaryCommon",
             data: {
                 "mer_item_id": mer_item_id,
-                "mer_price_id": mer_price_id
+                "mer_price_id": mer_price_id,
+                "cid": cid
             },
             success: function (result) {
                 if (200 === result.code) {
@@ -57,7 +59,7 @@
 
 <script id="priceAndInventorySummaryCommon-template" type="text/x-handlebars-template">
     {{#each this}}
-        <span  {{#if inventory_summaray}} class="on"  {{/if}}><a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&day={{priceSummaray.day}}">
+        <span  {{#if inventory_summaray}} class="on"  {{/if}}><a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&cid={{cid}}&day={{priceSummaray.day}}">
 					<div class="tit  font14">{{formatDay}}<i>{{week}}</i></div>
                     {{#if inventory_summaray}}
                         <div class="price font13">

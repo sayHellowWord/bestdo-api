@@ -53,6 +53,9 @@ public class ServiceInit implements CommandLineRunner {
         //cms访问地址
         HttpParams.CMS_URL = env.getProperty("server.cms.url");
 
+        //订单来源
+        HttpParams.ORDER_SOURCE = Integer.parseInt(env.getProperty("service.order.source")) ;
+
         //初始化可接入服务
         String data = "{'internalIp':'" + env.getProperty("application.internalIp") + "','internalPort':'" + env.getProperty("application.internalPort") + "'," +
                 "'externalIp':'" + env.getProperty("application.externalIp") + "','externalPort':'" + env.getProperty("application.externalPort") + "' }";

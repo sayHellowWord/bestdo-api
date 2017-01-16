@@ -74,7 +74,7 @@
     <!--109 游泳108 健身 122台球 -->
     <#if detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122>
     <!--预订按钮-->
-        <div id="venuesBook">
+        <div id="venuesBook" data-info="${detail.price_info}">
            <#-- <div class="venuesBook">
                 <div class="venuesBookCont box">
                     <div class="venuesBookInfo boxflex2">

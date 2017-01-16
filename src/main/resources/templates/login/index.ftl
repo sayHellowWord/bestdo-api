@@ -74,7 +74,7 @@
         <div class="applyBtn font17">
             <a id="login-submit" href="javascript:void(0)">登录</a>
         </div>
-        <div class="getPswTxt font13"><a href="#">忘记密码</a></div>
+        <div class="getPswTxt font13"><a href="/login/findPassword">忘记密码</a></div>
     </div>
 </div>
 <script>

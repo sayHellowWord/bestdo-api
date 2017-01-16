@@ -44,21 +44,38 @@ public class UserController {
             return "login/index";
         }
         ResultBean resultBean = userService.findUserInfo(user.getUid());
-        httpSession.setAttribute("userinfo", new JSONObject(resultBean.getData()));
-        map.addAttribute("userinfo",new JSONObject(resultBean.getData()));
+
+        JSONObject userinfo = new JSONObject(resultBean.getData());
+
+        httpSession.setAttribute("userinfo", userinfo);
+
+        map.addAttribute("userinfo", userinfo);
+
+        String name = userinfo.getString("telephone");
+        if (userinfo.has("realName"))
+            name = userinfo.getString("realName");
+        map.addAttribute("name", name);
         return "user/index";
     }
+
     @RequestMapping(value = "/personalprofile")
-    public String personalprofile(HttpSession httpSession,ModelMap map) throws Exception {
-        map.addAttribute("userinfo",httpSession.getAttribute("userinfo"));
-       JSONObject jsonObject = new JSONObject(httpSession.getAttribute("userinfo").toString());
-        if(jsonObject.has("nickName")){
-            map.addAttribute("nickName",jsonObject.getString("nickName"));
+    public String personalprofile(HttpSession httpSession, ModelMap map) throws Exception {
+
+        JSONObject jsonObject = new JSONObject(httpSession.getAttribute("userinfo").toString());
+
+        map.addAttribute("userinfo",jsonObject);
+
+        String name = jsonObject.getString("telephone");
+        if (jsonObject.has("realName"))
+            name = jsonObject.getString("realName");
+        map.addAttribute("name", name);
+
+        if (jsonObject.has("nickName")) {
+            map.addAttribute("nickName", jsonObject.getString("nickName"));
         }
-        map.addAttribute("nickName","");
+        map.addAttribute("nickName", "");
         return "user/personalprofile";
     }
-
 
 
     @ResponseBody

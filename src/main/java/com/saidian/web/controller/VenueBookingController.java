@@ -159,9 +159,8 @@ public class VenueBookingController {
      */
     @ResponseBody
     @RequestMapping(value = "priceAndInventorySummaryCommon")
-    public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id) throws Exception {
-        ResultBean resultBean = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
-        return bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
+    public ResultBean priceAndInventorySummaryCommon(String mer_item_id, String mer_price_id, String cid) throws Exception {
+        return bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id, cid);
     }
 
     /**
@@ -197,19 +196,16 @@ public class VenueBookingController {
      * @return
      */
     @RequestMapping(value = "toOneDayMerItemPrice")
-    public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, String day, ModelMap modelMap) throws Exception {
+    public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id,String cid, String day, ModelMap modelMap) throws Exception {
 
         //获取八天价格汇总以及库存汇总(乒羽篮网）
-        ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id);
-
-        //获取一天商品明细的价格和库存信息（日期、时段、小时）
-        //ResultBean oneDayMerItemPrice =  bTiemService.getOneDayItemPriceForTimeinterval(mer_item_id, mer_price_id, day);
+        ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id,cid);
 
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);
         modelMap.addAttribute("day", day);
+        modelMap.addAttribute("cid", cid);
         modelMap.addAttribute("priceAndInventorySummaryCommon", priceAndInventorySummaryCommon.getLists());
-        // modelMap.addAttribute("oneDayMerItemPrice", oneDayMerItemPrice.getObject());
 
         return "/site/onedaymeritemprice";
     }
@@ -229,7 +225,7 @@ public class VenueBookingController {
         //排序器
         Ordering<OneDayItemPrice.InventoryInfo> orderingName = new Ordering<OneDayItemPrice.InventoryInfo>() {
             public int compare(OneDayItemPrice.InventoryInfo left, OneDayItemPrice.InventoryInfo right) {
-                return left.getName().compareTo(right.getName()) ;
+                return left.getName().compareTo(right.getName());
             }
         };
         inventoryInfos = orderingName.sortedCopy(inventoryInfos);

@@ -79,6 +79,7 @@
 <script language="javascript" type="text/javascript" src="../js/myproject.js"></script>
 <script>
     $(function () {
+
         $("input").inputEve({
             cls: '.header',
             clearVal: '.close'
@@ -172,14 +173,14 @@
                 }
             });
 
-            $("#register-password-div").on("click","#register-password-submit",function () {
+            $("#register-password-div").on("click", "#register-password-submit", function () {
                 var password = $("#password").val();
-                if(password.length < 1){
+                if (password.length < 1) {
                     alert("请输入密码!!");
                     return;
                 }
                 var passwordCheck = $("#password-check").val();
-                if(passwordCheck.length < 1){
+                if (passwordCheck.length < 1) {
                     alert("请输入确认密码!!");
                     return;
                 }
@@ -192,23 +193,25 @@
                     data: {
                         "telephone": telphone,
                         "password": password,
-                        "regOrigin":'TELEPHONE'
+                        "regOrigin": 'TELEPHONE'
                     },
                     success: function (result) {
                         if (200 === result.code) {
-                           alert("注册成功!!");
+                            alert("注册成功!!");
                         } else {
                             alert(result.msg);
                         }
                     }
+                })
+
+
             })
-            
+
 
         })
 
 
     })
-
 
     //验证按倒计时
     var wait = 60;
