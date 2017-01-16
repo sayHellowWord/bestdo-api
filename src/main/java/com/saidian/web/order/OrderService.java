@@ -46,7 +46,6 @@ public class OrderService {
      * @throws Exception
      */
     public ResultBean orderLists(String status, String project_no, String cid, String uid, int page, int pagesize) throws Exception {
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", status);
         jsonObject.put("project_no", project_no);
@@ -54,23 +53,17 @@ public class OrderService {
         jsonObject.put("uid", uid);
         jsonObject.put("page", page);
         jsonObject.put("pagesize", pagesize);
-
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_LISTS, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-
         ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             JSONObject dataJsonObject = new JSONObject(resultBean.getData());
-
             resultBean.setPage(dataJsonObject.getInt("page"));
             resultBean.setPageSize(dataJsonObject.getInt("pagesize"));
             resultBean.setTotal(dataJsonObject.getInt("total"));
-
           /*  resultBean.setTotalPage(dataJsonObject.getInt("totalPage"));*/
-
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println(resultBean.getData());
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-
 
         }
         return resultBean;

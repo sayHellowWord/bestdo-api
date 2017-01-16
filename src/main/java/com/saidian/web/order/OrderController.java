@@ -160,9 +160,7 @@ public class OrderController {
 
     @RequestMapping(value = "test")
     public ResultBean accountRegister() throws Exception {
-
         JSONArray items = new JSONArray();
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_price_id", "167");
         jsonObject.put("order_money", "5600");
@@ -172,24 +170,24 @@ public class OrderController {
         jsonObject.put("play_person_name", service_id);
         jsonObject.put("start_hour", service_id);
         jsonObject.put("end_hour", service_id);*/
-
         items.put(jsonObject);
-
         ResultBean resultBean = createOrderService.createFitnessOrder("77v", 7, "0h1170105151026m47",
                 15, 0, "",
                 "107", "10200031000009", "2017-01-08", "", "0",
                 "15810045436", "",
                 "", items.toString(), "", "5600", 0, "5600");
-
         //   return orderService.orderLists("","77v","","0h1170105151026m47",1,20);
-
         //  return orderService.orderCancel("", "0h1170105151026m47");
-
         //    return orderService.orderUnsubscribe("", "0h1170105151026m47","");
-
-
         return orderService.orderDetail("", "0h1170105151026m47");
-
     }
+
+    @RequestMapping(value = "/orderLists")
+    @ResponseBody
+    public ResultBean orderLists(String status, String project_no, String cid, String uid, Integer page, Integer pagesize) throws Exception {
+        ResultBean resultBean = orderService.orderLists("", "77v", "", "0h1170105151026m47", null == page ? 1 : page, null == pagesize ? 10 : pagesize);
+        return resultBean;
+    }
+
 
 }
