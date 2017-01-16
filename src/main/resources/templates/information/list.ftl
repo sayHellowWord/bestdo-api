@@ -22,7 +22,6 @@
                 <p class="font17">体育信息</p>
             </div>
         </div>
-
     </div>
 </div>
 </div>
@@ -30,7 +29,7 @@
 <!--体测列表-->
 <div class="wrapper">
     <div class="bodylist">
-        <ul class="list2 list3">
+        <ul id="list" class="list2 list3">
 
         </ul>
     </div>
@@ -48,7 +47,7 @@
     function search(page, rows) {
         $.ajax({
             type: "POST",
-            url: "/cms/match/list/yc",
+            url: "/cms/information/list/cms",
             data: {
                 "page": page,
                 "rows": rows
@@ -82,9 +81,9 @@
     {{#each this}}
     <li class="box">
         <div class="bodyimg">
-            <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}">
+            <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
         </div>
-        <a href="/cms/match/detail?id={{id}}">
+        <a href="/cms/information//toDetail?id={{id}}">
             <div class="bodydetail boxflex">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address font12">

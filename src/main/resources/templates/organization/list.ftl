@@ -58,21 +58,7 @@
     <!--赛事列表-->
     <div class="venueslist">
         <ul id="list" class="list">
-            <#--<li class="box vip">
-                <div class="venuesimg"><img src="images/2.png"></div>
-                <div class="venuesdetial boxflex">
-                    <h2 class="font16">蓝岛大厦健身所</h2>
-                    <div class="address add3 font12">
-                        <span class="p">组织性质：民间组织课程时间：1月1日-1月3日课程时间：1月1日-1月3日</span>
-                    </div>
-                    <div class="address add3 font12">
-                        <span class="p">最新简介：直门西直门西直门西直门西直直门西直门西直门西直门西直</span>
-                    </div>
-                    <div class="address add3 font12">
-                        <span class="p">最新动态：2015-10-10课程时间：1月1日-1月3日课程时间：1月1日-1月3日</span>
-                    </div>
-                </div>
-            </li>-->
+
         </ul>
 
     </div>
@@ -144,6 +130,7 @@
 
             area = $('.nearby .on').data('value');
             order = $('.sort .on').data('value');
+            $("#list").html('');
             search(area, order, 1, 15);
 
             //scope.district = $(this).attr('data-tag');
@@ -175,6 +162,7 @@
 
             area = $('.nearby .on').data('value');
             order = $('.sort .on').data('value');
+            $("#list").html('');
             search(area, order, 1, 15);
 
             //scope.district = $(this).attr('data-tag');

@@ -143,6 +143,7 @@ $(function(){
 
             area = $('.nearby .on').data('value');
             order = $('.sort .on').data('value');
+            $("#list").html('');
             search(area, order, 1, 15);
 
 			//scope.district = $(this).attr('data-tag');
@@ -171,6 +172,7 @@ $(function(){
 
             area = $('.nearby .on').data('value');
             order = $('.sort .on').data('value');
+            $("#list").html('');
             search(area, order, 1, 15);
 
 			//scope.district = $(this).attr('data-tag');
