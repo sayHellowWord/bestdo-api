@@ -59,7 +59,12 @@
 
 <script id="priceAndInventorySummaryCommon-template" type="text/x-handlebars-template">
     {{#each this}}
-        <span  {{#if inventory_summaray}} class="on"  {{/if}}><a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&cid={{cid}}&day={{priceSummaray.day}}">
+        <span  {{#if inventory_summaray}} class="on"  {{/if}}>
+        {{#if inventory_summaray}}
+        <a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&cid={{cid}}&day={{priceSummaray.day}}">
+        {{else}}
+        <a href="javascript:void(0)">
+        {{/if}}
 					<div class="tit  font14">{{formatDay}}<i>{{week}}</i></div>
                     {{#if inventory_summaray}}
                         <div class="price font13">

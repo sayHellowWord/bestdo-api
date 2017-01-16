@@ -50,6 +50,10 @@ public class BTiemService {
     private static String MER_ONE_DAY_MER_ITEM_PRICE = "item/getOneDayMerItemPrice";
 
 
+    //根据商品ID及卡种ID获取默认价格ID
+    private static String PROJECT_MER_PRICE_ID = "project/getMerPriceId";
+
+
     /**
      * 根据卡种id 获取商品信息（运动类型）
      *
@@ -364,37 +368,52 @@ public class BTiemService {
                 PriceAndInventorySummaryCommon priceAndInventorySummaryCommon = new PriceAndInventorySummaryCommon();
 
                 priceAndInventorySummaryCommon.setInventory_summaray(json.getInt("inventory_summaray"));
-
-                JSONObject priceSummarayJSONObject = json.getJSONObject("price_summaray");
-                PriceSummaray priceSummaray = null;
-                try {
-                    priceSummaray = objectMapper.readValue(priceSummarayJSONObject.toString(), PriceSummaray.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                DateTime dateTime = null;
+                if (json.has("price_summaray") && json.optJSONObject("price_summaray") != null) {
+                    JSONObject priceSummarayJSONObject = json.getJSONObject("price_summaray");
+                    PriceSummaray priceSummaray = null;
+                    try {
+                        priceSummaray = objectMapper.readValue(priceSummarayJSONObject.toString(), PriceSummaray.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //日期处理
+               /*     DateTime todayDateTime = new DateTime();
+                    String today = todayDateTime.toString("yyyy-MM-dd");
+                    dateTime = new DateTime(priceSummaray.getDay());
+                    if (today.equals(priceSummaray.getDay())) {
+                        priceAndInventorySummaryCommon.setWeek("今日");
+                    } else {
+                        priceAndInventorySummaryCommon.setWeek(dateTime.toString("EE", Locale.CHINESE));
+                    }
+                    priceAndInventorySummaryCommon.setFormatDay(dateTime.toString("MM月dd日"));*/
+                    priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
                 }
                 //日期处理
                 DateTime todayDateTime = new DateTime();
                 String today = todayDateTime.toString("yyyy-MM-dd");
-                DateTime dateTime = new DateTime(priceSummaray.getDay());
-                if (today.equals(priceSummaray.getDay())) {
+                dateTime = new DateTime(key);
+                if (today.equals(key)) {
                     priceAndInventorySummaryCommon.setWeek("今日");
                 } else {
                     priceAndInventorySummaryCommon.setWeek(dateTime.toString("EE", Locale.CHINESE));
                 }
                 priceAndInventorySummaryCommon.setFormatDay(dateTime.toString("MM月dd日"));
 
-                priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
                 priceAndInventorySummaryCommon.setMer_item_id(mer_item_id);
                 priceAndInventorySummaryCommon.setMer_price_id(mer_price_id);
                 priceAndInventorySummaryCommon.setCid(cid);
-
                 priceAndInventorySummaryCommons.add(priceAndInventorySummaryCommon);
             }
 
             //排序
             Ordering<PriceAndInventorySummaryCommon> ordering = new Ordering<PriceAndInventorySummaryCommon>() {
                 public int compare(PriceAndInventorySummaryCommon left, PriceAndInventorySummaryCommon right) {
-                    return left.getPriceSummaray().getDay().compareTo(right.getPriceSummaray().getDay());
+                  /*  if (left.getPriceSummaray() != null && right.getPriceSummaray() != null) {
+                        return left.getPriceSummaray().getDay().compareTo(right.getPriceSummaray().getDay());
+                    }
+                    return 0;*/
+                    return left.getFormatDay().compareTo(right.getFormatDay());
                 }
             };
             priceAndInventorySummaryCommons = ordering.sortedCopy(priceAndInventorySummaryCommons);
@@ -540,9 +559,6 @@ public class BTiemService {
                 JSONObject inventoryJSONObject = dataJSONObject.getJSONObject("inventory_info");
                 List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
 
-                //todo 方便测试
-                double priceTest = 1;
-
                 for (String key : inventoryJSONObject.keySet()) {
                     JSONObject inventoryInfoJson = inventoryJSONObject.getJSONObject(key);
                     OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.new InventoryInfo();
@@ -551,35 +567,53 @@ public class BTiemService {
                     inventoryInfo.setName(inventoryInfoJson.getString("name"));
                     inventoryInfo.setStatus(inventoryInfoJson.getString("status"));
 
-                    JSONObject hourJSONObject = inventoryInfoJson.getJSONObject("hour");
+
                     List<OneDayItemPrice.HourInfo> hours = new ArrayList<OneDayItemPrice.HourInfo>();
-                    for (String houorKey : hourJSONObject.keySet()) {
-                        JSONObject hourJSON = hourJSONObject.getJSONObject(houorKey);
-                        OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
-                        Integer hour = hourJSON.getInt("hour");
-                        hourInfo.setHour(hour);
-                        int status = hourJSON.getInt("status");
-                        hourInfo.setStatus(status);
-                        double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
+                    if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONObject("inventoryInfoJson") != null) {
+                        JSONObject hourJSONObject = inventoryInfoJson.getJSONObject("hour");
 
-                        //todo 方便测试
-                        price = priceTest;
-
-                        hourInfo.setPrepay_price(price);
-                        if (1 == status && price > 2) {
-                            hourInfo.setCanbook(1);
-                        } else {
-                            hourInfo.setCanbook(0);
+                        //解析每个小时单元格的 状态是否可预订 以及赋予价格信息
+                        for (String houorKey : hourJSONObject.keySet()) {
+                            JSONObject hourJSON = hourJSONObject.getJSONObject(houorKey);
+                            OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
+                            Integer hour = hourJSON.getInt("hour");
+                            hourInfo.setHour(hour);
+                            int status = hourJSON.getInt("status");
+                            hourInfo.setStatus(status);
+                            double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
+                            hourInfo.setPrepay_price(price);
+                            if (1 == status && price > 2) {
+                                hourInfo.setCanbook(1);
+                            } else {
+                                hourInfo.setCanbook(0);
+                            }
+                            PriceInfo priceInfo = timePriceInfo.get(hour);
+                            hourInfo.setPriceInfo(priceInfo);
+                            hours.add(hourInfo);
                         }
-
-                        PriceInfo priceInfo = timePriceInfo.get(hour);
-                        hourInfo.setPriceInfo(priceInfo);
-
-                        hours.add(hourInfo);
+                    } else if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONArray("inventoryInfoJson") != null) {
+                        JSONArray hourJSONObject = inventoryInfoJson.getJSONArray("hour");
+                        //解析每个小时单元格的 状态是否可预订 以及赋予价格信息
+                        int length = hourJSONObject.length();
+                        for (int i = 0; i < length; i++) {
+                            JSONObject hourJSON = hourJSONObject.getJSONObject(i);
+                            OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
+                            Integer hour = hourJSON.getInt("hour");
+                            hourInfo.setHour(hour);
+                            int status = hourJSON.getInt("status");
+                            hourInfo.setStatus(status);
+                            double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
+                            hourInfo.setPrepay_price(price);
+                            if (1 == status && price > 2) {
+                                hourInfo.setCanbook(1);
+                            } else {
+                                hourInfo.setCanbook(0);
+                            }
+                            PriceInfo priceInfo = timePriceInfo.get(hour);
+                            hourInfo.setPriceInfo(priceInfo);
+                            hours.add(hourInfo);
+                        }
                     }
-                    //todo 方便测试
-                    priceTest += 1;
-
                     inventoryInfo.setHourInfos(hours);
                     inventoryInfos.add(inventoryInfo);
                 }
@@ -591,5 +625,24 @@ public class BTiemService {
         }
         return resultBean;
     }
+
+
+    /**
+     * 根据商品ID及卡种ID获取默认价格ID
+     *
+     * @param merid
+     * @param card_type_id
+     * @return
+     */
+    public ResultBean getMerPriceId(String merid, String card_type_id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("merid", merid);
+        jsonObject.put("card_type_id", card_type_id);
+
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + PROJECT_MER_PRICE_ID, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean resultBean = HttpResultUtil.result2Bean(result);
+        return resultBean;
+    }
+
 
 }

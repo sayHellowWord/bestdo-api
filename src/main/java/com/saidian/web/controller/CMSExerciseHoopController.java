@@ -1,6 +1,7 @@
 package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.saidian.bean.Result;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.TenMinSite;
@@ -53,7 +54,7 @@ public class CMSExerciseHoopController {
     @RequestMapping("/list/yc")
     @ResponseBody
     public Result<TenMinSite> ycExerciseHoopList(String keyword, Integer page, Integer rows) throws Exception {
-        String result = restClient.excrciseHoodList(keyword, null == page ? 1 : page, null == rows ? 10 : rows);
+        String result = restClient.excrciseHoodList(Strings.isNullOrEmpty(keyword) ? "" : keyword, null == page ? 1 : page, null == rows ? 10 : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<TenMinSite> tenMinSiteResult = null;
         try {

@@ -83,10 +83,14 @@ public class RESTClient {
      */
     public String ycTrainhList(String name, String project, String district, String signState, String shelves,
                                String state, Integer page, Integer rows, String time_sort) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listTrainWX?name={name}&project={project}" +
+     /*   String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listTrainWX?name={name}&project={project}" +
                         "&district={district}&signState={signState}&shelves={shelves}&state={state}&page={page}" +
                         "&rows={rows}&time_sort={time_sort}",
-                null, String.class, name, project, district, signState, shelves, state, page, rows, time_sort);
+                null, String.class, name, project, district, signState, shelves, state, page, rows, time_sort);*/
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listTrainWX?district={district}&page={page}" +
+                        "&rows={rows}&time_sort={time_sort}",
+                null, String.class, district, page, rows, time_sort);
+
         return result;
     }
 
@@ -168,7 +172,7 @@ public class RESTClient {
 //                        "&page={page}&rows={rows}&startDate={startDate}&endDate={endDate}",
 //                null, String.class, title, label, state, page, rows, startDate, endDate);
         String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?page={page}&rows={rows}",
-                null, String.class,page, rows);
+                null, String.class, page, rows);
         return result;
     }
 

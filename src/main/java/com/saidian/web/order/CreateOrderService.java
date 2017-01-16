@@ -62,26 +62,31 @@ public class CreateOrderService {
 
     //网球订单
     public ResultBean createTennisOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
-                                           String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                           String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                        String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
+                                        String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_TENNIS_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        return HttpResultUtil.result2Bean(result);
+        try {
+            ResultBean resultBean =  HttpResultUtil.result2Bean(result);
+            return  resultBean;
+        } catch (Exception e){
+            e.printStackTrace();
+            ResultBean resultBean = new ResultBean();
+            resultBean.setCode(-1);
+            resultBean.setMsg(result);
+            return resultBean;
+        }
+
     }
 
     //足球订单
     public ResultBean createFootballOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
-                                        String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                        String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                          String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
+                                          String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_FOOTBALL_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);
     }
-
-
-
-
-
 
 
     /**

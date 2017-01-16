@@ -112,16 +112,26 @@ public class OrderController {
          uid = jsonObject.getString("uid");
 */
         String uid = "0h1170114160444ihv";
-
         JSONArray items = new JSONArray();
+        order_money = "1";
+//        mer_item_id=10205221000000&mer_price_id=2123&book_day=2017-01-17&cid=109
+        mer_price_id = "2123";
+        book_phone = "15810045436";
+        book_day = "2017-01-17";
+        cid = 1020522;
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_price_id", mer_price_id);
         jsonObject.put("order_money", order_money);
         jsonObject.put("reduce_money", 0);
         jsonObject.put("pay_money", order_money);
-
         items.put(jsonObject);
+        ResultBean resultBean1 = createOrderService.createSwimOrder(HttpParams.serviceId,
+                HttpParams.ORDER_SOURCE, uid, Integer.parseInt(HttpParams.cardId), 0, "",
+                cid.toString(), mer_item_id, book_day, "", "0", book_phone,
+                "", "", items.toString(), "1", order_money, 0, order_money);
+
+        System.out.println(resultBean1);
 
 
         switch (cid) {
@@ -130,11 +140,11 @@ public class OrderController {
             case 109:
 
                 //todo card_id
-            /*    ResultBean resultBean = createOrderService.createSwimOrder(HttpParams.serviceId,
+                ResultBean resultBean = createOrderService.createSwimOrder(HttpParams.serviceId,
                         HttpParams.ORDER_SOURCE, uid, Integer.parseInt(HttpParams.cardId), 0, "",
                         cid.toString(), mer_item_id, book_day, "", "0", book_phone,
                         "", "", items.toString(), "1", order_money, 0, order_money);
-*/
+
               /*  ResultBean resultBean = createOrderService.createSwimOrder(HttpParams.serviceId,
                         HttpParams.ORDER_SOURCE, uid,15, 0, "",
                         cid.toString(), mer_item_id, book_day, "", "0", book_phone,
@@ -189,5 +199,35 @@ public class OrderController {
         return resultBean;
     }
 
+    @RequestMapping(value = "ordertest")
+    public void test() throws Exception {
 
+      /*  JSONArray items = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_price_id", "167");
+        jsonObject.put("order_money", "5600");
+        jsonObject.put("reduce_money", 0);
+        jsonObject.put("pay_money", "5600");
+        items.put(jsonObject);
+        ResultBean resultBean = createOrderService.createFitnessOrder("77v", 7, "0h1170114160444ihv",
+                15, 0, "",
+                "107", "10200031000009", "2017-01-08", "", "0",
+                "15810045436", "",
+                "", items.toString(), "", "5600", 0, "5600");*/
+
+
+      JSONArray items = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mer_price_id", "2117");
+        jsonObject.put("order_money", "5600");
+        jsonObject.put("reduce_money", 0);
+        jsonObject.put("pay_money", "5600");
+        items.put(jsonObject);
+        ResultBean resultBean = createOrderService.createTennisOrder(HttpParams.serviceId, 7, "0h1170114160444ihv",
+                423, 0,
+                "", "1020520", "10205201000000", "2017-01-18", "",
+                "0", "15810045436", "", "", items.toString(), "1",
+                "5600", 0, "5600");
+        System.out.println(resultBean);
+    }
 }

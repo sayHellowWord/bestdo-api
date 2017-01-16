@@ -49,13 +49,13 @@
                 <li class="moreinfo box font14">
                     <span class="tit">报名时间：</span>
                     <div class="cont boxflex">
-                       ${detail.startDate}- ${detail.endDate}
+                    ${detail.startDate}- ${detail.endDate}
                     </div>
                 </li>
                 <li class="moreinfo box font14">
                     <span class="tit">比赛时间：</span>
                     <div class="cont boxflex">
-                       ${detail.matchDate}
+                    ${detail.matchDate}
                     </div>
                 </li>
             </ul>
@@ -64,20 +64,22 @@
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">赛事动态</h3>
             <div class="scrolldateCont box font12">
+            <#if dynamic?exists>
                 <#list dynamic as dynamic>
                     <span>
-                        <a href="/cms/match/dynamicDetail?id=${dynamic.id}&matchName=${detail.name}" class="sai">
-                            <div class="box">
-                                <img src="${dynamic.thumbnail}">
-                                <div>
-                                    <h2 class="font16">${dynamic.title}</h2>
-                                    <P class="font12 now">${dynamic.createTime}</P>
-                                    <P class="font12">${dynamic.eventContext}</P>
+                            <a href="/cms/match/dynamicDetail?id=${dynamic.id}&matchName=${detail.name}" class="sai">
+                                <div class="box">
+                                    <img src="${dynamic.thumbnail}">
+                                    <div>
+                                        <h2 class="font16">${dynamic.title}</h2>
+                                        <P class="font12 now">${dynamic.createTime}</P>
+                                        <P class="font12">${dynamic.eventContext}</P>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </span>
+                            </a>
+                        </span>
                 </#list>
+            </#if>
             </div>
         </div>
         <div class="venuesInfo">

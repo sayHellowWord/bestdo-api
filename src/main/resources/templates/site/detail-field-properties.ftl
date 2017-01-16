@@ -41,7 +41,7 @@
             <div><span>场地类型：</span><span><#if detail.venue.venue_type?number == 1>普通<#elseif  detail.venue.venue_type == '2'>品牌<#elseif  detail.venue.venue_type == '3'>高校<#elseif  detail.venue.venue_type == '4'>专业</#if></span></div>
             <div><span>泳道数量：</span><span>${detail.venue.lanes_number}</span></div>
             <div><span>泳道长度：</span><span><#if detail.venue.lanes_length?number == 1 >25米<#elseif detail.venue.lanes_length?number == 2 >50米<#elseif detail.venue.lanes_length?number == 3 >异形<#else>无</#if></span></div>
-            <#if detail.venue.profundal_zone?number gt 0 || detail.venue.shallow_zone?number gt 0><div><span>泳池深度(深/浅)：</span><span>${ detail.venue.profundal_zone /  detail.venue.shallow_zone}</span></div></#if>
+            <#if detail.venue.profundal_zone?number gt 0 || detail.venue.shallow_zone?number gt 0><div><span>泳池深度(深/浅)：</span><span>${ detail.venue.profundal_zone}/ ${ detail.venue.shallow_zone}</span></div></#if>
             <#if detail.venue.children_zone?number == 1><div><span>儿童区：</span><span>有</span></div></#if>
             <#if detail.venue.diving_platform?number == 1><div><span>跳台：</span><span>有</span></div></#if>
             <#if detail.venue.fitness_facility?number == 1><div><span>健身实施：</span><span>有</span></div></#if>

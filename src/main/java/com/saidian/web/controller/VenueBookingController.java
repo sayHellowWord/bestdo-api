@@ -56,14 +56,20 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取运动类型出错");
             e.printStackTrace();
         }
-        //todo 运动类型为空 是否默认
-        List<GoodsType> goodsTypes = goodsResultBean.getLists();
+        List<GoodsType> goodsTypes = null;
+        if (null != goodsResultBean && null != goodsResultBean.getLists()) {
+            goodsTypes = goodsResultBean.getLists();
+            for (GoodsType goodsType : goodsTypes) {
+
+
+            }
+        }
         //行政区
         ResultBean regionsResultBean = null;
         try {
             regionsResultBean = publicService.regionGetChildren(HttpParams.cityId);
         } catch (Exception e) {
-            logger.error(LOG_PRE + "获取运动类型出错");
+            logger.error(LOG_PRE + "获取行政区出错");
             e.printStackTrace();
         }
         //获取经纬度
@@ -74,6 +80,8 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取距离出错出错");
             e.printStackTrace();
         }
+
+
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         map.addAttribute("lng", lntAndLatResultBean);
@@ -102,24 +110,20 @@ public class VenueBookingController {
      */
     @ResponseBody
     @RequestMapping(value = "search")
-    public Object search(String merid, String mer_item_ids, String mer_price_id, String city, String q, String card_type_id,
+    public Object search(String merid, String mer_item_ids, String city, String q, String card_type_id,
                          String radius, String longitude, String latitude, String sort, String price_sort, Integer page,
                          Integer pagesize, Integer district) throws Exception {
-      /*  ResultBean goodsDetailResultBean = bTiemService.getMerItemList(HttpParams.merid, "", "", HttpParams.cityId, "", HttpParams.cardId,
-                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
 
-        ResultBean goodsDetailResultBean1 = bTiemService.getMerItemList("", "", "", HttpParams.cityId, "", HttpParams.cardId,
-                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+        //根据merid获取priceid
+        ResultBean resultBean = bTiemService.getMerPriceId(merid, HttpParams.cardId);
+        String mer_price_id = "";
+        if (200 == resultBean.getCode()) {
+            mer_price_id = new JSONObject(resultBean.getData().toString()).getString("price_id");
+        }
 
-        ResultBean goodsDetailResultBean2 = bTiemService.getMerItemList(HttpParams.merid, "", "", "", "", HttpParams.cardId,
-                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
-
-        ResultBean goodsDetailResultBean3 = bTiemService.getMerItemList(HttpParams.merid, "", "", HttpParams.cityId, "", "",
-                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
-*/
-
-        ResultBean goodsDetailResultBean = bTiemService.getMerItemList("", "", "", "", "", "",
-                "", "", "", "", "", null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, 0);
+        ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, "", mer_price_id,
+                HttpParams.cityId, "", "", "", "", "", "", "",
+                null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, null == district ? 0 : district);
 
         //讲接口返回jsondata 置空
         goodsDetailResultBean.setData(StringUtils.EMPTY);
@@ -196,10 +200,10 @@ public class VenueBookingController {
      * @return
      */
     @RequestMapping(value = "toOneDayMerItemPrice")
-    public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id,String cid, String day, ModelMap modelMap) throws Exception {
+    public String toOneDayMerItemPrice(String mer_item_id, String mer_price_id, String cid, String day, ModelMap modelMap) throws Exception {
 
         //获取八天价格汇总以及库存汇总(乒羽篮网）
-        ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id,cid);
+        ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id, cid);
 
         modelMap.addAttribute("mer_item_id", mer_item_id);
         modelMap.addAttribute("mer_price_id", mer_price_id);
@@ -285,7 +289,12 @@ public class VenueBookingController {
                 rows.set(i, row);
             }
         }
-        return ImmutableBiMap.of("timeList", timeList, "nameList", nameList, "rows", rows);
+        Map<String, List> sMap = new HashMap<String, List>();
+        sMap.put("timeList", timeList);
+        sMap.put("nameList", nameList);
+        sMap.put("rows", rows);
+        return sMap;
+        // return ImmutableBiMap.of("timeList", timeList, "nameList", nameList, "rows", rows);
     }
 
 

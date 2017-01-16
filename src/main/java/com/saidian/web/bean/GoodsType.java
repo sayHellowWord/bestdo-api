@@ -19,6 +19,9 @@ public class GoodsType {
 
     private String imgurl;
 
+    //商品明细ids(多个用逗号分隔)
+    private String mer_item_ids;
+
     @Override
     public String toString() {
         return "Goods{" +
@@ -86,5 +89,13 @@ public class GoodsType {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+    public String getMer_item_ids() {
+        return mer_item_ids;
+    }
+
+    public void setMer_item_ids(String mer_item_ids) {
+        this.mer_item_ids = mer_item_ids;
     }
 }

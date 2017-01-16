@@ -83,8 +83,10 @@ public class CMSTrainController {
     @RequestMapping("/list/yc")
     @ResponseBody
     public Result ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows, String time_sort) throws Exception {
-        String resultStr = restClient.ycTrainhList(name, project, district, signState, shelves, state,
+
+        String resultStr = restClient.ycTrainhList(name, project, Strings.isNullOrEmpty(district) ? "" : district, signState, shelves, state,
                 null == page ? 1 : page, null == rows ? 10 : rows, Strings.isNullOrEmpty(time_sort) ? "asc" : time_sort);
+
         Result result = new Result();
         List<Train> trains = null;
         try {

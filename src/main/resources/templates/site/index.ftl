@@ -39,7 +39,7 @@
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on">全部</a>
+        <a href="javascript:void(0)" class="on" data-merid="">全部</a>
     <#if goodsTypes?? >
         <#list goodsTypes as goodsType>
             <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.name}</a>
@@ -51,19 +51,19 @@
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="administrative-area" class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on">全部区域</a>
-        <#if regions??>
-            <#list regions as regions>
-                <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
-            </#list>
-        </#if>
+        <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
+    <#if regions??>
+        <#list regions as regions>
+            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+        </#list>
+    </#if>
     </div>
 </div>
 <!--距离-->
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="distance" class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on">不限距离</a>
+        <a href="javascript:void(0)" data-value="" class="on">不限距离</a>
         <a href="javascript:void(0)" data-value="">距离最近</a>
         <a href="javascript:void(0)">优惠最多</a>
         <a href="javascript:void(0)" data-value="5000">附近5km</a>
@@ -123,20 +123,25 @@
             typing: "slidemenu"
         });
 
-        //筛选列表点击
-        $(".slidemenu").on("click", "#sport-type > a,#administrative-area > a,#distance > a", function () {
-            alert($("#sport-type").find(".on").data("merid"));
-            var merid = $("#sport-type").find(".on").data("merid");
-            var radius = $("#distance").find(".on").data("value");
-            var longitude;
-            var latitude;
-            var sort;
-            var price_sort;
-            var page = 1;
-            var pagesize = 10;
-            var district = $("#administrative-area").find(".on").data("value");
-            $("#googDetail-list").html('');
-            venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+        //筛选列表点击--运动类型
+        $(".slidemenu").on("click", "#sport-type > a", function () {
+            $("#sport-type a").removeClass("on");
+            $(this).addClass("on");
+            clickSeach();
+        });
+
+        //筛选列表点击--行政区
+        $(".slidemenu").on("click", "#administrative-area > a", function () {
+            $("#administrative-area a").removeClass("on");
+            $(this).addClass("on");
+            clickSeach();
+        });
+
+        //筛选列表点击--排序
+        $(".slidemenu").on("click", "#distance > a", function () {
+            $("#distance a").removeClass("on");
+            $(this).addClass("on");
+            clickSeach();
         });
 
         //文章详情点击
@@ -144,10 +149,27 @@
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
             var cid = $(this).data("cid");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id+"&cid="+cid;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid;
         });
 
+
     });
+
+
+    //筛选条件触发
+    function clickSeach() {
+        var merid = $("#sport-type").find(".on").data("merid");
+        var radius = $("#distance").find(".on").data("value");
+        var longitude;
+        var latitude;
+        var sort;
+        var price_sort;
+        var page = 1;
+        var pagesize = 10;
+        var district = $("#administrative-area").find(".on").data("value");
+        $("#googDetail-list").html('');
+        venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+    }
 
 
     //场馆列表搜索
@@ -195,7 +217,7 @@
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="price font12">
-                <span class="font18">￥{{min_price}}</span>起<i>门市价￥{{price}}</i>
+                <span class="font18">￥{{price}}</span>
             </div>
             <div class="address font12">
                 <span class="d">{{geodist}}</span>

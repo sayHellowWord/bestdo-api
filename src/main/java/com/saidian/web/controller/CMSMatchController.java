@@ -1,14 +1,12 @@
 package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.saidian.bean.Result;
-import com.saidian.bean.ResultBean;
-import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.Match;
 import com.saidian.web.bean.cms.MatchDynamic;
 import com.saidian.web.platform.PublicService;
-import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ public class CMSMatchController {
     @Autowired
     PublicService publicService;//公共服务
 
-    private  ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping("/list")
     public String matchList(ModelMap modelMap) {
@@ -55,48 +53,54 @@ public class CMSMatchController {
 
     /**
      * 体育赛事详情
+     *
      * @param id
      * @param modelMap
      * @return
      */
     @RequestMapping("/detail")
-    public String detail(String id,ModelMap modelMap) {
+    public String detail(String id, ModelMap modelMap) {
         String result = restClient.matchDetail(id);
         Result<Match> matchDetailResult = null;
         try {
             matchDetailResult = objectMapper.readValue(result, Result.class);
+            modelMap.addAttribute("detail", matchDetailResult.getData());
         } catch (IOException e) {
+            logger.error(LOG_PRE + "获取赛事详情出错");
             e.printStackTrace();
         }
 
-        result = restClient.matchDynamicList(id,1,15);
+        result = restClient.matchDynamicList(id, 1, 15);
         Result<MatchDynamic> matchDynamicResult = null;
         try {
             matchDynamicResult = objectMapper.readValue(result, Result.class);
+            modelMap.addAttribute("dynamic", matchDynamicResult.getData());
         } catch (IOException e) {
+            logger.error(LOG_PRE + "获取赛事动态列表出错");
             e.printStackTrace();
         }
-        modelMap.addAttribute("detail",matchDetailResult.getData());
-        modelMap.addAttribute("dynamic",matchDynamicResult.getData());
+
         return "/match/detail";
     }
 
     @RequestMapping("/dynamicDetail")
-    public String dynamicDetail(String id,String matchName,ModelMap modelMap) {
-        String  result = restClient.matchDynamicDetail(id);
+    public String dynamicDetail(String id, String matchName, ModelMap modelMap) {
+        String result = restClient.matchDynamicDetail(id);
         Result<MatchDynamic> matchDynamicResult = null;
         try {
             matchDynamicResult = objectMapper.readValue(result, Result.class);
         } catch (IOException e) {
+            logger.error(LOG_PRE + "获取赛事动态出错");
             e.printStackTrace();
         }
-        modelMap.addAttribute("dynamic",matchDynamicResult.getData());
-        modelMap.addAttribute("matchName",matchName);
+        modelMap.addAttribute("dynamic", matchDynamicResult.getData());
+        modelMap.addAttribute("matchName", matchName);
         return "/match/dynamicdetail";
     }
 
     /**
      * 体育赛事列表 接口
+     *
      * @param keyword
      * @param page
      * @param rows
@@ -106,12 +110,13 @@ public class CMSMatchController {
     @RequestMapping("/list/yc")
     @ResponseBody
     public Result<Match> ycMatchList(String keyword, Integer page, Integer rows) throws Exception {
-        String result = restClient.matchList(keyword, null == page ? 1 : page, null == rows ? 10 : rows);
+        String result = restClient.matchList(Strings.isNullOrEmpty(keyword) ? "" : keyword, null == page ? 1 : page, null == rows ? 10 : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<Match> matchResult = null;
         try {
             matchResult = objectMapper.readValue(result, Result.class);
         } catch (IOException e) {
+            logger.error(LOG_PRE + "获取赛事列表出错");
             e.printStackTrace();
         }
         return matchResult;

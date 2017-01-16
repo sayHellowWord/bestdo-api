@@ -118,9 +118,9 @@
             <div class="venuesBookInfo boxflex2">
                 <div class="price box2">
                     {{#if destine}}
-                    {{#each priceInfos}}
-                    <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
-                    {{/each}}
+                        {{#each priceInfos}}
+                        <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
+                        {{/each}}
                     {{else}}
                     <div class="service box2"><p class="font12">不可预订</p></div>
                     {{/if}}
