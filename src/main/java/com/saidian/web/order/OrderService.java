@@ -1,12 +1,17 @@
 package com.saidian.web.order;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
+import com.saidian.web.bean.order.OrderResult;
 import com.saidian.web.bean.siteinfo.BookDay;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * Created by Administrator on 2017/1/5.
@@ -24,7 +29,7 @@ public class OrderService {
 
     private static String ORDER_DETAIL = "order/detail";
 
-
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * @param status     status = -2 已退订
@@ -54,17 +59,36 @@ public class OrderService {
         jsonObject.put("page", page);
         jsonObject.put("pagesize", pagesize);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_LISTS, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        ResultBean resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
-            JSONObject dataJsonObject = new JSONObject(resultBean.getData());
-            resultBean.setPage(dataJsonObject.getInt("page"));
-            resultBean.setPageSize(dataJsonObject.getInt("pagesize"));
-            resultBean.setTotal(dataJsonObject.getInt("total"));
-          /*  resultBean.setTotalPage(dataJsonObject.getInt("totalPage"));*/
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            System.out.println(resultBean.getData());
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
+            OrderResult orderResult = null;
+            try {
+                objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
+                orderResult = objectMapper.readValue(resultBean.getData().toString(), OrderResult.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(orderResult);
+            /*JSONObject dataJson = new JSONObject(resultBean.getData().toString());
+            if (dataJson.has("orders") && dataJson.optJSONArray("orders") != null) {
+                JSONArray ordersJsonArr = dataJson.optJSONArray("orders");
+                List<Order> orderList = new ArrayList<Order>();
+                for (int i = 0; i < ordersJsonArr.length(); i++) {
+                    JSONObject orderJson = ordersJsonArr.getJSONObject(i);
+                    Order order = null;
+                    try {
+                        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
+                        order = objectMapper.readValue(orderJson.toString(), Order.class);
+                        orderList.add(order);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(orderList);
+                resultBean.setLists(orderList);
+            }*/
         }
         return resultBean;
     }
@@ -155,22 +179,31 @@ public class OrderService {
 
     }*/
 
-
+    /**
+     * 订单详情
+     * @param oid
+     * @param uid
+     * @return
+     * @throws Exception
+     */
     public ResultBean orderDetail(String oid, String uid) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("oid", oid);
         jsonObject.put("uid", uid);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        System.out.println(result);
-        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
-        System.out.println(resultBean.getMsg());
+        ResultBean<OrderResult> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
-            System.out.println(resultBean.getData());
+            OrderResult orderResult = null;
+            try {
+                objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
+                orderResult = objectMapper.readValue(resultBean.getData().toString(), OrderResult.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            resultBean.setObject(orderResult);
         }
         return resultBean;
     }
-
-
 
 
 }

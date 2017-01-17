@@ -110,6 +110,13 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.7</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+
         <!-- ============   工具 end  ============  -->
 
         <!-- ============   测试 begin  ============  -->

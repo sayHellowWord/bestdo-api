@@ -75,7 +75,8 @@ public class VenueBookingController {
         //获取经纬度
         ResultBean lntAndLatResultBean = null;
         try {
-            lntAndLatResultBean = publicService.getCityLngAndLat(HttpParams.cityId);
+          //  lntAndLatResultBean = publicService.getCityLngAndLat(HttpParams.cityId);
+            lntAndLatResultBean = publicService.getCityLngAndLat("52");
         } catch (Exception e) {
             logger.error(LOG_PRE + "获取距离出错出错");
             e.printStackTrace();
@@ -84,7 +85,8 @@ public class VenueBookingController {
 
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
-        map.addAttribute("lng", lntAndLatResultBean);
+       // map.addAttribute("lng", lntAndLatResultBean);
+        map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
         return "site/index";
     }
 

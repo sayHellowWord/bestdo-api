@@ -1,8 +1,11 @@
 package com.saidian.web.bean.siteinfo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 日期型价格信息
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PriceInfo {
 
     private String week;

@@ -536,6 +536,7 @@ public class BTiemService {
             //时间片价格 key时间起点 value prepay_price
             Map<Integer, Double> timePrice = new HashMap();
             Map<Integer, PriceInfo> timePriceInfo = new HashMap();
+
             //价格解析  >>>>>>> 填充timePrice>>>>>>填充Hour的price>>>> 判断是否可预订(有价格 状态为1)
             if (dataJSONObject.has("price_info") && dataJSONObject.optJSONObject("price_info") != null) {
                 JSONObject priceInfoJSONObject = dataJSONObject.getJSONObject("price_info");
@@ -550,7 +551,19 @@ public class BTiemService {
                         e.printStackTrace();
                     }
                     timePriceInfo.put(priceinfo.getInt("start_hour"), priceInfo);
-
+                }
+            }else if(dataJSONObject.has("price_info") && dataJSONObject.optJSONArray("price_info") != null){
+                JSONArray priceInfoJSONObject = dataJSONObject.getJSONArray("price_info");
+                for (int i = 0; i < priceInfoJSONObject.length(); i++) {
+                    JSONObject priceinfo = priceInfoJSONObject.getJSONObject(i);
+                    timePrice.put(priceinfo.getInt("start_hour"), priceinfo.getDouble("prepay_price"));
+                    PriceInfo priceInfo = null;
+                    try {
+                        priceInfo = objectMapper.readValue(priceinfo.toString(), PriceInfo.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    timePriceInfo.put(priceinfo.getInt("start_hour"), priceInfo);
                 }
             }
 
@@ -569,7 +582,7 @@ public class BTiemService {
 
 
                     List<OneDayItemPrice.HourInfo> hours = new ArrayList<OneDayItemPrice.HourInfo>();
-                    if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONObject("inventoryInfoJson") != null) {
+                    if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONObject("hour") != null) {
                         JSONObject hourJSONObject = inventoryInfoJson.getJSONObject("hour");
 
                         //解析每个小时单元格的 状态是否可预订 以及赋予价格信息
@@ -591,7 +604,7 @@ public class BTiemService {
                             hourInfo.setPriceInfo(priceInfo);
                             hours.add(hourInfo);
                         }
-                    } else if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONArray("inventoryInfoJson") != null) {
+                    } else if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONArray("hour") != null) {
                         JSONArray hourJSONObject = inventoryInfoJson.getJSONArray("hour");
                         //解析每个小时单元格的 状态是否可预订 以及赋予价格信息
                         int length = hourJSONObject.length();

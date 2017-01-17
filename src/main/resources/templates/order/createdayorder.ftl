@@ -126,7 +126,7 @@
                 return;
             }
 
-            var order_money = $("#pay-total").val().replace("￥", "");
+            var order_money = $("#pay-total").text().replace("￥", "");
 
             $.ajax({
                 type: "POST",
@@ -138,10 +138,13 @@
                     "mer_price_id": mer_price_id,
                     "book_day": book_day,
                     "book_phone": telphone,
-                    "order_money": order_money
+                    "order_money": order_money,
+                    "start_hour": ${priceInfo.start_hour},
+                    "end_hour": ${priceInfo.end_hour},
+                    "play_time": '${priceInfo.play_time!}'
                 },
                 success: function (result) {
-                    if (200 != result.code) {
+                    if (200 == result.code) {
                         alert("订单提交成功");
                         $("#choose-pay-type").show();
                     } else {
@@ -149,7 +152,7 @@
                     }
 
                     //todo 方便测试
-                    $("#choose-pay-type").show();
+                   // $("#choose-pay-type").show();
 
                 }
             });

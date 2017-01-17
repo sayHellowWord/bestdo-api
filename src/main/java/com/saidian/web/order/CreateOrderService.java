@@ -5,6 +5,7 @@ import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
 import com.saidian.web.bean.siteinfo.BookDay;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class CreateOrderService {
     //创建健身订单
     public ResultBean createFitnessOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
                                          String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                         String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                         String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         //  JSONObject data = new JSONObject("{\"service_id\":\"77v\",\"source\":7,\"uid\":\"0h1170105151026m47\",\"card_type_id\":15,\"card_id\":0,\"account_no\":\"\",\"cid\":\"108\",\"mer_item_id\":\"10200031000009\",\"book_day\":\"2017-01-08\",\"order_money\":5600,\"reduce_money\":0,\"other_money_name\":\"\",\"other_money\":0,\"pay_money\":5600,\"book_phone\":\"18210842622\",\"note\":\"\",\"create_staff_id\":0,\"items\":[{\"play_time\":\"22:00\",\"play_person_name\":\"\",\"start_hour\":\"22\",\"end_hour\":\"24\",\"piece_id\":\"\",\"mer_price_id\":\"1626\",\"order_money\":\"5600\",\"reduce_money\":0,\"pay_money\":\"5600\",\"is_rights\":0}]}");
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_FITNESS_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
@@ -43,18 +44,28 @@ public class CreateOrderService {
 
     //    创建游泳订单
     public ResultBean createSwimOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
-                                      String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                      String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                      String cid, String mer_item_id, String book_day, String other_money_name, String other_money,
+                                      String book_phone, String note, String create_staff_id, JSONArray items, String is_sendsms,
+                                      String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_SWIM_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        return HttpResultUtil.result2Bean(result);
+        try {
+            ResultBean resultBean = HttpResultUtil.result2Bean(result);
+            return resultBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultBean resultBean = new ResultBean();
+            resultBean.setCode(-1);
+            resultBean.setMsg(result);
+            return resultBean;
+        }
     }
 
 
     //羽毛球订单
     public ResultBean createBadmintonOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
                                            String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                           String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                           String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_BADMINTON_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);
@@ -63,13 +74,13 @@ public class CreateOrderService {
     //网球订单
     public ResultBean createTennisOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
                                         String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                        String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                        String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_TENNIS_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         try {
-            ResultBean resultBean =  HttpResultUtil.result2Bean(result);
-            return  resultBean;
-        } catch (Exception e){
+            ResultBean resultBean = HttpResultUtil.result2Bean(result);
+            return resultBean;
+        } catch (Exception e) {
             e.printStackTrace();
             ResultBean resultBean = new ResultBean();
             resultBean.setCode(-1);
@@ -82,7 +93,7 @@ public class CreateOrderService {
     //足球订单
     public ResultBean createFootballOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
                                           String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
-                                          String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+                                          String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_FOOTBALL_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);
@@ -122,7 +133,10 @@ public class CreateOrderService {
      * @param pay_money        减免金额
      * @return
      */
-    private JSONObject requestParam(String service_id, int source, String uid, int card_type_id, int card_id, String account_no, String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone, String note, String create_staff_id, String items, String is_sendsms, String order_money, int reduce_money, String pay_money) {
+    private JSONObject requestParam(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
+                                    String cid, String mer_item_id, String book_day, String other_money_name, String other_money,
+                                    String book_phone, String note, String create_staff_id, JSONArray items, String is_sendsms,
+                                    String order_money, int reduce_money, String pay_money) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("service_id", service_id);
         jsonObject.put("source", source);
@@ -130,7 +144,7 @@ public class CreateOrderService {
         jsonObject.put("card_type_id", card_type_id);
         jsonObject.put("card_id", card_id);
         jsonObject.put("account_no", account_no);
-        jsonObject.put("cid", cid);
+        jsonObject.put("cid", Integer.parseInt(cid));
         jsonObject.put("mer_item_id", mer_item_id);
         jsonObject.put("book_day", book_day);
         jsonObject.put("other_money_name", other_money_name);
@@ -139,10 +153,10 @@ public class CreateOrderService {
         jsonObject.put("note", note);
         jsonObject.put("create_staff_id", create_staff_id);
         jsonObject.put("items", items);
-        jsonObject.put("is_sendsms", is_sendsms);
-        jsonObject.put("order_money", order_money);
+        jsonObject.put("is_sendsms", Integer.parseInt(is_sendsms));
+        jsonObject.put("order_money", Integer.parseInt(order_money));
         jsonObject.put("reduce_money", reduce_money);
-        jsonObject.put("pay_money", pay_money);
+        jsonObject.put("pay_money", Integer.parseInt(pay_money));
         return jsonObject;
     }
 

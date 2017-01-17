@@ -99,13 +99,16 @@
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
+
+    var longitude = '${coordinate.lng}';
+    var latitude = '${coordinate.lat}';
+
+
     $(function () {
 
         //初始化加载
         var merid = $("#sport-type").find(".on").data("merid");
         var radius = $("#distance").find(".on").data("value");
-        var longitude;
-        var latitude;
         var sort;
         var price_sort;
         var page = 1;
@@ -160,8 +163,6 @@
     function clickSeach() {
         var merid = $("#sport-type").find(".on").data("merid");
         var radius = $("#distance").find(".on").data("value");
-        var longitude;
-        var latitude;
         var sort;
         var price_sort;
         var page = 1;

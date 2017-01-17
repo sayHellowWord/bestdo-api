@@ -1,5 +1,6 @@
 package com.saidian.web.order;
 
+import com.google.common.base.Strings;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
@@ -94,7 +95,6 @@ public class OrderController {
             case 106:
                 return "order/createtimeorder";
         }
-
         //TODO 创建订单失败
         return "";
     }
@@ -103,64 +103,61 @@ public class OrderController {
     @ResponseBody
     public Object submitOrder(Integer card_id, String account_no,
                               Integer cid, String mer_item_id, String mer_price_id, String book_day, String other_money_name, String other_money,
-                              String book_phone, String note, String create_staff_id,
-                              String order_money
+                              String book_phone, String note, String create_staff_id, String order_money,
+
+                              Integer start_hour, Integer end_hour, String play_time
 
             , HttpSession httpSession) throws Exception {
 
         /*JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
          uid = jsonObject.getString("uid");
 */
-        String uid = "0h1170114160444ihv";
+        //魏继鹏测试环境数据
+        String uid = "522160521120318tRS";
+
         JSONArray items = new JSONArray();
-        order_money = "1";
-//        mer_item_id=10205221000000&mer_price_id=2123&book_day=2017-01-17&cid=109
-        mer_price_id = "2123";
-        book_phone = "15810045436";
-        book_day = "2017-01-17";
-        cid = 1020522;
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("mer_price_id", mer_price_id);
-        jsonObject.put("order_money", order_money);
-        jsonObject.put("reduce_money", 0);
-        jsonObject.put("pay_money", order_money);
-        items.put(jsonObject);
-        ResultBean resultBean1 = createOrderService.createSwimOrder(HttpParams.serviceId,
-                HttpParams.ORDER_SOURCE, uid, Integer.parseInt(HttpParams.cardId), 0, "",
-                cid.toString(), mer_item_id, book_day, "", "0", book_phone,
-                "", "", items.toString(), "1", order_money, 0, order_money);
-
-        System.out.println(resultBean1);
-
-
+        ResultBean resultBean = null;
         switch (cid) {
             //日期型
             case 108:
+//                createOrderService.createFitnessOrder()
             case 109:
+                //组织订单数据
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("mer_price_id", Integer.parseInt(mer_price_id));
+                jsonObject.put("order_money", Integer.parseInt(order_money));
+                jsonObject.put("reduce_money", 0);
+                jsonObject.put("is_rights", 0);
+                jsonObject.put("pay_money", Integer.parseInt(order_money));
+                jsonObject.put("start_hour", start_hour);
+                jsonObject.put("end_hour", end_hour);
+                if (!Strings.isNullOrEmpty(play_time))
+                    jsonObject.put("play_time", play_time);
+                jsonObject.put("play_person_name", "第一个游泳创建订单");
 
-                //todo card_id
-                ResultBean resultBean = createOrderService.createSwimOrder(HttpParams.serviceId,
-                        HttpParams.ORDER_SOURCE, uid, Integer.parseInt(HttpParams.cardId), 0, "",
-                        cid.toString(), mer_item_id, book_day, "", "0", book_phone,
-                        "", "", items.toString(), "1", order_money, 0, order_money);
+                items.put(jsonObject);
 
-              /*  ResultBean resultBean = createOrderService.createSwimOrder(HttpParams.serviceId,
-                        HttpParams.ORDER_SOURCE, uid,15, 0, "",
-                        cid.toString(), mer_item_id, book_day, "", "0", book_phone,
-                        "", "", items.toString(), "1", order_money, 0, order_money);
-
-
-                System.out.println(resultBean.toString());
-*/
+                resultBean = createOrderService.createSwimOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
+                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        "", "0", book_phone, "", "",
+                        items, "1", order_money, 0, order_money);
+                return resultBean;
             case 122:
-
                 // return "order/createdayorder";
-
             case 101:
+                resultBean = createOrderService.createTennisOrder(HttpParams.serviceId, 7, "522160521120318tRS",
+                        423, 0, "", "101", "10205201000000", book_day,
+                        "", "0", book_phone, "", "", items,
+                        "1", order_money, 0, order_money);
+                System.out.println(resultBean.toString());
             case 102:
+//                createOrderService.createBadmintonOrder()
+
             case 104:
+//                createOrderService
+
             case 106:
+//                createOrderService.c
 
                 //return "order/createtimeorder";
         }
@@ -185,49 +182,39 @@ public class OrderController {
                 15, 0, "",
                 "107", "10200031000009", "2017-01-08", "", "0",
                 "15810045436", "",
-                "", items.toString(), "", "5600", 0, "5600");
+                "", items, "", "5600", 0, "5600");
         //   return orderService.orderLists("","77v","","0h1170105151026m47",1,20);
         //  return orderService.orderCancel("", "0h1170105151026m47");
         //    return orderService.orderUnsubscribe("", "0h1170105151026m47","");
-        return orderService.orderDetail("", "0h1170105151026m47");
+        return orderService.orderDetail("179917011055092958", "522160521120318tRS");
     }
 
     @RequestMapping(value = "/orderLists")
     @ResponseBody
     public ResultBean orderLists(String status, String project_no, String cid, String uid, Integer page, Integer pagesize) throws Exception {
-        ResultBean resultBean = orderService.orderLists("", "77v", "", "0h1170105151026m47", null == page ? 1 : page, null == pagesize ? 10 : pagesize);
+        ResultBean resultBean = orderService.orderLists("2", "179", "", "522160521120318tRS", null == page ? 1 : page, null == pagesize ? 10 : pagesize);
         return resultBean;
     }
 
     @RequestMapping(value = "ordertest")
     public void test() throws Exception {
-
-      /*  JSONArray items = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("mer_price_id", "167");
-        jsonObject.put("order_money", "5600");
-        jsonObject.put("reduce_money", 0);
-        jsonObject.put("pay_money", "5600");
-        items.put(jsonObject);
-        ResultBean resultBean = createOrderService.createFitnessOrder("77v", 7, "0h1170114160444ihv",
-                15, 0, "",
-                "107", "10200031000009", "2017-01-08", "", "0",
-                "15810045436", "",
-                "", items.toString(), "", "5600", 0, "5600");*/
-
-
-      JSONArray items = new JSONArray();
+        JSONArray items = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_price_id", "2117");
         jsonObject.put("order_money", "5600");
         jsonObject.put("reduce_money", 0);
         jsonObject.put("pay_money", "5600");
         items.put(jsonObject);
-        ResultBean resultBean = createOrderService.createTennisOrder(HttpParams.serviceId, 7, "0h1170114160444ihv",
+        ResultBean resultBean = createOrderService.createTennisOrder(HttpParams.serviceId, 7, "522160521120318tRS",
                 423, 0,
-                "", "1020520", "10205201000000", "2017-01-18", "",
-                "0", "15810045436", "", "", items.toString(), "1",
+                "", "101", "10205201000000", "2017-01-18", "",
+                "0", "15810045436", "", "", items, "1",
                 "5600", 0, "5600");
         System.out.println(resultBean);
+    }
+
+    @RequestMapping(value = "detail")
+    public ResultBean orderDeail() throws Exception {
+        return orderService.orderDetail("179917011055092958", "522160521120318tRS");
     }
 }
