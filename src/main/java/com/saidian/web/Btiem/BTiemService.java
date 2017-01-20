@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -48,7 +49,6 @@ public class BTiemService {
 
     //获取小时型库存
     private static String MER_ONE_DAY_MER_ITEM_PRICE = "item/getOneDayMerItemPrice";
-
 
     //根据商品ID及卡种ID获取默认价格ID
     private static String PROJECT_MER_PRICE_ID = "project/getMerPriceId";
@@ -474,7 +474,9 @@ public class BTiemService {
                 oneDayItemPrice.setPriceInfos(priceInfos);
             }
 
-            if (oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0) {
+            if (oneDayItemPrice.getInventoryInfos().get(0).getNumber() > 0
+                    && !CollectionUtils.isEmpty(oneDayItemPrice.getPriceInfos())
+                    && Integer.parseInt(oneDayItemPrice.getPriceInfos().get(0).getPrepay_price()) > 0) {
                 oneDayItemPrice.setDestine((byte) 1);
             } else {
                 oneDayItemPrice.setDestine((byte) 0);
@@ -552,7 +554,7 @@ public class BTiemService {
                     }
                     timePriceInfo.put(priceinfo.getInt("start_hour"), priceInfo);
                 }
-            }else if(dataJSONObject.has("price_info") && dataJSONObject.optJSONArray("price_info") != null){
+            } else if (dataJSONObject.has("price_info") && dataJSONObject.optJSONArray("price_info") != null) {
                 JSONArray priceInfoJSONObject = dataJSONObject.getJSONArray("price_info");
                 for (int i = 0; i < priceInfoJSONObject.length(); i++) {
                     JSONObject priceinfo = priceInfoJSONObject.getJSONObject(i);
@@ -575,7 +577,10 @@ public class BTiemService {
                 for (String key : inventoryJSONObject.keySet()) {
                     JSONObject inventoryInfoJson = inventoryJSONObject.getJSONObject(key);
                     OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.new InventoryInfo();
-                    inventoryInfo.setPiece_id(inventoryInfoJson.getString("piece_id"));
+
+                    String piece_id = inventoryInfoJson.getString("piece_id");
+
+                    inventoryInfo.setPiece_id(piece_id);
                     inventoryInfo.setVenue_id(inventoryInfoJson.getString("venue_id"));
                     inventoryInfo.setName(inventoryInfoJson.getString("name"));
                     inventoryInfo.setStatus(inventoryInfoJson.getString("status"));
@@ -589,6 +594,8 @@ public class BTiemService {
                         for (String houorKey : hourJSONObject.keySet()) {
                             JSONObject hourJSON = hourJSONObject.getJSONObject(houorKey);
                             OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
+
+                            hourInfo.setPiece_id(piece_id);
                             Integer hour = hourJSON.getInt("hour");
                             hourInfo.setHour(hour);
                             int status = hourJSON.getInt("status");
@@ -602,6 +609,7 @@ public class BTiemService {
                             }
                             PriceInfo priceInfo = timePriceInfo.get(hour);
                             hourInfo.setPriceInfo(priceInfo);
+
                             hours.add(hourInfo);
                         }
                     } else if (inventoryInfoJson.has("hour") && inventoryInfoJson.optJSONArray("hour") != null) {
@@ -611,6 +619,8 @@ public class BTiemService {
                         for (int i = 0; i < length; i++) {
                             JSONObject hourJSON = hourJSONObject.getJSONObject(i);
                             OneDayItemPrice.HourInfo hourInfo = oneDayItemPrice.new HourInfo();
+
+                            hourInfo.setPiece_id(piece_id);
                             Integer hour = hourJSON.getInt("hour");
                             hourInfo.setHour(hour);
                             int status = hourJSON.getInt("status");
@@ -624,6 +634,7 @@ public class BTiemService {
                             }
                             PriceInfo priceInfo = timePriceInfo.get(hour);
                             hourInfo.setPriceInfo(priceInfo);
+
                             hours.add(hourInfo);
                         }
                     }

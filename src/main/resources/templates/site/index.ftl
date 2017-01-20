@@ -39,10 +39,13 @@
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on" data-merid="">全部</a>
     <#if goodsTypes?? >
         <#list goodsTypes as goodsType>
-            <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.name}</a>
+            <#if goodsType_index == 0  >
+                <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.name}</a>
+            <#else >
+                <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.name}</a>
+            </#if>
         </#list>
     </#if>
     </div>
@@ -63,7 +66,7 @@
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="distance" class="slidemenuCont font14">
-        <a href="javascript:void(0)" data-value="" class="on">不限距离</a>
+        <a href="javascript:void(0)" data-value="10000000000000000" class="on">不限距离</a>
         <a href="javascript:void(0)" data-value="">距离最近</a>
         <a href="javascript:void(0)">优惠最多</a>
         <a href="javascript:void(0)" data-value="5000">附近5km</a>
@@ -221,7 +224,7 @@
                 <span class="font18">￥{{price}}</span>
             </div>
             <div class="address font12">
-                <span class="d">{{geodist}}</span>
+                <span class="d">{{geodist}}km</span>
                 <span class="q">{{region}}</span>
                 <span class="p">{{region}}</span>
             </div>

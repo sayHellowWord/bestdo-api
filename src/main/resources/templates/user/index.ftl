@@ -34,14 +34,14 @@
 		</div>
 	</div>
 	<ul class="centerOrder">
-		<li class="all font14"><a href="#">
+		<li class="all font14"><a href="/order/orderLists?status=9">
 			<span>全部订单</span>订单
 		</a></li>
 		<li class="part font12">
-			<a href="#"><span></span><p>待付款</p></a>
-			<a href="#"><span></span><p>确认中</p></a>
-			<a href="#"><span></span><p>待下场</p></a>
-			<a href="#"><span></span><p>已结束</p></a>
+			<a href="/order/orderLists?status=0"><span></span><p>待付款</p></a>
+			<a href="/order/orderLists?status=5"><span></span><p>确认中</p></a>
+			<a href="/order/orderLists?status=3"><span></span><p>待下场</p></a>
+			<a href="/order/orderLists?status=7"><span></span><p>已结束</p></a>
 		</li>
 	</ul>
 	<ul class="centerOrder centerOther">

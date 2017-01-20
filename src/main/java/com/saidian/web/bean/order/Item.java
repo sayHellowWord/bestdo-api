@@ -1,8 +1,11 @@
 package com.saidian.web.bean.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Administrator on 2017/1/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Item {
 
     private String order_item_id;
@@ -247,5 +250,38 @@ public class Item {
 
     public void setPiece_name(String piece_name) {
         this.piece_name = piece_name;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "order_item_id='" + order_item_id + '\'' +
+                ", oid='" + oid + '\'' +
+                ", mer_price_id='" + mer_price_id + '\'' +
+                ", price_type='" + price_type + '\'' +
+                ", play_time='" + play_time + '\'' +
+                ", play_person_name='" + play_person_name + '\'' +
+                ", piece_id='" + piece_id + '\'' +
+                ", start_hour='" + start_hour + '\'' +
+                ", end_hour='" + end_hour + '\'' +
+                ", order_money='" + order_money + '\'' +
+                ", reduce_money='" + reduce_money + '\'' +
+                ", pay_money='" + pay_money + '\'' +
+                ", other_money='" + other_money + '\'' +
+                ", price_info_number='" + price_info_number + '\'' +
+                ", price_info='" + price_info + '\'' +
+                ", price_info_type='" + price_info_type + '\'' +
+                ", supplier_settlement_price='" + supplier_settlement_price + '\'' +
+                ", supplier_settlement_price_old='" + supplier_settlement_price_old + '\'' +
+                ", supplier_settlement_status='" + supplier_settlement_status + '\'' +
+                ", company_settlement_price='" + company_settlement_price + '\'' +
+                ", code='" + code + '\'' +
+                ", code_status='" + code_status + '\'' +
+                ", code_check_time='" + code_check_time + '\'' +
+                ", update_time='" + update_time + '\'' +
+                ", stime='" + stime + '\'' +
+                ", etime='" + etime + '\'' +
+                ", piece_name='" + piece_name + '\'' +
+                '}';
     }
 }

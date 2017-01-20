@@ -35,7 +35,7 @@
         <!--场馆信息-->
         <div class="venuesInfo">
             <ul>
-                <li class="address font15"><p>${detail.venue.stadium.address}</p></li>
+                <li class="address font15"><p><a href="/site/map?mer_item_id=${detail.mer_item_id}">${detail.venue.stadium.address}</p></a></li>
                 <li class="tel font15"><p><a href="tel:${detail.venue.stadium.phone}">${detail.venue.stadium.phone}</a>
                 </p></li>
             </ul>
@@ -51,8 +51,8 @@
         <!-- 时段性  102 羽毛球  101 网球  106 乒乓球 104 篮球 -->
     <#if detail.cid?number == 101 || detail.cid?number == 102 || detail.cid?number == 104 || detail.cid?number == 106>
         <#include "detail-priceAndInventorySummaryCommon.ftl">
-        <!-- 时段性 109 游泳 108 健身 122 台球-->
-    <#elseif detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122 >
+        <!-- 时段性 109 游泳 108 健身 113 台球-->
+    <#elseif detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 113 >
         <#include "detail-showBookDays.ftl">
     <#else>
      <#--   <div class="venuesInfo">
@@ -71,8 +71,8 @@
         <!--场馆服务-->
     <#include "detail-venue-services.ftl">
 
-    <!--109 游泳108 健身 122台球 -->
-    <#if detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122>
+    <!--109 游泳108 健身 113台球 -->
+    <#if detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 113>
     <!--预订按钮-->
         <div id="venuesBook" data-info="${detail.price_info}">
            <#-- <div class="venuesBook">

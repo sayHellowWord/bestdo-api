@@ -56,6 +56,13 @@ public class ServiceInit implements CommandLineRunner {
         //订单来源
         HttpParams.ORDER_SOURCE = Integer.parseInt(env.getProperty("service.order.source"));
 
+        //支付-接入方id
+        HttpParams.mid = Integer.parseInt(env.getProperty("service.pay.mid"));
+
+        //项目编号
+        HttpParams.project_no = env.getProperty("service.project.no");
+
+
         //初始化可接入服务
         String data = "{'internalIp':'" + env.getProperty("application.internalIp") + "','internalPort':'" + env.getProperty("application.internalPort") + "'," +
                 "'externalIp':'" + env.getProperty("application.externalIp") + "','externalPort':'" + env.getProperty("application.externalPort") + "' }";

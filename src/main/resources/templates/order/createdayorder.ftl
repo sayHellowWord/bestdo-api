@@ -45,7 +45,7 @@
         <span class="tit2">手机</span>
         <div class="cont2 boxflex">
             <a href="javascript:void(0)" class="close"></a>
-            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}">
+            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}15810045436">
         </div>
     </li>
 </ul>
@@ -73,15 +73,23 @@
             选择支付方式
         </h1>
         <ul class="paystylelist">
-            <li class="wx on">
+        <#--
+            <li class="wx" data-type="WEIXINJSAPI">
                 <span class="icon"></span><span class="txt font16">微信</span>
             </li>
+            <li class="zfb  on" data-type="ALIPAYWAP">
+                <span class="icon"></span><span class="txt font16">支付宝</span>
+            </li>
+-->
         </ul>
+        <input id="pay_order_id" type="hidden">
+        <input id="pay_goods_id" type="hidden">
+        <input id="pay_amount" type="hidden">
         <div id="confirm-pay" class="payBtn font18"><a href="#">确定支付</a></div>
     </div>
 </div>
 
-<div class="creatBtn font17">
+<div id="submit-div" class="creatBtn font17">
     <div class="btnCont"><a id="submit-order" href="javascript:void(0)">提交订单</a></div>
 </div>
 <#--<div id="layer">
@@ -101,6 +109,14 @@
 <script src="/js/jquery.js"></script>
 <script src="/js/bestdo.js"></script>
 <script>
+    //判断是否为微信支付
+    var ua = window.navigator.userAgent.toLowerCase();
+    var payType = "<li class='zfb on' data-type='ALIPAYWAP'><span class='icon'></span><span class='txt font16'>支付宝</span></li>";
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        payType = "<li class='wx on' data-type='WEIXINJSAPI'><span class='icon'></span><span class='txt font16'>微信</span></li>";
+    }
+    $(".paystylelist").html(payType);
+
     $(function () {
 
         var mer_item_id = '${mer_item_id}';
@@ -147,13 +163,13 @@
                     if (200 == result.code) {
                         alert("订单提交成功");
                         $("#choose-pay-type").show();
+                        $("#submit-div").hide();
+                        $("#pay_order_id").val(result.object.oid);
+                        $("#pay_goods_id").val(result.object.mer_item_id);
+                        $("#pay_amount").val(result.object.pay_money);
                     } else {
-                        alert("订单提交失败")
+                        alert("订单提交失败:" + result.msg)
                     }
-
-                    //todo 方便测试
-                   // $("#choose-pay-type").show();
-
                 }
             });
 
@@ -162,8 +178,42 @@
 
         //确定支付
         $("#confirm-pay").on("click", function () {
-            //TODO 使用支付接口
-            alert("调起支付接口");
+
+            var order_id = $("#pay_order_id").val();
+            var goods_id = $("#pay_goods_id").val();
+            var amount = $("#pay_amount").val();
+
+            var code = -1;
+            var url = '';
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "/pay/payBank",
+                data: {
+                    "order_id": order_id,
+                    "goods_id": goods_id,
+                    "amount": amount,
+                    "channel_id": $(".paystylelist").find(".on").data("type")
+                },
+                success: function (result) {
+                    if (200 == result.code) {
+                        code = result.code;
+                        url = result.data;
+
+                        //循环执行，每隔3秒钟执行一次 showalert（）
+                        window.setInterval(function () {
+                            checkOrder(order_id);
+                        }, 3000);
+
+                    } else {
+                        alert("创建订单失败")
+                    }
+                }
+            });
+            if (200 == code) {
+                openPaypage(url);
+            }
         })
 
 
@@ -199,6 +249,47 @@
             $(".buycount input").val(num);
         })
     })
+
+
+    //检查订单状态
+    function checkOrder(order_id) {
+        var status = 0;
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "/order/searchDeail",
+            data: {
+                "oid": order_id
+            },
+            success: function (result) {
+                if (200 == result.code) {
+                    status = result.object.status;
+                }
+            }
+        });
+        if (-1 == status) { //已取消》订单超时
+            toTimeOutPage(order_id)
+        } else if (1 == status) { //已支付
+            toSucPage(order_id)
+        }
+    }
+
+    //打开支付页面
+    function openPaypage(url) {
+        window.open(url);
+    }
+
+    //跳转支付成功页
+    function toSucPage(order_id) {
+        window.location.href = "/pay/paySucPage";
+    }
+
+    //跳转支付超时页
+    function toTimeOutPage(order_id) {
+        window.location.href = "/pay/payTimeOutPage";
+    }
+
+
 </script>
 </body>
 </html>

@@ -38,7 +38,8 @@ public class UserController {
      */
     @RequestMapping(value = "/index")
     public String index(HttpSession httpSession, HttpServletRequest httpServletRequest, ModelMap map) throws Exception {
-        User user = (User) httpSession.getAttribute("user");
+        //TODO 测试
+        /* User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             map.addAttribute("back_url", httpServletRequest.getRequestURI() + (Strings.isNullOrEmpty(httpServletRequest.getQueryString()) ? "" : "?" + httpServletRequest.getQueryString()));
             return "login/index";
@@ -54,7 +55,7 @@ public class UserController {
         String name = userinfo.getString("telephone");
         if (userinfo.has("realName"))
             name = userinfo.getString("realName");
-        map.addAttribute("name", name);
+        map.addAttribute("name", name);*/
         return "user/index";
     }
 

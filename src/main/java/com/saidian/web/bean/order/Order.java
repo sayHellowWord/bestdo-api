@@ -1,10 +1,13 @@
 package com.saidian.web.bean.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/1/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
     private String oid;
@@ -58,6 +61,15 @@ public class Order {
     private String book_number;
     private String process_rules_name;
     private Stadium stadium;
+
+
+    //========================  订单列表显示  =====================================
+    private String time;
+    private double money;
+    private int noPay;
+    private String statusName;
+    //========================  订单列表显示  =====================================
+
 
     public String getOid() {
         return oid;
@@ -449,5 +461,96 @@ public class Order {
 
     public void setStadium(Stadium stadium) {
         this.stadium = stadium;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
+    public int getNoPay() {
+        return noPay;
+    }
+
+    public void setNoPay(int noPay) {
+        this.noPay = noPay;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "oid='" + oid + '\'' +
+                ", service_id='" + service_id + '\'' +
+                ", source='" + source + '\'' +
+                ", uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
+                ", company_id='" + company_id + '\'' +
+                ", project_id='" + project_id + '\'' +
+                ", card_type_id='" + card_type_id + '\'' +
+                ", card_batch_id='" + card_batch_id + '\'' +
+                ", card_id='" + card_id + '\'' +
+                ", account_rule_id='" + account_rule_id + '\'' +
+                ", account_no='" + account_no + '\'' +
+                ", cid='" + cid + '\'' +
+                ", stadium_id='" + stadium_id + '\'' +
+                ", stadium_name='" + stadium_name + '\'' +
+                ", venue_id='" + venue_id + '\'' +
+                ", merid='" + merid + '\'' +
+                ", mer_item_id='" + mer_item_id + '\'' +
+                ", mer_item_name='" + mer_item_name + '\'' +
+                ", book_day='" + book_day + '\'' +
+                ", order_money='" + order_money + '\'' +
+                ", reduce_money='" + reduce_money + '\'' +
+                ", other_money_name='" + other_money_name + '\'' +
+                ", other_money='" + other_money + '\'' +
+                ", pay_money='" + pay_money + '\'' +
+                ", pay_channel='" + pay_channel + '\'' +
+                ", pay_time='" + pay_time + '\'' +
+                ", status='" + status + '\'' +
+                ", money_status='" + money_status + '\'' +
+                ", certificate_status='" + certificate_status + '\'' +
+                ", process_type='" + process_type + '\'' +
+                ", process_rules='" + process_rules + '\'' +
+                ", process_status='" + process_status + '\'' +
+                ", inventory_type='" + inventory_type + '\'' +
+                ", is_set_supplier='" + is_set_supplier + '\'' +
+                ", supplier_id='" + supplier_id + '\'' +
+                ", is_supplier_settlement='" + is_supplier_settlement + '\'' +
+                ", book_phone='" + book_phone + '\'' +
+                ", note='" + note + '\'' +
+                ", create_staff_id='" + create_staff_id + '\'' +
+                ", create_time='" + create_time + '\'' +
+                ", update_time='" + update_time + '\'' +
+                ", is_cycle='" + is_cycle + '\'' +
+                ", is_test='" + is_test + '\'' +
+                ", user_category='" + user_category + '\'' +
+                ", items=" + items +
+                ", book_number='" + book_number + '\'' +
+                ", process_rules_name='" + process_rules_name + '\'' +
+                ", stadium=" + stadium +
+                ", time='" + time + '\'' +
+                ", money=" + money +
+                ", noPay=" + noPay +
+                ", statusName='" + statusName + '\'' +
+                '}';
     }
 }

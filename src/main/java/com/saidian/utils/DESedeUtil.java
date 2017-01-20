@@ -1,5 +1,7 @@
 package com.saidian.utils;
 
+import org.json.JSONObject;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -40,6 +42,14 @@ public class DESedeUtil {
             e3.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        JSONObject resultJSON = new JSONObject("{\"result\":\"succ\",\"money\":\"1\",\"out_order\":\"10w917011917172632\",\"bankname\":\"ALIPAYWAP\"}");
+        String resultStr = resultJSON.getString("result");
+        String bankname = resultJSON.getString("bankname");
+        String out_order = resultJSON.getString("out_order");
+        System.out.println("resultStr : " + resultStr + "bankname" + bankname + "out_order" + out_order);
     }
 
 }

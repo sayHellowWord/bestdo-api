@@ -30,7 +30,12 @@ public class HttpParams {
 
     public static int DEFAULT_PAGE_SIZE = 10;//默认分页-每页大小
 
-    public static String CMS_URL ;//cms访问地址
+    public static String CMS_URL;//cms访问地址
 
-    public static  int ORDER_SOURCE;//订单来源
+    public static int ORDER_SOURCE;//订单来源
+
+    public static int mid; //支付-接入方ID
+
+    public static String project_no;//项目编号
+
 }

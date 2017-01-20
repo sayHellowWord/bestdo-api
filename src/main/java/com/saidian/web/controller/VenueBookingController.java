@@ -124,7 +124,7 @@ public class VenueBookingController {
         }
 
         ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, "", mer_price_id,
-                HttpParams.cityId, "", "", "", "", "", "", "",
+                HttpParams.cityId, "", "", radius, longitude, latitude, "", "",
                 null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, null == district ? 0 : district);
 
         //讲接口返回jsondata 置空
@@ -136,8 +136,14 @@ public class VenueBookingController {
     public String toDetail(String mer_item_id, String mer_price_id, String cid, ModelMap map) throws Exception {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
-        dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
-        map.addAttribute("detail", dataJsonObject);
+//        if(dataJsonObject.has("data") && dataJsonObject.optJSONObject("data") != null){
+            dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
+            map.addAttribute("detail", dataJsonObject);
+//        }else{
+//            map.addAttribute("msg", dataJsonObject.get("msg"));
+//            return "site/detailfail";
+//        }
+
 
         //场馆服务
         JSONObject stadium = dataJsonObject.getJSONObject("venue").getJSONObject("stadium");
@@ -300,4 +306,18 @@ public class VenueBookingController {
     }
 
 
+    @RequestMapping(value = "map")
+    public String map(String mer_item_id, ModelMap map) throws Exception {
+        String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
+        JSONObject dataJsonObject = new JSONObject(detailResultBean);
+        dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
+        JSONObject statiumJson =  dataJsonObject.getJSONObject("venue").getJSONObject("stadium");
+        map.addAttribute("detail", dataJsonObject);
+        map.addAttribute("name", statiumJson.getString("name"));
+        map.addAttribute("address",  statiumJson.getString("address"));
+        map.addAttribute("latitude",  statiumJson.getString("latitude"));
+        map.addAttribute("longitude", statiumJson.getString("longitude"));
+        map.addAttribute("mer_item_id", mer_item_id);
+        return "site/map";
+    }
 }

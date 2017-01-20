@@ -1,5 +1,6 @@
 package com.saidian.web.order;
 
+import com.google.common.base.Strings;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
@@ -30,6 +31,14 @@ public class CreateOrderService {
     //足球
     private static String CREATE_FOOTBALL_ORDER = "order/createFootballOrder";
 
+    //台球
+    private static String CREATE_MIX_ORDER = "order/createMixOrder";
+
+    //篮球
+    private static String CREATE_BASKETBALL_ORDER = "order/createBasketballOrder";
+
+    private static String CREATE_TABLE_TENNIS_ORDER = "order/createTableTennisOrder";
+
     //创建健身订单
     public ResultBean createFitnessOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
                                          String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
@@ -51,6 +60,8 @@ public class CreateOrderService {
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_SWIM_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         try {
             ResultBean resultBean = HttpResultUtil.result2Bean(result);
+            JSONObject jsonObj = new JSONObject(resultBean.getData());
+            resultBean.setObject(jsonObj);
             return resultBean;
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +108,54 @@ public class CreateOrderService {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_FOOTBALL_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);
+    }
+
+    //台球
+    public ResultBean createMixOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
+                                     String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
+                                     String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+        JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_MIX_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        return resultBean;
+    }
+
+
+    //篮球
+    public ResultBean createBasketballOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
+                                        String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
+                                        String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+        JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_BASKETBALL_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        try {
+            ResultBean resultBean = HttpResultUtil.result2Bean(result);
+            return resultBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultBean resultBean = new ResultBean();
+            resultBean.setCode(-1);
+            resultBean.setMsg(result);
+            return resultBean;
+        }
+
+    }
+
+    //乒乓球
+    public ResultBean createTableTennisOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,
+                                        String cid, String mer_item_id, String book_day, String other_money_name, String other_money, String book_phone,
+                                        String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
+        JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_TABLE_TENNIS_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        try {
+            ResultBean resultBean = HttpResultUtil.result2Bean(result);
+            return resultBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultBean resultBean = new ResultBean();
+            resultBean.setCode(-1);
+            resultBean.setMsg(result);
+            return resultBean;
+        }
     }
 
 
@@ -154,9 +213,11 @@ public class CreateOrderService {
         jsonObject.put("create_staff_id", create_staff_id);
         jsonObject.put("items", items);
         jsonObject.put("is_sendsms", Integer.parseInt(is_sendsms));
-        jsonObject.put("order_money", Integer.parseInt(order_money));
+        if (!Strings.isNullOrEmpty(order_money))
+            jsonObject.put("order_money", Integer.parseInt(order_money));
         jsonObject.put("reduce_money", reduce_money);
-        jsonObject.put("pay_money", Integer.parseInt(pay_money));
+        if (!Strings.isNullOrEmpty(pay_money))
+            jsonObject.put("pay_money", Integer.parseInt(pay_money));
         return jsonObject;
     }
 

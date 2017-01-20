@@ -122,6 +122,8 @@ public class OneDayItemPrice {
 
         private PriceInfo priceInfo;
 
+        private String piece_id;
+
         public int getHour() {
             return hour;
         }
@@ -160,6 +162,14 @@ public class OneDayItemPrice {
 
         public void setPriceInfo(PriceInfo priceInfo) {
             this.priceInfo = priceInfo;
+        }
+
+        public String getPiece_id() {
+            return piece_id;
+        }
+
+        public void setPiece_id(String piece_id) {
+            this.piece_id = piece_id;
         }
     }
 

@@ -363,4 +363,48 @@ public class Stadium {
     public void setStadium_position_name(String stadium_position_name) {
         this.stadium_position_name = stadium_position_name;
     }
+
+    @Override
+    public String toString() {
+        return "Stadium{" +
+                "stadium_id='" + stadium_id + '\'' +
+                ", name='" + name + '\'' +
+                ", abbreviation='" + abbreviation + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", district='" + district + '\'' +
+                ", region='" + region + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", city_position_id='" + city_position_id + '\'' +
+                ", fax='" + fax + '\'' +
+                ", phone='" + phone + '\'' +
+                ", stadium_source='" + stadium_source + '\'' +
+                ", thumb='" + thumb + '\'' +
+                ", level='" + level + '\'' +
+                ", chain_name='" + chain_name + '\'' +
+                ", is_chain='" + is_chain + '\'' +
+                ", type='" + type + '\'' +
+                ", check_code_method='" + check_code_method + '\'' +
+                ", bd_person='" + bd_person + '\'' +
+                ", bd_phone='" + bd_phone + '\'' +
+                ", description='" + description + '\'' +
+                ", recommend_reason='" + recommend_reason + '\'' +
+                ", bd_status='" + bd_status + '\'' +
+                ", status='" + status + '\'' +
+                ", create_staff_id='" + create_staff_id + '\'' +
+                ", verify_staff_id='" + verify_staff_id + '\'' +
+                ", verify_time='" + verify_time + '\'' +
+                ", verify_reason='" + verify_reason + '\'' +
+                ", create_time='" + create_time + '\'' +
+                ", update_time='" + update_time + '\'' +
+                ", note='" + note + '\'' +
+                ", customer_remark='" + customer_remark + '\'' +
+                ", status_name='" + status_name + '\'' +
+                ", stadium_source_name='" + stadium_source_name + '\'' +
+                ", level_name='" + level_name + '\'' +
+                ", stadium_position_name='" + stadium_position_name + '\'' +
+                '}';
+    }
 }

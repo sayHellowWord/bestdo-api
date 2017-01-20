@@ -4,6 +4,8 @@ import com.saidian.bean.ResultBean;
 import com.saidian.web.bean.GoogDetail;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Administrator on 2017/1/5.
  */
@@ -91,7 +93,8 @@ public class HttpResultUtil {
             googDetail.set_geodist(goodDetailJsonObject.getDouble("@geodist"));
         }
         if (goodDetailJsonObject.has("geodist")) {
-            googDetail.setGeodist(goodDetailJsonObject.getDouble("geodist"));
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            googDetail.setGeodist(Double.parseDouble(decimalFormat.format(goodDetailJsonObject.getDouble("geodist") / 1000)));
         }
 
         if (goodDetailJsonObject.has("title")) {

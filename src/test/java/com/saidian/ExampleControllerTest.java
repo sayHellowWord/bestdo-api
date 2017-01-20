@@ -58,12 +58,20 @@ public class ExampleControllerTest {
         //String result = restTemplate.getForObject("http://localhost:" + port + "/site/toOneDayMerItemPrice?" +
         //"mer_item_id=10200001000731&mer_price_id=1429&day=2017-01-14", String.class);
       //  String result = restTemplate.getForObject("http://localhost:" + port + "/order/detail", String.class);
-        String result = restTemplate.getForObject("http://localhost:" + port + "/order/ordertest", String.class);
+        String result = restTemplate.getForObject("http://localhost:" + port + "/order/orderListsSearch?status=9", String.class);
         assertNotNull(result);
         System.out.println("*******************************************************");
         System.out.println(result);
         System.out.println("*******************************************************");
 
+    }
+
+    @Test
+    public void testPay(){
+        String result = restTemplate.getForObject("http://localhost:" + port + "/pay/test", String.class);
+        System.out.println("*******************************************************");
+        System.out.println(result);
+        System.out.println("*******************************************************");
     }
 
 

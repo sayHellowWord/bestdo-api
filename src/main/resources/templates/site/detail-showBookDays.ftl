@@ -125,7 +125,7 @@
                     <div class="service box2"><p class="font12">不可预订</p></div>
                     {{/if}}
                 </div>
-            <#-- todo 提示信息 获取-->
+            <#-- todo 提示信息 获取 price_info-->
                 <div class="service box2"><p id="price_info" class="font12"></p></div>
             </div>
             {{#if destine}}

@@ -1,10 +1,14 @@
 package com.saidian.web.bean.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/1/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderResult {
 
     private String total;
@@ -92,5 +96,20 @@ public class OrderResult {
 
     public void setCertificate_status(String[] certificate_status) {
         this.certificate_status = certificate_status;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderResult{" +
+                "total='" + total + '\'' +
+                ", page='" + page + '\'' +
+                ", pagesize='" + pagesize + '\'' +
+                ", status=" + Arrays.toString(status) +
+                ", orderDiffNum=" + orderDiffNum +
+                ", process_status=" + Arrays.toString(process_status) +
+                ", certificate_status=" + Arrays.toString(certificate_status) +
+                ", cid='" + cid + '\'' +
+                ", orders=" + orders +
+                '}';
     }
 }

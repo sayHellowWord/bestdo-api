@@ -2,16 +2,24 @@ package com.saidian.web.order;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.saidian.bean.OrderStatus;
+import com.saidian.bean.ReqOrigin;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
+import com.saidian.web.bean.order.Order;
 import com.saidian.web.bean.order.OrderResult;
 import com.saidian.web.bean.siteinfo.BookDay;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/1/5.
@@ -50,7 +58,7 @@ public class OrderService {
      * @return
      * @throws Exception
      */
-    public ResultBean orderLists(String status, String project_no, String cid, String uid, int page, int pagesize) throws Exception {
+    public ResultBean<OrderResult> orderLists(String status, String project_no, String cid, String uid, int page, int pagesize) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", status);
         jsonObject.put("project_no", project_no);
@@ -59,9 +67,8 @@ public class OrderService {
         jsonObject.put("page", page);
         jsonObject.put("pagesize", pagesize);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_LISTS, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        ResultBean resultBean = HttpResultUtil.result2Bean(result);
+        ResultBean<OrderResult> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
-
             OrderResult orderResult = null;
             try {
                 objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
@@ -70,7 +77,32 @@ public class OrderService {
                 e.printStackTrace();
             }
 
-            System.out.println(orderResult);
+            List<Order> orders = orderResult.getOrders();
+            if (!CollectionUtils.isEmpty(orders)) {
+                DateTime dateTime = new DateTime();
+                for (Order order : orders) {
+                    String orderCid = order.getCid();
+                    //日期型 109 游泳  108 健身 113 台球
+                    //时段性 101 网球 102 羽毛球  104 篮球   106 乒乓球 足球待定 todo
+                   /* if ("109".equals(orderCid) || "108".equals(orderCid) || "113".equals(orderCid)) {
+                        order.setTime(order.getPay_time());
+                    } else if ("101".equals(orderCid) || "102".equals(orderCid) || "104".equals(orderCid) || "106".equals(orderCid)) {
+                    }
+*/
+                    dateTime = new DateTime(order.getBook_day());
+                    order.setTime(dateTime.toString("MM月dd日") + " " + dateTime.toString("EE", Locale.CHINESE));
+                    order.setMoney(Double.parseDouble(order.getOrder_money()) / 100);
+                    order.setStatusName(OrderStatus.getName(Integer.parseInt(order.getStatus())));
+                }
+            }
+            orderResult.setOrders(orders);
+
+
+            System.out.println(orderResult.toString());
+
+            resultBean.setObject(orderResult);
+            resultBean.setData(StringUtils.EMPTY);
+
             /*JSONObject dataJson = new JSONObject(resultBean.getData().toString());
             if (dataJson.has("orders") && dataJson.optJSONArray("orders") != null) {
                 JSONArray ordersJsonArr = dataJson.optJSONArray("orders");
@@ -135,12 +167,9 @@ public class OrderService {
         jsonObject.put("uid", uid);
 
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_UNSUBSCRIBE, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-
-        ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
+        ResultBean resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
-
             System.out.println(resultBean.getData());
-
         }
 
         return resultBean;
@@ -181,28 +210,34 @@ public class OrderService {
 
     /**
      * 订单详情
+     *
      * @param oid
      * @param uid
      * @return
      * @throws Exception
      */
-    public ResultBean orderDetail(String oid, String uid) throws Exception {
+    public ResultBean<Order> orderDetail(String oid, String uid) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("oid", oid);
         jsonObject.put("uid", uid);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
-        ResultBean<OrderResult> resultBean = HttpResultUtil.result2Bean(result);
-        if (200 == resultBean.getCode()) {
-            OrderResult orderResult = null;
+        ResultBean<Order> orderResultBean = HttpResultUtil.result2Bean(result);
+        if (200 == orderResultBean.getCode()) {
+            Order order = null;
             try {
                 objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
-                orderResult = objectMapper.readValue(resultBean.getData().toString(), OrderResult.class);
+                order = objectMapper.readValue(orderResultBean.getData().toString(), Order.class);
+                DateTime dateTime = new DateTime(order.getBook_day());
+                order.setTime(dateTime.toString("MM月dd日") + " " + dateTime.toString("EE", Locale.CHINESE));
+                order.setMoney(Double.parseDouble(order.getOrder_money()) / 100);
+                order.setStatusName(OrderStatus.getName(Integer.parseInt(order.getStatus())));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            resultBean.setObject(orderResult);
+            orderResultBean.setObject(order);
+            orderResultBean.setData(StringUtils.EMPTY);
         }
-        return resultBean;
+        return orderResultBean;
     }
 
 

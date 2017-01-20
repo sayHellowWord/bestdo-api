@@ -153,8 +153,24 @@
                 return;
             }
             var book_day = $("#summary-day-list .on").data("day");
-            window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&book_day=" + book_day + "&cid=" + cid;
+            /* <td class="true"  data-money="{{prepay_price}}" data-piece_id="{{piece_id}}" data-start_hour="{{priceInfo.start_hour}}"  data-end_hour="{{priceInfo.end_hour}}">
+ */
+            //组织选中的片场信息
+            var timeStr = '';
+            $("#row-table").find(".on").each(function () {
+                var money = $(this).data("money");
+                var piece_id = $(this).data("piece_id");
+                var start_hour = $(this).data("start_hour");
+                var end_hour = $(this).data("end_hour");
+                timeStr = timeStr + money + "," + piece_id + "," + start_hour + "," + end_hour + ";";
+            });
 
+            var totalMoney = $("#has-choose-money").text().replace("￥", "");
+
+
+            // window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&book_day=" + book_day + "&cid=" + cid;
+            window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&mer_price_id=" + mer_price_id +
+                    "&book_day=" + book_day + "&cid=" + cid + "&timeStr=" + timeStr + "&totalMoney=" + totalMoney;
         })
 
 
@@ -242,7 +258,10 @@
     <tr>
         {{#each row}}
         {{#if canbook}}
-        <td class="true"><span><i>￥</i>{{prepay_price}}</span></td>
+        <td class="true" data-money="{{prepay_price}}" data-piece_id="{{piece_id}}"
+            data-start_hour="{{priceInfo.start_hour}}" data-end_hour="{{priceInfo.end_hour}}">
+            <span><i>￥</i>{{prepay_price}}</span>
+        </td>
         {{else}}
         <td><span></span></td>
         {{/if}}
