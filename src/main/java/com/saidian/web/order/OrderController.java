@@ -6,6 +6,7 @@ import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
 import com.saidian.web.bean.TimeTable;
+import com.saidian.web.bean.User;
 import com.saidian.web.bean.order.Order;
 import com.saidian.web.bean.siteinfo.OneDayItemPrice;
 import com.saidian.web.bean.siteinfo.PriceInfo;
@@ -42,8 +43,6 @@ public class OrderController {
     @Autowired
     BTiemService bTiemService;//场馆
 
-    private String weiUID = "522160521120318tRS";
-
     @RequestMapping(value = "createOrder")
     public String createOrder(String mer_item_id, String mer_price_id, String book_day, Integer cid
             , String timeStr, String totalMoney
@@ -53,16 +52,18 @@ public class OrderController {
                 "cid = [" + cid + "], timeStr = [" + timeStr + "], modelMap = [" + modelMap + "], httpSession = [" + httpSession + "], httpServletRequest = [" + httpServletRequest + "]");
         System.out.println("----------------------------------------------");
         //判断是否登录 todo 待恢复
-      /*  User user = (User) httpSession.getAttribute("user");
+        User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             modelMap.addAttribute("back_url", httpServletRequest.getRequestURI() + (Strings.isNullOrEmpty(httpServletRequest.getQueryString()) ? "" : "?" + httpServletRequest.getQueryString()));
             return "login/index";
-        }*/
+        }
         if (null == cid)
             throw new Exception("运动类型不能为空");
-      /*  JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-        String telephone = jsonObject.getString("telephone");
-        modelMap.addAttribute("telephone", telephone);*/
+        JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
+        if (null != jsonObject && jsonObject.has("telephone")) {
+            String telephone = jsonObject.getString("telephone");
+            modelMap.addAttribute("telephone", telephone);
+        }
 
         //获取订单信息
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
@@ -133,13 +134,13 @@ public class OrderController {
             , String timeStr
             , HttpSession httpSession) throws Exception {
 
-        /*JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-         uid = jsonObject.getString("uid");
-*/
+        JSONObject userObject = (JSONObject) httpSession.getAttribute("userinfo");
+        String uid = userObject.getString("uid");
+
         //魏继鹏测试环境数据 todo
         //  String uid = "522160521120318tRS";
         //武波
-        String uid = "0h1170114160444ihv";
+        //  String uid = "0h1170114160444ihv";
 
         JSONArray items = new JSONArray();
         ResultBean resultBean = null;
@@ -261,19 +262,21 @@ public class OrderController {
     @ResponseBody
     public ResultBean orderListsSearch(String status, String cid, Integer page, Integer pagesize, HttpSession httpSession) throws Exception {
         //todo udi
-      /*JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-         uid = jsonObject.getString("uid");
-*/
-        return orderService.orderLists(status, HttpParams.project_no, cid, "0h1170114160444ihv", null == page ? 1 : page, null == pagesize ? 10 : pagesize);
+        JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
+        String uid = jsonObject.getString("uid");
+
+        // return orderService.orderLists(status, HttpParams.project_no, cid, "0h1170114160444ihv", null == page ? 1 : page, null == pagesize ? 10 : pagesize);
+        return orderService.orderLists(status, HttpParams.project_no, cid, uid, null == page ? 1 : page, null == pagesize ? 10 : pagesize);
     }
 
     @RequestMapping(value = "detail")
-    public String orderDeail(String oid, ModelMap modelMap) throws Exception {
+    public String orderDeail(String oid, ModelMap modelMap, HttpSession httpSession) throws Exception {
         //todo udi
-      /*JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-         uid = jsonObject.getString("uid");
-*/
-        Order order = orderService.orderDetail(oid, "0h1170114160444ihv").getObject();
+        JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
+        String uid = jsonObject.getString("uid");
+
+        Order order = orderService.orderDetail(oid, uid).getObject();
+        // Order order = orderService.orderDetail(oid, "0h1170114160444ihv").getObject();
         if ("0".equals(order.getStatus())) {//未支付计算倒计时时间 总时长为15分钟
             String create_time = order.getCreate_time();
             DateTime createTimeDateTime = new DateTime(Long.parseLong(create_time) * 1000);
@@ -294,12 +297,13 @@ public class OrderController {
 
     @RequestMapping(value = "searchDeail")
     @ResponseBody
-    public ResultBean searchDeail(String oid) throws Exception {
+    public ResultBean searchDeail(String oid, HttpSession httpSession) throws Exception {
         //todo udi
-      /*JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-         uid = jsonObject.getString("uid");
-*/
-        return orderService.orderDetail(oid, "0h1170114160444ihv");
+        JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
+        String uid = jsonObject.getString("uid");
+
+        return orderService.orderDetail(oid, uid);
+        //  return orderService.orderDetail(oid, "0h1170114160444ihv");
     }
 
     @RequestMapping(value = "paytimeout")
@@ -316,15 +320,25 @@ public class OrderController {
     }
 
 
-    @RequestMapping(value = "unsubscribe")
-    public ResultBean orderUnsubscribe(String order_id, String reason, ModelMap modelMap) throws Exception {
+    @RequestMapping(value = "submitunsubscribe")
+    @ResponseBody
+    public ResultBean orderUnsubscribe(String order_id, String reason, HttpSession httpSession) throws Exception {
         //todo udi
-      /*JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-         uid = jsonObject.getString("uid");
-*/
-        ResultBean resultBean = orderService.orderUnsubscribe(order_id, "0h1170114160444ihv", reason);
+        JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
+        String uid = jsonObject.getString("uid");
+
+        // ResultBean resultBean = orderService.orderUnsubscribe(order_id, "0h1170114160444ihv", reason);
+        ResultBean resultBean = orderService.orderUnsubscribe(order_id, uid, reason);
         return resultBean;
     }
+
+    @RequestMapping(value = "unsubscriberesult")
+    public String unsubscribesuc(String order_id, String code, ModelMap modelMap) {
+        modelMap.addAttribute("order_id", order_id);
+        modelMap.addAttribute("code", code);
+        return "/order/unsubscriberesult";
+    }
+
 
     //日期型返回结果处理
     private void dayResult(ResultBean resultBean) {

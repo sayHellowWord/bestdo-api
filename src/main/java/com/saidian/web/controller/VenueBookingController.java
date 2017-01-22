@@ -75,7 +75,7 @@ public class VenueBookingController {
         //获取经纬度
         ResultBean lntAndLatResultBean = null;
         try {
-          //  lntAndLatResultBean = publicService.getCityLngAndLat(HttpParams.cityId);
+            //lntAndLatResultBean = publicService.getCityLngAndLat(HttpParams.cityId);
             lntAndLatResultBean = publicService.getCityLngAndLat("52");
         } catch (Exception e) {
             logger.error(LOG_PRE + "获取距离出错出错");
@@ -85,7 +85,7 @@ public class VenueBookingController {
 
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
-       // map.addAttribute("lng", lntAndLatResultBean);
+        // map.addAttribute("lng", lntAndLatResultBean);
         map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
         return "site/index";
     }
@@ -137,8 +137,8 @@ public class VenueBookingController {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
 //        if(dataJsonObject.has("data") && dataJsonObject.optJSONObject("data") != null){
-            dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
-            map.addAttribute("detail", dataJsonObject);
+        dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
+        map.addAttribute("detail", dataJsonObject);
 //        }else{
 //            map.addAttribute("msg", dataJsonObject.get("msg"));
 //            return "site/detailfail";
@@ -311,11 +311,11 @@ public class VenueBookingController {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
         dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
-        JSONObject statiumJson =  dataJsonObject.getJSONObject("venue").getJSONObject("stadium");
+        JSONObject statiumJson = dataJsonObject.getJSONObject("venue").getJSONObject("stadium");
         map.addAttribute("detail", dataJsonObject);
         map.addAttribute("name", statiumJson.getString("name"));
-        map.addAttribute("address",  statiumJson.getString("address"));
-        map.addAttribute("latitude",  statiumJson.getString("latitude"));
+        map.addAttribute("address", statiumJson.getString("address"));
+        map.addAttribute("latitude", statiumJson.getString("latitude"));
         map.addAttribute("longitude", statiumJson.getString("longitude"));
         map.addAttribute("mer_item_id", mer_item_id);
         return "site/map";

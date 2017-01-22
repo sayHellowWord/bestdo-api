@@ -62,6 +62,12 @@ public class ServiceInit implements CommandLineRunner {
         //项目编号
         HttpParams.project_no = env.getProperty("service.project.no");
 
+        //微信支付地址
+        HttpParams.weixin_key = env.getProperty("weixin.pay.key");
+
+        //微信支付秘钥
+        HttpParams.weixin_url = env.getProperty("weixin.pay.url");
+
 
         //初始化可接入服务
         String data = "{'internalIp':'" + env.getProperty("application.internalIp") + "','internalPort':'" + env.getProperty("application.internalPort") + "'," +

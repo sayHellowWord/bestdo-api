@@ -1,6 +1,7 @@
 package com.saidian;
 
 
+import com.saidian.utils.MD5Util;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.security.NoSuchAlgorithmException;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -67,7 +70,7 @@ public class ExampleControllerTest {
     }
 
     @Test
-    public void testPay(){
+    public void testPay() throws NoSuchAlgorithmException {
         String result = restTemplate.getForObject("http://localhost:" + port + "/pay/test", String.class);
         System.out.println("*******************************************************");
         System.out.println(result);

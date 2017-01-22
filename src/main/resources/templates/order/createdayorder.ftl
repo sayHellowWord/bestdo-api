@@ -185,6 +185,7 @@
 
             var code = -1;
             var url = '';
+            var sign = '';
 
             $.ajax({
                 type: "POST",
@@ -200,7 +201,7 @@
                     if (200 == result.code) {
                         code = result.code;
                         url = result.data;
-
+                        sign = result.object;
                         //循环执行，每隔3秒钟执行一次 showalert（）
                         window.setInterval(function () {
                             checkOrder(order_id);
@@ -212,7 +213,7 @@
                 }
             });
             if (200 == code) {
-                openPaypage(url);
+                openPaypage(url, order_id, amount, sign);
             }
         })
 
@@ -275,9 +276,16 @@
     }
 
     //打开支付页面
-    function openPaypage(url) {
+    function openPaypage(url, order_id, amount, sign) {
+        console.info(url);
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+           // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+            window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+            return;
+        }
         window.open(url);
     }
+
 
     //跳转支付成功页
     function toSucPage(order_id) {

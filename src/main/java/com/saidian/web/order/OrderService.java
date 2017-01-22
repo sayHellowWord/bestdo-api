@@ -168,10 +168,6 @@ public class OrderService {
 
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_UNSUBSCRIBE, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
         ResultBean resultBean = HttpResultUtil.result2Bean(result);
-        if (200 == resultBean.getCode()) {
-            System.out.println(resultBean.getData());
-        }
-
         return resultBean;
     }
 

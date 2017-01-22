@@ -135,6 +135,9 @@
     </ul>
 </div>
 
+
+
+<#--  支付状态  -->
 <#if order.status?number == 0>
 <div id="order-status-show" class="orderBtn font17">
     ${canRepay}
@@ -143,7 +146,7 @@
             <div class="orderBtnL">
                 支付剩余<span id="count-down-re-pay-time">${diffMinutes}:${diffSeconds}</span>
             </div>
-            <a href="javascript:void(0)" class="topaybtn">去支付</a>
+            <a id="topaybtn" href="javascript:void(0)" class="topaybtn">去支付</a>
         </div>
     <#else>
         <div class="ordreBtnCont">
@@ -152,7 +155,27 @@
     </#if>
 </div>
     <#if canRepay?number == 1>
+    <div id="choose-pay-type" class="paystyle" style="display:none;">
+        <div class="paystyleBg"></div>
+        <div class="paystyleCont">
+            <h1 class="tit font17">
+                <a href="javascript:void(0)"></a>
+                选择支付方式
+            </h1>
+            <ul class="paystylelist">
+
+            </ul>
+            <input id="pay_order_id" type="hidden">
+            <input id="pay_goods_id" type="hidden">
+            <input id="pay_amount" type="hidden">
+            <div id="confirm-pay" class="payBtn font18"><a href="#">确定支付</a></div>
+        </div>
+    </div>
+    <script src="/js/jquery.js"></script>
     <script>
+
+
+        //倒计时
         var m = '${diffMinutes}';
         var s = '${diffSeconds}';
         function showtime() {
@@ -165,11 +188,112 @@
             if (m <= 0 && s <= 0 ) {
                 clearInterval(settime);
                 document.getElementById('order-status-show').innerHTML ="<div class='ordreBtnCont'> <a href='javascript:void(0)' class='buyBtn'>重新预订</a> </div>";
+                return false;
             }
         }
         var settime = setInterval(function () {
             showtime();
         }, 1000);
+
+
+
+        //判断是否为微信支付
+        var ua = window.navigator.userAgent.toLowerCase();
+        var payType = "<li class='zfb on' data-type='ALIPAYWAP'><span class='icon'></span><span class='txt font16'>支付宝</span></li>";
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+            payType = "<li class='wx on' data-type='WEIXINJSAPI'><span class='icon'></span><span class='txt font16'>微信</span></li>";
+        }
+        $(".paystylelist").html(payType);
+
+
+
+        var order_id = '${order.oid}';
+        var goods_id = '${order.mer_item_id}';
+        var amount = '${order.order_money}';
+
+        $(function () {
+            //去支付点击
+            $("#topaybtn").click(function () {
+                $("#choose-pay-type").show();
+            })
+
+            //确定支付
+            $("#confirm-pay").on("click", function () {
+
+                var code = -1;
+                var url = '';
+                var sign = '';
+
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "/pay/payBank",
+                    data: {
+                        "order_id": order_id,
+                        "goods_id": goods_id,
+                        "amount": amount,
+                        "channel_id": $(".paystylelist").find(".on").data("type")
+                    },
+                    success: function (result) {
+                        if (200 == result.code) {
+                            code = result.code;
+                            url = result.data;
+                            sign = result.object;
+
+                            //循环执行，每隔3秒钟执行一次 showalert（）
+                            window.setInterval(function () {
+                                checkOrder(order_id);
+                            }, 3000);
+
+                        } else {
+                            alert("创建订单失败")
+                        }
+                    }
+                });
+                if (200 == code) {
+                    openPaypage(url, order_id, amount, sign);
+                }
+            })
+
+
+        })
+
+        //检查订单状态
+        function checkOrder(order_id) {
+            var status = 0;
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "/order/searchDeail",
+                data: {
+                    "oid": order_id
+                },
+                success: function (result) {
+                    if (200 == result.code) {
+                        status = result.object.status;
+                    }
+                }
+            });
+            if (-1 == status) { //已取消》订单超时
+                toTimeOutPage(order_id)
+            } else if (1 == status) { //已支付
+                toSucPage(order_id)
+            } else if (3 == status) { //待下场
+                toSucPage(order_id)
+            }
+        }
+
+
+        //打开支付页面
+        function openPaypage(url, order_id, amount, sign) {
+            console.info(url);
+            if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+                window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+                return;
+            }
+            window.open(url);
+        }
     </script>
 
     </#if>

@@ -1,5 +1,6 @@
 package com.saidian.web.user;
 
+import com.google.common.base.Strings;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
@@ -33,6 +34,8 @@ public class UserService {
 
     private static String ACCOUNT_USER_INFO = "uccore/v1/api/account/findUserInfo"; //查询用户信息
 
+    private static String MODIFY_USER_INFO = "uccore/v1/api/account/modifyUserInfo"; //更新用户信息
+
 
     /**
      * 普通用户注册 ok
@@ -45,7 +48,7 @@ public class UserService {
      */
     public ResultBean accountRegister(String telephone, String email, String loginName, String password, String regOrigin) throws Exception {
 
-           JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("telephone", telephone);
         jsonObject.put("email", email);
         jsonObject.put("loginName", loginName);
@@ -171,14 +174,15 @@ public class UserService {
     }
 
     /**
-     *  验证接口仅验证
+     * 验证接口仅验证
+     *
      * @param account
      * @param validId
      * @param validCode
      * @return
      * @throws Exception
      */
-    public ResultBean securityVerificationValid(String account,String validId,String validCode) throws Exception {
+    public ResultBean securityVerificationValid(String account, String validId, String validCode) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("account", account);
         jsonObject.put("validId", validId);
@@ -190,6 +194,7 @@ public class UserService {
 
     /**
      * 查询登录账户信息
+     *
      * @param uid
      * @param loginName
      * @param telephone
@@ -197,7 +202,7 @@ public class UserService {
      * @param account
      * @return
      */
-    public ResultBean accountFindPassport(String uid,String loginName,String telephone,String email,String account) throws Exception {
+    public ResultBean accountFindPassport(String uid, String loginName, String telephone, String email, String account) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
         jsonObject.put("loginName", loginName);
@@ -210,6 +215,7 @@ public class UserService {
 
     /**
      * 查询用户基本信息
+     *
      * @param uid
      * @return
      */
@@ -217,6 +223,26 @@ public class UserService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_USER_INFO, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
+        return HttpResultUtil.result2Bean(result);
+    }
+
+    /**
+     * 修改用户真实姓名
+     *
+     * @param uid
+     * @param realName
+     * @return
+     * @throws Exception
+     */
+    public ResultBean modifyUserInfo(String uid, String nickName, String realName) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uid", uid);
+        if(!Strings.isNullOrEmpty(nickName))
+            jsonObject.put("nickName", nickName);
+        if(!Strings.isNullOrEmpty(realName))
+            jsonObject.put("realName", realName);
+
+        String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + MODIFY_USER_INFO, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);
     }
 

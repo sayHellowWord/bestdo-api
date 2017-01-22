@@ -1,19 +1,19 @@
 package com.saidian.web.controller;
 
-import com.saidian.config.HttpParams;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpSession;
-
 /**
- * Created by Administrator on 2017/1/4.
+ * 特惠
  */
+@RequestMapping(value = "odds")
 @Controller
-public class IndexController {
+public class OddsController {
 
     @RequestMapping("/")
     public String boot() {
-        return "index";
+        return "odds/index";
     }
+
+
 }

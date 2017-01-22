@@ -164,17 +164,17 @@
     $(function () {
 
         //初始化加载
-       /* var merid = $("#sport-type").find(".on").data("merid");
-        var radius = $("#distance").find(".on").data("value");
-        var sort = $("#distance").find(".on").data("distanacesrot");
-        var price_sort;
-        var page = 1;
-        var pagesize = 10;
-        var district = $("#administrative-area").find(".on").data("value");
-        $("#googDetail-list").html('');
+        /* var merid = $("#sport-type").find(".on").data("merid");
+         var radius = $("#distance").find(".on").data("value");
+         var sort = $("#distance").find(".on").data("distanacesrot");
+         var price_sort;
+         var page = 1;
+         var pagesize = 10;
+         var district = $("#administrative-area").find(".on").data("value");
+         $("#googDetail-list").html('');
 
-        venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-*/
+         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+ */
         /*筛选条件*/
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -279,7 +279,7 @@
             </div>
             <div class="address font12">
                 <span class="d">{{geodist}}km</span>
-               <#-- <span class="q">{{region}}</span>-->
+            <#-- <span class="q">{{region}}</span>-->
                 <span class="p">{{region}}</span>
             </div>
         </div>

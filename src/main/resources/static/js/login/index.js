@@ -35,7 +35,7 @@ $(function () {
             success: function (result) {
                 console.info(result.data.validId)
                 if (200 === result.code) {
-                    alert("登录成功");
+                   // alert("登录成功");
                     back();
                 } else {
                     alert(result.msg);
@@ -115,7 +115,7 @@ $(function () {
             },
             success: function (result) {
                 if (200 === result.code) {
-                    alert("快速登录成功");
+                   // alert("快速登录成功");
                     back();
                 } else {
                     alert(result.msg);

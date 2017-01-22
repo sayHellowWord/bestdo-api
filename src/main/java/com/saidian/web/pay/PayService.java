@@ -2,6 +2,7 @@ package com.saidian.web.pay;
 
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
+import com.saidian.config.HttpParams;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
 import com.saidian.utils.MD5Util;
@@ -11,6 +12,7 @@ import com.saidian.utils.http.Response;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -25,11 +27,6 @@ public class PayService {
     //支付回调
     private static String PAYMENT_TODO = "payment/todo";
 
-    //微信支付路径 todo 改为配置文件
-    private static String WEIXIN_PAY = "http://test.weixin.bestdo.com/paybank/topay";
-
-    //微信key 后期改为配置文件
-    private static String Key = "51b04e15s04t9cd65o2ad88e6b055a0a";
 
     //支付充值消费接口
     public ResultBean payBank(Integer mid, String order_id, String order_uid, String goods_id, String desc, Integer amount,
@@ -54,13 +51,14 @@ public class PayService {
 
     /**
      * 微信支付
+     *
      * @param order
      * @param amount
      * @param url
      * @return
      * @throws Exception
      */
-    public ResultBean weixinPayBank(String order, String amount, String url) throws Exception {
+    public ResultBean weixinPayBank(String order, String amount, Integer url) throws Exception {
         SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
         parameters.put("order", order);
         parameters.put("amount", amount);
@@ -69,24 +67,52 @@ public class PayService {
         String characterEncoding = "UTF-8";
         String mySign = createSign(characterEncoding, parameters);
 
+        System.out.println("mySign   :  " + mySign);
+
+        mySign = mySign.substring(0, mySign.length() / 2);
+
+
         HttpClient client = new HttpClient();
         Request request = new Request();
-        request.setUrl(WEIXIN_PAY);
-        request.getParameters().add(new String[]{"order_id", order});
+        request.setUrl(HttpParams.weixin_url);
+        request.getParameters().add(new String[]{"o", order});
         request.getParameters().add(new String[]{"a", amount});
         request.getParameters().add(new String[]{"s", mySign});
-        request.getParameters().add(new String[]{"l", 4 + ""});
+        request.getParameters().add(new String[]{"l", 5 + ""});
         Response response = new Response();
 
-        client.doPost(request, response);
+        client.doGet(request, response);
 
         Object obj = response.getResponseData();
         String result = obj == null ? "" : obj.toString();
 
-        System.out.println(request);
+        System.out.println(result);
 
 
         return null;
+    }
+
+    /**
+     * 获取加密sign
+     * @param order
+     * @param amount
+     * @param url
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public String getWeiXinPaySign(String order, String amount, Integer url) throws NoSuchAlgorithmException {
+        SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
+        parameters.put("order", order);
+        parameters.put("amount", amount);
+        parameters.put("url", url);
+
+        String characterEncoding = "UTF-8";
+        String mySign = createSign(characterEncoding, parameters);
+
+        System.out.println("mySign   :  " + mySign);
+
+        mySign = mySign.substring(0, mySign.length() / 2);
+        return mySign;
     }
 
 
@@ -118,7 +144,7 @@ public class PayService {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static String createSign(String characterEncoding, SortedMap<Object, Object> parameters) {
+    public static String createSign(String characterEncoding, SortedMap<Object, Object> parameters) throws NoSuchAlgorithmException {
         StringBuffer sb = new StringBuffer();
         Set es = parameters.entrySet();//所有参与传参的参数按照accsii排序（升序）
         Iterator it = es.iterator();
@@ -131,8 +157,11 @@ public class PayService {
                 sb.append(k + "=" + v + "&");
             }
         }
-        sb.append("key=" + Key);
+        sb.append("key=" + HttpParams.weixin_key);
         String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
+        //String sign = MD5Util.getMd5(sb.toString().getBytes()).toUpperCase();
         return sign;
     }
+
+
 }

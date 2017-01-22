@@ -38,4 +38,9 @@ public class HttpParams {
 
     public static String project_no;//项目编号
 
+    public static String weixin_url;//微信支付地址
+
+    public static String weixin_key;//微信支付秘钥
+
+
 }

@@ -36,7 +36,6 @@ public class LoginController {
 
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
-
             User user = new User();
             user.setId(dataJSONObject.getInt("id"));
             user.setSid(dataJSONObject.getString("sid"));
@@ -46,10 +45,13 @@ public class LoginController {
             user.setLoginType(dataJSONObject.getString("loginType"));
             user.setScopeTime(dataJSONObject.getInt("scopeTime"));
             //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
-
             httpSession.setAttribute("user", user);
-
             resultBean.setData(StringUtils.EMPTY);
+
+            resultBean = userService.findUserInfo(user.getUid());
+            JSONObject userinfo = new JSONObject(resultBean.getData());
+            httpSession.setAttribute("userinfo", userinfo);
+
         }
 
         return resultBean;
@@ -110,6 +112,10 @@ public class LoginController {
             httpSession.setAttribute("user", user);
 
             resultBean.setData(StringUtils.EMPTY);
+
+            resultBean = userService.findUserInfo(user.getUid());
+            JSONObject userinfo = new JSONObject(resultBean.getData());
+            httpSession.setAttribute("userinfo", userinfo);
         }
         return resultBean;
     }

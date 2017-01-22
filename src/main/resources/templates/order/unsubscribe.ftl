@@ -60,8 +60,8 @@
         </div>
     </div>
 </div>
-<script src="js/jquery.js"></script>
-<script src="js/bestdo.js"></script>
+<script src="/js/jquery.js"></script>
+<script src="/js/bestdo.js"></script>
 <script>
     $(function(){
         $(".reasontxt").dateControl({
@@ -85,24 +85,32 @@
 
             $.ajax({
                 type: "POST",
-                url: "/order/unsubscribe",
+                url: "/order/submitunsubscribe",
                 data: {
                     "order_id": order_id,
                     "reason": reason
                 },
                 success: function (result) {
-                    if (200 === result.code) {
+                   /* if (200 === result.code) {
+                        console.info(result);
+                        alert("退订成功");
 
                     } else {
                         alert("获取订单状态出错")
-                    }
+                    }*/
+                    toResultPage(order_id, result.code);
                 }
             });
-
-
         })
-
     })
+
+    //跳转结果页
+    function toResultPage(order_id,code) {
+        window.location.href="/order/unsubscriberesult?order_id="+order_id+"&code="+code;
+    }
+    
+    
+    
 </script>
 </body>
 </html>
