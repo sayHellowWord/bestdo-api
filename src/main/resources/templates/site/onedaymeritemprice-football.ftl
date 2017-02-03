@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>预订-乒羽篮网</title>
+    <title>预订-足球</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!--忽略页面中的数字识别为电话号码-->
     <meta name="format-detection" content="telephone=no"/>
@@ -33,7 +33,7 @@
                         <span><a href="javascript:void(0)" class="on"
                                  data-day="${summary.priceSummaray.day}">${summary.formatDay}
                             <br>${summary.week}</a></span>
-                    <#else>
+                    <#else >
                         <span><a href="javascript:void(0)" data-day="${summary.priceSummaray.day}">${summary.formatDay}
                             <br>${summary.week}</a></span>
                     </#if>
@@ -57,11 +57,7 @@
                         </div>
                     </div>
                     <table id="row-table" cellpadding="0" cellspacing="0">
-                    <#--  <tr>
-                            <td class="true"><span><i>￥</i>50</span></td>
-                            <td><span></span></td>
-                            <td class="true on"><span><i>￥</i>50</span></td>
-                        </tr>-->
+
                     </table>
                 </div>
             </div>
@@ -125,8 +121,6 @@
             loadData(mer_item_id, mer_price_id, day);
         })
 
-
-        /*<td class="true"><span><i>￥</i>50</span></td> <td><span></span></td> <td class="true on"><span><i>￥</i>50</span></td>*/
         //时间段选择
         $("#row-table").on("click", ".true", function () {
 
@@ -140,7 +134,36 @@
                     alert("每次最多只能预定5片场地");
                     return;
                 } else {
+                    //每次只少连着三片
+                    //第几个td
+                    var index = $(this).index();
+                    var flag = false;
+
+                    //找下一个tr
+                    var firstBro = $(this).parent().next();
+                    var firstBroTd = $(firstBro).find("td")[index];
+                    if (!$(firstBroTd).hasClass("true")) {
+                        flag = true;
+                    }
+
+                    /*   var secondBro = $(firstBro).next();
+                       var secondBroTd =$(secondBro).find("td")[index];
+                       if (!$(secondBroTd).hasClass("true")) {
+                           flag = true;
+                       }
+
+                       if ($("#row-table").find(".on").length > 3) {
+                           alert("每次最多只能预定6片场地");
+                           return;
+                       }*/
+
+                    if (flag) {
+                        alert("至少要连续两片场地!");
+                        return;
+                    }
                     $(this).addClass("on");
+                    $(firstBroTd).addClass("on");
+                    // $(secondBroTd).addClass("on");
                     countChoose();
                 }
             }
@@ -153,11 +176,24 @@
                 return;
             }
             var book_day = $("#summary-day-list .on").data("day");
-            /* <td class="true"  data-money="{{prepay_price}}" data-piece_id="{{piece_id}}" data-start_hour="{{priceInfo.start_hour}}"  data-end_hour="{{priceInfo.end_hour}}">
- */
+
             //组织选中的片场信息
             var timeStr = '';
+            var flag = false;
             $("#row-table").find(".on").each(function () {
+
+                var index = $(this).index();
+
+                var prevBro = $(this).parent().prev();
+                var prevBroTd = $(prevBro).find("td")[index];
+
+                var nextBro = $(this).parent().next();
+                var nextBroTd = $(nextBro).find("td")[index];
+
+                if (!$(nextBroTd).hasClass("on") && !$(prevBroTd).hasClass("on") ) {
+                    flag = true;
+                }
+
                 var money = $(this).data("money");
                 var piece_id = $(this).data("piece_id");
                 var start_hour = $(this).data("start_hour");
@@ -165,10 +201,13 @@
                 timeStr = timeStr + money + "," + piece_id + "," + start_hour + "," + end_hour + ";";
             });
 
-//            var totalMoney = $("#has-choose-money").text().replace("￥", "");
+            if(flag){
+                alert("场地必须是连续的2块起订!");
+                return;
+            }
+
             var totalMoney = $("#has-choose-money").data("money");
 
-            // window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&book_day=" + book_day + "&cid=" + cid;
             window.location.href = "/order/createOrder?mer_item_id=" + mer_item_id + "&mer_price_id=" + mer_price_id +
                     "&book_day=" + book_day + "&cid=" + cid + "&timeStr=" + timeStr + "&totalMoney=" + totalMoney;
         })
@@ -180,11 +219,10 @@
         $("#has-choose-num").html($("#row-table").find(".on").length + "个");
         var money = 0;
         $("#row-table").find(".on").each(function () {
-//            var thisMoney = $(this).text().replace("￥", "");
             var thisMoney = $(this).data("money");
             money = money + thisMoney * 1;
         })
-        $("#has-choose-money").data("money",money);
+        $("#has-choose-money").data("money", money);
         money = Math.floor(money) / 100;
         $("#has-choose-money").html("￥" + money);
     }

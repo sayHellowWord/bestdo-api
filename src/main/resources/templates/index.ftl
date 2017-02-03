@@ -60,8 +60,8 @@
 <div id="nav">
     <div class="nav font12">
         <div class="navCont box">
-            <a href="javascript:void(0)" class="boxflex on"><span></span>首页</a>
-            <a href="/odds" class="boxflex"><span></span>特惠</a>
+            <a href="/" class="boxflex on"><span></span>首页</a>
+            <a href="/odds/index" class="boxflex"><span></span>特惠</a>
             <a href="/user/index" class="boxflex"><span></span>我的</a>
         </div>
     </div>

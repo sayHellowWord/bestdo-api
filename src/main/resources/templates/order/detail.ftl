@@ -17,7 +17,7 @@
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">订单详情</p></div>
             <div class="headerR"><a href="tel:${order.stadium.phone}" class="tel"></a></div>
         </div>
@@ -140,7 +140,7 @@
 <#--  支付状态  -->
 <#if order.status?number == 0>
 <div id="order-status-show" class="orderBtn font17">
-    ${canRepay}
+   <#-- ${canRepay}-->
     <#if canRepay?number == 1>
         <div class="ordreBtnCont">
             <div class="orderBtnL">

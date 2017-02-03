@@ -37,7 +37,10 @@ public class CreateOrderService {
     //篮球
     private static String CREATE_BASKETBALL_ORDER = "order/createBasketballOrder";
 
+    //台球
     private static String CREATE_TABLE_TENNIS_ORDER = "order/createTableTennisOrder";
+
+
 
     //创建健身订单
     public ResultBean createFitnessOrder(String service_id, int source, String uid, int card_type_id, int card_id, String account_no,

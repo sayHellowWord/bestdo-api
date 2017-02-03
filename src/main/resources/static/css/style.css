@@ -2222,11 +2222,11 @@ body {
 }
 
 .sportsel .slidemenuCont .i1:before {
-    background-image: url(../images/item/fliter_ic_golf.png);
+    background-image: url(../images/item/fliter_ic_football.png);
 }
 
 .sportsel .slidemenuCont .i2:before {
-    background-image: url(../images/item/fliter_ic_golf2.png);
+    background-image: url(../images/item/fliter_ic_pingpang.png);
 }
 
 .sportsel .slidemenuCont .i3:before {
@@ -2246,11 +2246,11 @@ body {
 }
 
 .sportsel .slidemenuCont .i7:before {
-    background-image: url(../images/item/fliter_ic_tennis.png);
+    background-image: url(../images/item/fliter_ic_basketball.png);
 }
 
 .sportsel .slidemenuCont .i8:before {
-    background-image: url(../images/item/fliter_ic_tennis.png);
+    background-image: url(../images/item/fliter_ic_billiards.png);
 }
 
 .sportsel .slidemenuCont .on {

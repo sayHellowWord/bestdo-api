@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 
 /**
- * Created by Administrator on 2017/1/11.
+ * 十分钟健身圈
  */
 @RequestMapping(value = "/cms/exercisehoop")
 @Controller

@@ -17,7 +17,7 @@
 <div id="header">
     <div class="header fixed">
         <div class="header box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">创建订单</p></div>
             <div class="headerR"></div>
         </div>
@@ -56,7 +56,7 @@
 <h1 class="creatTit font12">结算信息</h1>
 <ul class="blockinput">
     <li class="font14">
-        <span class="p1">￥${totalMoney}</span>
+        <span class="p1">￥${((totalMoney?number)/100)?string("#.##")}</span>
         <span class="tit">订单总额</span>
     </li>
 <#--    <li class="font14">
@@ -68,7 +68,7 @@
         <span class="tit">抵扣</span>
     </li>-->
     <li class="font14">
-        <span id="pay-total" class="p1 p2">￥${totalMoney}</span>
+        <span id="pay-total" class="p1 p2" data-money="${totalMoney}" >￥${((totalMoney?number)/100)?string("#.##")}</span>
         <span class="tit">支付金额</span>
     </li>
 </ul>
@@ -130,7 +130,8 @@
                 return;
             }
 
-            var order_money = $("#pay-total").text().replace("￥", "");
+//            var order_money = $("#pay-total").text().replace("￥", "");
+            var order_money = $("#pay-total").data("money");
 
             $.ajax({
                 type: "POST",
@@ -190,10 +191,10 @@
                         url = result.data;
                         sign = result.object;
                         //循环执行，每隔3秒钟执行一次 showalert（）
-                        window.setInterval(function () {
+                      /*  window.setInterval(function () {
                             checkOrder(order_id);
                         }, 3000);
-
+*/
                     } else {
                         alert("创建订单失败")
                     }

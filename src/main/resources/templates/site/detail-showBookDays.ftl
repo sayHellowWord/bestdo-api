@@ -79,6 +79,7 @@
                 if (200 === result.code) {
                     var source = $("#price-template").html();
                     var template = Handlebars.compile(source);
+
                     Handlebars.registerHelper('if_destine', function (value, options) {
                         if (value == 0) {
                             return "gray";
@@ -88,6 +89,11 @@
                             return "";
                         }
                     });
+
+                    Handlebars.registerHelper('if_price', function (value, options) {
+                        return Math.floor(value) / 100;
+                    });
+
                     var html = template(result.object);
                     $("#venuesBook").append(html);
 
@@ -119,7 +125,8 @@
                 <div class="price box2">
                     {{#if destine}}
                         {{#each priceInfos}}
-                        <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>
+                     <#--   <p class="p1 font20"><span>{{prepay_price}}</span><i class="font12">起</i></p>-->
+                        <p class="p1 font20"><span>{{#if_price prepay_price}} {{prepay_price}} {{/if_price}}</span><i class="font12">起</i></p>
                         {{/each}}
                     {{else}}
                     <div class="service box2"><p class="font12">不可预订</p></div>

@@ -1,8 +1,11 @@
 package com.saidian.web.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Administrator on 2017/1/5.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GoogDetail {
 
     private String id;

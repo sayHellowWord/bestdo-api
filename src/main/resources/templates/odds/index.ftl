@@ -18,13 +18,13 @@
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="/" class="back"></a></div>
-            <div class="headerC boxflex"><p class="font17">场馆预订</p></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
+            <div class="headerC boxflex"><p class="font17">特惠</p></div>
             <div class="headerR"></div>
         </div>
     </div>
 </div>
-<div class="chooseTab www25 font13">
+<#--<div class="chooseTab www25 font13">
     <div class="chooseTabCont">
         <a href="javascript:void(0)" data-tab="0">
             运动类型<span></span>
@@ -36,9 +36,9 @@
             距离<span></span>
         </a>
     </div>
-</div>
+</div>-->
 <!--运动类型-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
     <#if goodsTypes?? >
@@ -51,9 +51,9 @@
         </#list>
     </#if>
     </div>
-</div>
+</div>-->
 <!--行政区-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div id="administrative-area" class="slidemenuCont font14">
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
@@ -63,9 +63,9 @@
         </#list>
     </#if>
     </div>
-</div>
+</div>-->
 <!--距离-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div id="distance" class="slidemenuCont font14">
         <a href="javascript:void(0)" data-value="10000000000000000" data-distanacesrot="" class="on">不限距离</a>
@@ -73,7 +73,7 @@
         <a href="javascript:void(0)" data-value="5000" data-distanacesrot="">附近5km</a>
         <a href="javascript:void(0)" data-value="10000" data-distanacesrot="">附近10km</a>
     </div>
-</div>
+</div>-->
 <!--场馆列表-->
 <div class="wrapper">
     <!--场馆列表-->
@@ -118,7 +118,6 @@
             var mk = new BMap.Marker(r.point);
             map.addOverlay(mk);
             map.panTo(r.point);
-            //alert('您的位置：'+r.point.lng+','+r.point.lat);
             longitude = r.point.lng;
             latitude = r.point.lat;
             var merid = $("#sport-type").find(".on").data("merid");
@@ -134,7 +133,6 @@
 
         }
         else {
-            alert('failed'+this.getStatus());
             var merid = $("#sport-type").find(".on").data("merid");
             var radius = $("#distance").find(".on").data("value");
             var sort = $("#distance").find(".on").data("distanacesrot");
@@ -149,32 +147,8 @@
         }
     },{enableHighAccuracy: true})
 
-    //关于状态码
-    //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
-    //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
-    //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
-    //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
-    //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
-    //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
-    //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
-    //BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
-    //BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
-
-
     $(function () {
 
-        //初始化加载
-        /* var merid = $("#sport-type").find(".on").data("merid");
-         var radius = $("#distance").find(".on").data("value");
-         var sort = $("#distance").find(".on").data("distanacesrot");
-         var price_sort;
-         var page = 1;
-         var pagesize = 10;
-         var district = $("#administrative-area").find(".on").data("value");
-         $("#googDetail-list").html('');
-
-         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
- */
         /*筛选条件*/
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -235,7 +209,7 @@
         //$(".load-container").show();
         $.ajax({
             type: "POST",
-            url: "/site/search",
+            url: "/odds/search",
             data: {
                 "merid": merid,
                 "radius": radius,

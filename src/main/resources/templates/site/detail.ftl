@@ -54,6 +54,9 @@
         <!-- 时段性 109 游泳 108 健身 113 台球-->
     <#elseif detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 113 >
         <#include "detail-showBookDays.ftl">
+    <#--120 足球-->
+    <#elseif detail.cid?number == 120 >
+        <#include "detail-football.ftl">
     <#else>
      <#--   <div class="venuesInfo">
             <ul>

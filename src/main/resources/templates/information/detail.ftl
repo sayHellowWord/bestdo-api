@@ -17,7 +17,7 @@
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">${news.title}</p></div>
         </div>
     </div>
@@ -26,7 +26,7 @@
 <!-- 赛事具体内容 -->
 <div class="saishi">
     <p class="font20">${news.subTitle}</p>
-    <span class="font12">${news.createDate!}&nbsp&nbsp${news.author}</span>
+    <span class="font12">${news.createDate?string('yyyy年MM月dd HH:mm:ss')}&nbsp&nbsp${news.author}</span>
     <#list news.icon?split(";") as image>
         <img src="${image}">
     </#list>

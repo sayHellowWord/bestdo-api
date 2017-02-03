@@ -11,13 +11,12 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 
-
 <body>
 <!--头部公用-->
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex">
                 <p class="font17">体育组织</p>
             </div>
@@ -42,8 +41,11 @@
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 nearby">
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
-        <#--todo 测试数据待删除-->
-        <a href="javascript:void(0)" data-value="1935">亭湖区</a>
+    <#if regions??>
+        <#list regions as regions>
+            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+        </#list>
+    </#if>
     </div>
 </div>
 <!--排序-->

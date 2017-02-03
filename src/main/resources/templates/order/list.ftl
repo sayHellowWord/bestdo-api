@@ -16,7 +16,7 @@
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex">
                 <p class="font17">全部订单</p>
             </div>
@@ -33,12 +33,11 @@
         <a data-cid="108" href="javascript:void(0)" class="i4"><span>健身</span></a>
         <a data-cid="102" href="javascript:void(0)" class="i5"><span>羽毛球</span></a>
         <a data-cid="101" href="javascript:void(0)" class="i6"><span>网球</span></a>
-        <a data-cid="101" href="javascript:void(0)" class="i7"><span>篮球</span></a>
-        <a data-cid="101" href="javascript:void(0)" class="i8"><span>台球</span></a>
-        <a data-cid="101" href="javascript:void(0)" class="i1"><span>足球</span></a>
-        <a data-cid="101" href="javascript:void(0)" class="i2"><span>乒乓球</span></a>
+        <a data-cid="104" href="javascript:void(0)" class="i7"><span>篮球</span></a>
+        <a data-cid="113" href="javascript:void(0)" class="i8"><span>台球</span></a>
+        <a data-cid="120" href="javascript:void(0)" class="i1"><span>足球</span></a>
+        <a data-cid="106" href="javascript:void(0)" class="i2"><span>乒乓球</span></a>
     </div>
-    data-cid=""
 </div>
 <div class="wrapper">
     <!--订单状态-->
@@ -102,7 +101,6 @@
         //页面加载完后执行
         window.onload = function () {
             var status = $("#ul-order-status").find(".on").data("status");
-            var project_no = "";
             var cid = $("#div-order-type").find(".on").data("cid");
             var page = 1;
             var pagesize = 10;
@@ -112,7 +110,12 @@
 
         $(".slidemenuCont a").on("click", function () {
             var ix = $(".slidemenuCont a").index($(this));
-
+            var status = $("#ul-order-status").find(".on").data("status");
+            var cid = $("#div-order-type").find(".on").data("cid");
+            var page = 1;
+            var pagesize = 10;
+            $("#ul-order-list").html('');
+            search(status, cid, page, pagesize, 1);
         })
         $(".headerR .txt").tabEve({
             cls: ".slidemenu",
@@ -140,7 +143,6 @@
             $(".orderStadiusCont ul li").removeClass("on")
             $(this).addClass("on");
             var status = $("#ul-order-status").find(".on").data("status");
-            var project_no = "";
             var cid = $("#div-order-type").find(".on").data("cid");
             var page = 1;
             var pagesize = 10;

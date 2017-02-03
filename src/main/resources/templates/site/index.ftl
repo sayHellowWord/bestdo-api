@@ -18,7 +18,7 @@
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="/" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">场馆预订</p></div>
             <div class="headerR"></div>
         </div>
@@ -109,12 +109,12 @@
 
     // 百度地图API功能
     var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398,39.897445);
-    map.centerAndZoom(point,12);
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
 
     var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function(r){
-        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
             var mk = new BMap.Marker(r.point);
             map.addOverlay(mk);
             map.panTo(r.point);
@@ -134,7 +134,6 @@
 
         }
         else {
-            alert('failed'+this.getStatus());
             var merid = $("#sport-type").find(".on").data("merid");
             var radius = $("#distance").find(".on").data("value");
             var sort = $("#distance").find(".on").data("distanacesrot");
@@ -147,7 +146,7 @@
             venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
         }
-    },{enableHighAccuracy: true})
+    }, {enableHighAccuracy: true})
 
     //关于状态码
     //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
@@ -164,17 +163,17 @@
     $(function () {
 
         //初始化加载
-       /* var merid = $("#sport-type").find(".on").data("merid");
-        var radius = $("#distance").find(".on").data("value");
-        var sort = $("#distance").find(".on").data("distanacesrot");
-        var price_sort;
-        var page = 1;
-        var pagesize = 10;
-        var district = $("#administrative-area").find(".on").data("value");
-        $("#googDetail-list").html('');
+        /* var merid = $("#sport-type").find(".on").data("merid");
+         var radius = $("#distance").find(".on").data("value");
+         var sort = $("#distance").find(".on").data("distanacesrot");
+         var price_sort;
+         var page = 1;
+         var pagesize = 10;
+         var district = $("#administrative-area").find(".on").data("value");
+         $("#googDetail-list").html('');
 
-        venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-*/
+         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+ */
         /*筛选条件*/
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -220,7 +219,7 @@
     function clickSeach() {
         var merid = $("#sport-type").find(".on").data("merid");
         var radius = $("#distance").find(".on").data("value");
-        var sort =  $("#distance").find(".on").data("distanacesrot");
+        var sort = $("#distance").find(".on").data("distanacesrot");
         var price_sort;
         var page = 1;
         var pagesize = 10;
@@ -253,6 +252,11 @@
                     if (result.total > 0) {
                         var source = $("#googDetail-template").html();
                         var template = Handlebars.compile(source);
+
+                        Handlebars.registerHelper('if_price', function (value, options) {
+                            return Math.floor(value) / 100;
+                        });
+
                         var html = template(result.lists);
                         $(".load-container").hide();
                         $("#googDetail-list").append(html);
@@ -275,11 +279,12 @@
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="price font12">
-                <span class="font18">￥{{price}}</span>
+            <#-- <span class="font18">￥{{price}}</span>-->
+                <span class="font18">￥{{#if_price price}} {{price}} {{/if_price}}</span>
             </div>
             <div class="address font12">
                 <span class="d">{{geodist}}km</span>
-               <#-- <span class="q">{{region}}</span>-->
+            <#-- <span class="q">{{region}}</span>-->
                 <span class="p">{{region}}</span>
             </div>
         </div>

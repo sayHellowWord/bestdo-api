@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/1/15.
+ * 体育信息
  */
 @RequestMapping(value = "/cms/information")
 @Controller

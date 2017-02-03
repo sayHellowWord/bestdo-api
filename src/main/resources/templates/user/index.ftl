@@ -17,7 +17,7 @@
 <div id="header">
 	<div class="header">
 		<div class="headerCont box">
-			<div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+			<div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
 			<div class="headerC boxflex"><p class="font17">我的</p></div>
 			
 		</div>
@@ -55,9 +55,9 @@
 <div id="nav">
 	<div class="nav font12">
 		<div class="navCont box">
-			<a href="javascript:void(0)" class="boxflex"><span></span>首页</a>
-			<a href="javascript:void(0)" class="boxflex"><span></span>特惠</a>
-			<a href="javascript:void(0)" class="boxflex on"><span></span>我的</a>
+            <a href="/" class="boxflex on"><span></span>首页</a>
+            <a href="/odds/index" class="boxflex"><span></span>特惠</a>
+            <a href="/user/index" class="boxflex"><span></span>我的</a>
 		</div>
 	</div>
 </div>

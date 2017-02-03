@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Administrator on 2017/1/5.
+ * 用户相关
  */
 @Service
 public class UserService {
@@ -234,13 +234,11 @@ public class UserService {
      * @return
      * @throws Exception
      */
-    public ResultBean modifyUserInfo(String uid, String nickName, String realName) throws Exception {
+    public ResultBean modifyUserInfo(String uid, String key, String value) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uid", uid);
-        if(!Strings.isNullOrEmpty(nickName))
-            jsonObject.put("nickName", nickName);
-        if(!Strings.isNullOrEmpty(realName))
-            jsonObject.put("realName", realName);
+        if (!Strings.isNullOrEmpty(value))
+            jsonObject.put(key, value);
 
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + MODIFY_USER_INFO, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
         return HttpResultUtil.result2Bean(result);

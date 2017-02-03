@@ -3,10 +3,13 @@ package com.saidian.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.saidian.bean.Result;
+import com.saidian.bean.ResultBean;
+import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.Match;
 import com.saidian.web.bean.cms.MatchDynamic;
 import com.saidian.web.platform.PublicService;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 
 /**
- * Created by Administrator on 2017/1/11.
+ * 体育赛事
  */
 @RequestMapping(value = "cms/match")
 @Controller
@@ -39,7 +42,7 @@ public class CMSMatchController {
     @RequestMapping("/list")
     public String matchList(ModelMap modelMap) {
         //行政区
-      /*  ResultBean regionsResultBean = null;
+        ResultBean regionsResultBean = null;
         try {
             regionsResultBean = publicService.regionGetChildren(HttpParams.cityId);
         } catch (Exception e) {
@@ -47,7 +50,6 @@ public class CMSMatchController {
             e.printStackTrace();
         }
         modelMap.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
-       */
         return "/match/list";
     }
 
@@ -109,8 +111,8 @@ public class CMSMatchController {
      */
     @RequestMapping("/list/yc")
     @ResponseBody
-    public Result<Match> ycMatchList(String keyword, Integer page, Integer rows) throws Exception {
-        String result = restClient.matchList(Strings.isNullOrEmpty(keyword) ? "" : keyword, null == page ? 1 : page, null == rows ? 10 : rows);
+    public Result<Match> ycMatchList(String district, Integer page, Integer rows) throws Exception {
+        String result = restClient.matchList(Strings.isNullOrEmpty(district) ? "" : district, null == page ? 1 : page, null == rows ? 10 : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<Match> matchResult = null;
         try {

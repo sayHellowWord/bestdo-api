@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Administrator on 2017/1/5.
+ * 用户相关
  */
 @RequestMapping(value = "user")
 @Controller
@@ -39,7 +39,7 @@ public class UserController {
     @RequestMapping(value = "/index")
     public String index(HttpSession httpSession, HttpServletRequest httpServletRequest, ModelMap map) throws Exception {
         //TODO 测试
-         User user = (User) httpSession.getAttribute("user");
+        User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             map.addAttribute("back_url", httpServletRequest.getRequestURI() + (Strings.isNullOrEmpty(httpServletRequest.getQueryString()) ? "" : "?" + httpServletRequest.getQueryString()));
             return "login/index";
@@ -64,20 +64,48 @@ public class UserController {
 
         JSONObject jsonObject = new JSONObject(httpSession.getAttribute("userinfo").toString());
 
-        map.addAttribute("userinfo",jsonObject);
+        map.addAttribute("userinfo", jsonObject);
 
         String name = jsonObject.getString("telephone");
-        if (jsonObject.has("realName"))
+        if (jsonObject.has("realName")){
             name = jsonObject.getString("realName");
+        }
         map.addAttribute("name", name);
 
         if (jsonObject.has("nickName")) {
             map.addAttribute("nickName", jsonObject.getString("nickName"));
+        }else {
+            map.addAttribute("nickName", "");
         }
-        map.addAttribute("nickName", "");
         return "user/personalprofile";
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "modifyUserInfo")
+    public ResultBean modifyUserInfo(String key, String value, HttpSession httpSession) throws Exception {
+        //todo udi
+        JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
+        String uid = jsonObject.getString("uid");
+        ResultBean resultBean = userService.modifyUserInfo(uid, key, value);
+        if (200 == resultBean.getCode()) {
+            ResultBean userBean = userService.findUserInfo(uid);
+            JSONObject userinfo = new JSONObject(userBean.getData());
+            httpSession.setAttribute("userinfo", userinfo);
+        }
+        return resultBean;
+    }
+
+    @RequestMapping(value = "modifynickname")
+    public String modifynickname(){
+        return "/user/modifynickname";
+    }
+
+
+    @RequestMapping(value = "modifyrealname")
+    public String modifyrealname(){
+        return "/user/modifyrealname";
+    }
 
     @ResponseBody
     @RequestMapping(value = "accountRegister")

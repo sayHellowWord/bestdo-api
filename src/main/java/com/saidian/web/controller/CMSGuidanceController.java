@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 
 /**
- * Created by Administrator on 2017/1/15.
+ * 健身指导
  */
 @RequestMapping(value = "/cms/guidance")
 @Controller

@@ -102,10 +102,10 @@ public class RESTClient {
     }
 
     //教练列表
-    public String coachList(String name, String project, String rank, String state, Integer page, Integer rows) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listCoachWX?name={name}&project={project}" +
+    public String coachList(String trainId, String name, String project, String rank, String state, Integer page, Integer rows) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listCoachWX?trainId={trainId}&name={name}&project={project}" +
                         "&rank={rank}&state={state}&page={page}&rows={rows}", null, String.class,
-                name, project, rank, state, page, rows);
+                trainId, name, project, rank, state, page, rows);
         return result;
     }
 
@@ -143,6 +143,14 @@ public class RESTClient {
                 null, String.class, id);
         return result;
     }
+
+    //查找组织动态
+    public String findOrganizationDynamic(String oId, Integer page, Integer rows) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "orgn/listDynamicWX?oId={oId}&page={page}&rows={rows}",
+                null, String.class, oId, page, rows);
+        return result;
+    }
+
 
     //查找组织冬天
     public String findDynamic(String id) {

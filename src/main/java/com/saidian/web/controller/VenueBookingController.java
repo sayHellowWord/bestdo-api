@@ -222,6 +222,27 @@ public class VenueBookingController {
         return "/site/onedaymeritemprice";
     }
 
+    /**
+     * 跳转到小时型库存页面——足球
+     *
+     * @return
+     */
+    @RequestMapping(value = "toOneDayMerItemPricefootball")
+    public String toOneDayMerItemPricefootball(String mer_item_id, String mer_price_id, String cid, String day, ModelMap modelMap) throws Exception {
+
+        //获取八天价格汇总以及库存汇总(乒羽篮网）
+        ResultBean priceAndInventorySummaryCommon = bTiemService.priceAndInventorySummaryCommon(mer_item_id, mer_price_id, cid);
+
+        modelMap.addAttribute("mer_item_id", mer_item_id);
+        modelMap.addAttribute("mer_price_id", mer_price_id);
+        modelMap.addAttribute("day", day);
+        modelMap.addAttribute("cid", cid);
+        modelMap.addAttribute("priceAndInventorySummaryCommon", priceAndInventorySummaryCommon.getLists());
+
+        return "/site/onedaymeritemprice-football";
+    }
+
+
     //获取日期型 某一天各片场信息
     @RequestMapping(value = "getOneDayItemPriceForTimeinterval")
     @ResponseBody
@@ -231,7 +252,10 @@ public class VenueBookingController {
         OneDayItemPrice oneDayItemPrice = oneDayMerItemPrice.getObject();
 
         //片场库存信息
-        List<OneDayItemPrice.InventoryInfo> inventoryInfos = oneDayItemPrice.getInventoryInfos();
+        List<OneDayItemPrice.InventoryInfo> inventoryInfos = new ArrayList<OneDayItemPrice.InventoryInfo>();
+        if (null != oneDayItemPrice && null != oneDayItemPrice.getInventoryInfos())
+            inventoryInfos = oneDayItemPrice.getInventoryInfos();
+
 
         //安装片场名称排序
         //排序器
@@ -297,6 +321,7 @@ public class VenueBookingController {
                 rows.set(i, row);
             }
         }
+
         Map<String, List> sMap = new HashMap<String, List>();
         sMap.put("timeList", timeList);
         sMap.put("nameList", nameList);

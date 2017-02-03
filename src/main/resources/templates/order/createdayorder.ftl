@@ -17,7 +17,7 @@
 <div id="header">
     <div class="header">
         <div class="headerCont box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">创建订单</p></div>
             <div class="headerR"></div>
         </div>
@@ -45,7 +45,7 @@
         <span class="tit2">手机</span>
         <div class="cont2 boxflex">
             <a href="javascript:void(0)" class="close"></a>
-            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}15810045436">
+            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}">
         </div>
     </li>
 </ul>
@@ -53,11 +53,11 @@
 <h1 class="creatTit font12">结算信息</h1>
 <ul class="blockinput">
     <li class="font14">
-        <span id="order-total" class="p1">￥${priceInfo.prepay_price}</span>
+        <span id="order-total" class="p1">￥${((priceInfo.prepay_price?number)/100)?string("#.##")}</span>
         <span class="tit">订单总额</span>
     </li>
     <li class="font14">
-        <span id="pay-total" class="p1 p2">￥${priceInfo.prepay_price}</span>
+        <span id="pay-total" class="p1 p2" data-price="${priceInfo.prepay_price}">￥${((priceInfo.prepay_price?number)/100)?string("#.##")}</span>
         <span class="tit">支付金额</span>
     </li>
 </ul>
@@ -142,7 +142,8 @@
                 return;
             }
 
-            var order_money = $("#pay-total").text().replace("￥", "");
+          //  var order_money = $("#pay-total").text().replace("￥", "");
+            var order_money = $("#pay-total").data("price");
 
             $.ajax({
                 type: "POST",
@@ -203,9 +204,9 @@
                         url = result.data;
                         sign = result.object;
                         //循环执行，每隔3秒钟执行一次 showalert（）
-                        window.setInterval(function () {
+                      /*  window.setInterval(function () {
                             checkOrder(order_id);
-                        }, 3000);
+                        }, 3000);*/
 
                     } else {
                         alert("创建订单失败")

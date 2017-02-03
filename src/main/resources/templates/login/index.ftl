@@ -16,7 +16,7 @@
 <div id="header">
     <div class="header fixed">
         <div class="headerCont box">
-            <div class="headerL"><a href="javascript:void(0)" class="back"></a></div>
+            <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">登录</p></div>
             <div class="headerR"><a href="../login/register" class="txt2 font14">注册</a></div>
         </div>

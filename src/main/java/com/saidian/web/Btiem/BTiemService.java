@@ -388,6 +388,13 @@ public class BTiemService {
                     }
                     priceAndInventorySummaryCommon.setFormatDay(dateTime.toString("MM月dd日"));*/
                     priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
+                } else{
+                    //未配置价格异常处理
+                    PriceSummaray priceSummaray = new PriceSummaray();
+                    priceSummaray.setMin_price("0.00");
+                    priceSummaray.setMax_price("0.00");
+                    priceSummaray.setDay(key);
+                    priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
                 }
                 //日期处理
                 DateTime todayDateTime = new DateTime();

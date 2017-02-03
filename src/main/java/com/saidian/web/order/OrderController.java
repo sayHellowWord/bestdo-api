@@ -118,6 +118,7 @@ public class OrderController {
             case 102:
             case 104:
             case 106:
+            case 120:
                 return "order/createtimeorder";
         }
         //TODO 创建订单失败
@@ -214,6 +215,17 @@ public class OrderController {
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
                 dayResult(resultBean);
+                break;
+            case 120://足球
+                timeParams(mer_price_id, play_time, timeStr, items);
+                resultBean = createOrderService.createFootballOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
+                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        "", "0", book_phone, "", "", items,
+                        "1", order_money, 0, order_money);
+
+                jsonR = new JSONObject(resultBean.getData());
+                resultBean.setObject(ImmutableBiMap.of("oid", jsonR.getString("oid"), "mer_item_id", jsonR.getString("mer_item_id")
+                        , "pay_money", jsonR.getString("pay_money")));
                 break;
             case 102://羽毛球
                 timeParams(mer_price_id, play_time, timeStr, items);
