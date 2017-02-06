@@ -150,7 +150,7 @@
         </div>
     <#else>
         <div class="ordreBtnCont">
-            <a href="javascript:void(0)" class="buyBtn">重新预订</a>
+            <a href="/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}" class="buyBtn">重新预订</a>
         </div>
     </#if>
 </div>
@@ -173,10 +173,8 @@
     </div>
     <script src="/js/jquery.js"></script>
     <script>
-
-
         //倒计时
-        var m = '${diffMinutes}';
+        /* var m = '${diffMinutes}';
         var s = '${diffSeconds}';
         function showtime() {
             document.getElementById('count-down-re-pay-time').innerHTML = m + ":" + s;
@@ -193,8 +191,33 @@
         }
         var settime = setInterval(function () {
             showtime();
-        }, 1000);
+        }, 1000);*/
+        var minute = '${diffMinutes}';
+        var second = '${diffSeconds}';
+        var mer_item_id = '${order.mer_item_id}';
+        var mer_price_id = '${order.items[0].mer_price_id}';
+        var cid = '${order.cid}';
+        function lxfEndtime(){
+            if(second <= 0 && minute<=0){
+                document.getElementById('order-status-show').innerHTML ="<div class='ordreBtnCont'>" +
+                        "<a href='/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}' class='buyBtn'>重新预订</a> </div>";
+                return false;
+            }
+            if(second == 0) {
+                second = 59;
+            } else {
+                second--;
+            }
+            second = second<10?('0'+second):second;
 
+            if(second == 59 && minute>0) {
+                minute--;
+            }
+            //minute = minute<10?('0'+minute):minute;
+
+            document.getElementById('count-down-re-pay-time').innerHTML = minute + ":" + second;
+            var t = setTimeout("lxfEndtime()",1000);
+        };
 
 
         //判断是否为微信支付
@@ -212,6 +235,10 @@
         var amount = '${order.order_money}';
 
         $(function () {
+
+            //倒计时
+            lxfEndtime();
+
             //去支付点击
             $("#topaybtn").click(function () {
                 $("#choose-pay-type").show();

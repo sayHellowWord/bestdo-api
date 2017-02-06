@@ -19,12 +19,14 @@ public class GoodsType {
 
     private String imgurl;
 
+    private String client_name;
+
     //商品明细ids(多个用逗号分隔)
     private String mer_item_ids;
 
     @Override
     public String toString() {
-        return "Goods{" +
+        return "GoodsType{" +
                 "id='" + id + '\'' +
                 ", merid='" + merid + '\'' +
                 ", name='" + name + '\'' +
@@ -32,6 +34,8 @@ public class GoodsType {
                 ", alias='" + alias + '\'' +
                 ", sport='" + sport + '\'' +
                 ", imgurl='" + imgurl + '\'' +
+                ", client_name='" + client_name + '\'' +
+                ", mer_item_ids='" + mer_item_ids + '\'' +
                 '}';
     }
 
@@ -97,5 +101,13 @@ public class GoodsType {
 
     public void setMer_item_ids(String mer_item_ids) {
         this.mer_item_ids = mer_item_ids;
+    }
+
+    public String getClient_name() {
+        return client_name;
+    }
+
+    public void setClient_name(String client_name) {
+        this.client_name = client_name;
     }
 }

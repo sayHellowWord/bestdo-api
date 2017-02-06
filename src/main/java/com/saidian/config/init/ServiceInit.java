@@ -41,6 +41,9 @@ public class ServiceInit implements CommandLineRunner {
         //卡种id
         HttpParams.cardId = env.getProperty("service.card.id");
 
+        //特惠卡种id
+        HttpParams.oddscardId = env.getProperty("service.card.id.odds");
+
         //城市信息
         HttpParams.cityId = env.getProperty("server.city.id");
 

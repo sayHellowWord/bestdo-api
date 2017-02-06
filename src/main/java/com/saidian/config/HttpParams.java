@@ -18,7 +18,9 @@ public class HttpParams {
 
     public static String serviceType;
 
-    public static String cardId;
+    public static String cardId;//卡种id
+
+    public static String oddscardId;//特惠卡种id
 
     public static String cityId;
 

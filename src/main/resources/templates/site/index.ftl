@@ -44,9 +44,9 @@
     <#if goodsTypes?? >
         <#list goodsTypes as goodsType>
             <#if goodsType_index == 0  >
-                <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.name}</a>
+                <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.sport}</a>
             <#else >
-                <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.name}</a>
+                <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>
             </#if>
         </#list>
     </#if>

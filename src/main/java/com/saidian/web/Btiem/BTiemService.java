@@ -79,7 +79,9 @@ public class BTiemService {
                 goods.setName(goodsJsonObject.getString("name"));
                 goods.setCid(goodsJsonObject.getString("cid"));
                 goods.setAlias(goodsJsonObject.getString("alias"));
+                goods.setSport(goodsJsonObject.getString("sport"));
                 goods.setImgurl(goodsJsonObject.getString("imgurl"));
+                goods.setClient_name(goodsJsonObject.getString("client_name"));
                 lists.add(goods);
             }
             resultBean.setLists(lists);

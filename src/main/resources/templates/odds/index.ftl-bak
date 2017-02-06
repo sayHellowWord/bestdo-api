@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title>特惠商品</title>
+    <title>场馆列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
     <meta name="format-detection" content="telephone=no"/>
@@ -24,10 +24,10 @@
         </div>
     </div>
 </div>
-<div class="chooseTab www25 font13">
+<#--<div class="chooseTab www25 font13">
     <div class="chooseTabCont">
         <a href="javascript:void(0)" data-tab="0">
-            特惠项目<span></span>
+            运动类型<span></span>
         </a>
         <a href="javascript:void(0)" data-tab="1">
             行政区<span></span>
@@ -36,24 +36,24 @@
             距离<span></span>
         </a>
     </div>
-</div>
+</div>-->
 <!--运动类型-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
     <#if goodsTypes?? >
         <#list goodsTypes as goodsType>
             <#if goodsType_index == 0  >
-                <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.client_name}</a>
+                <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.name}</a>
             <#else >
-                <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.client_name}</a>
+                <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.name}</a>
             </#if>
         </#list>
     </#if>
     </div>
-</div>
+</div>-->
 <!--行政区-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div id="administrative-area" class="slidemenuCont font14">
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
@@ -63,9 +63,9 @@
         </#list>
     </#if>
     </div>
-</div>
+</div>-->
 <!--距离-->
-<div class="slidemenu">
+<#--<div class="slidemenu">
     <div class="slidebg"></div>
     <div id="distance" class="slidemenuCont font14">
         <a href="javascript:void(0)" data-value="10000000000000000" data-distanacesrot="" class="on">不限距离</a>
@@ -73,7 +73,7 @@
         <a href="javascript:void(0)" data-value="5000" data-distanacesrot="">附近5km</a>
         <a href="javascript:void(0)" data-value="10000" data-distanacesrot="">附近10km</a>
     </div>
-</div>
+</div>-->
 <!--场馆列表-->
 <div class="wrapper">
     <!--场馆列表-->
@@ -99,19 +99,6 @@
     <div class="loadCont"></div>
     <div class="loadBg"></div>
 </div>-->
-
-<!--导航-->
-<div id="nav">
-    <div class="nav font12">
-        <div class="navCont box">
-            <a href="/" class="boxflex"><span></span>首页</a>
-            <a href="/odds/index" class="boxflex  on"><span></span>特惠</a>
-            <a href="/user/index" class="boxflex"><span></span>我的</a>
-        </div>
-    </div>
-</div>
-
-
 <!--地图图标-->
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
@@ -122,12 +109,12 @@
 
     // 百度地图API功能
     var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398, 39.897445);
-    map.centerAndZoom(point, 12);
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
 
     var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
             var mk = new BMap.Marker(r.point);
             map.addOverlay(mk);
             map.panTo(r.point);
@@ -158,8 +145,7 @@
             venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
         }
-    }, {enableHighAccuracy: true})
-
+    },{enableHighAccuracy: true})
 
     $(function () {
 
@@ -208,7 +194,7 @@
     function clickSeach() {
         var merid = $("#sport-type").find(".on").data("merid");
         var radius = $("#distance").find(".on").data("value");
-        var sort = $("#distance").find(".on").data("distanacesrot");
+        var sort =  $("#distance").find(".on").data("distanacesrot");
         var price_sort;
         var page = 1;
         var pagesize = 10;
@@ -241,11 +227,6 @@
                     if (result.total > 0) {
                         var source = $("#googDetail-template").html();
                         var template = Handlebars.compile(source);
-
-                        Handlebars.registerHelper('if_price', function (value, options) {
-                            return Math.floor(value) / 100;
-                        });
-
                         var html = template(result.lists);
                         $(".load-container").hide();
                         $("#googDetail-list").append(html);
@@ -268,8 +249,7 @@
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="price font12">
-            <#-- <span class="font18">￥{{price}}</span>-->
-                <span class="font18">￥{{#if_price price}} {{price}} {{/if_price}}</span>
+                <span class="font18">￥{{price}}</span>
             </div>
             <div class="address font12">
                 <span class="d">{{geodist}}km</span>

@@ -59,10 +59,6 @@ public class VenueBookingController {
         List<GoodsType> goodsTypes = null;
         if (null != goodsResultBean && null != goodsResultBean.getLists()) {
             goodsTypes = goodsResultBean.getLists();
-            for (GoodsType goodsType : goodsTypes) {
-
-
-            }
         }
         //行政区
         ResultBean regionsResultBean = null;
