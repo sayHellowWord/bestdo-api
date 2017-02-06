@@ -119,6 +119,7 @@
 
     var longitude = '${coordinate.lng}';
     var latitude = '${coordinate.lat}';
+    var cardId = '${cardId}';
 
     // 百度地图API功能
     var map = new BMap.Map("allmap");
@@ -197,7 +198,7 @@
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
             var cid = $(this).data("cid");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid+ "&cardId=" + cardId;
         });
 
 

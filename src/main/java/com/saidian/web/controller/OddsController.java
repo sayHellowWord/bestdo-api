@@ -156,6 +156,9 @@ public class OddsController {
         map.addAttribute("goodsTypes", goodsTypes);
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
+
+        map.addAttribute("cardId", HttpParams.oddscardId);
+
         return "odds/index";
     }
 

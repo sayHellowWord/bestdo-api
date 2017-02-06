@@ -21,6 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -39,6 +40,11 @@ public class VenueBookingController {
 
     @Autowired
     PublicService publicService;//公共服务
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
     /**
      * 场馆列表
@@ -83,6 +89,10 @@ public class VenueBookingController {
         map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
         // map.addAttribute("lng", lntAndLatResultBean);
         map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
+
+
+        map.addAttribute("cardId", HttpParams.cardId);
+
         return "site/index";
     }
 
@@ -129,7 +139,7 @@ public class VenueBookingController {
     }
 
     @RequestMapping(value = "toDetail")
-    public String toDetail(String mer_item_id, String mer_price_id, String cid, ModelMap map) throws Exception {
+    public String toDetail(String mer_item_id, String mer_price_id, String cid,String cardId, ModelMap map,HttpSession httpSession) throws Exception {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
 //        if(dataJsonObject.has("data") && dataJsonObject.optJSONObject("data") != null){
@@ -155,6 +165,10 @@ public class VenueBookingController {
         map.addAttribute("mer_item_id", mer_item_id);
         map.addAttribute("mer_price_id", Strings.isNullOrEmpty(mer_price_id) ? "" : mer_price_id);
         map.addAttribute("cid", Strings.isNullOrEmpty(cid) ? "" : cid);
+
+        //TODO  卡种id 当用户打开两个页面下单时会出现卡种id错误 待修正（注 app和微信不会出现）
+        httpSession.setAttribute("cardid",cardId);
+
         return "site/detail";
     }
 

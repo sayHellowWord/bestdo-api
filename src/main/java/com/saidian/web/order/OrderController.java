@@ -138,6 +138,8 @@ public class OrderController {
         JSONObject userObject = (JSONObject) httpSession.getAttribute("userinfo");
         String uid = userObject.getString("uid");
 
+        card_id = Integer.parseInt((String) httpSession.getAttribute("cardid"));
+
         //魏继鹏测试环境数据 todo
         //  String uid = "522160521120318tRS";
         //武波
@@ -163,7 +165,7 @@ public class OrderController {
                 items.put(jsonObject);
 
                 resultBean = createOrderService.createFitnessOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "",
                         items, "1", order_money, 0, order_money);
                 dayResult(resultBean);
@@ -183,7 +185,7 @@ public class OrderController {
                 items.put(jsonObject);
 
                 resultBean = createOrderService.createSwimOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "",
                         items, "1", order_money, 0, order_money);
                 dayResult(resultBean);
@@ -202,7 +204,7 @@ public class OrderController {
                 items.put(jsonObject);
 
                 resultBean = createOrderService.createMixOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "",
                         items, "1", order_money, 0, order_money);
                 dayResult(resultBean);
@@ -211,7 +213,7 @@ public class OrderController {
                 //小时型
                 timeParams(mer_price_id, play_time, timeStr, items);
                 resultBean = createOrderService.createTennisOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
                 dayResult(resultBean);
@@ -219,7 +221,7 @@ public class OrderController {
             case 120://足球
                 timeParams(mer_price_id, play_time, timeStr, items);
                 resultBean = createOrderService.createFootballOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
 
@@ -230,7 +232,7 @@ public class OrderController {
             case 102://羽毛球
                 timeParams(mer_price_id, play_time, timeStr, items);
                 resultBean = createOrderService.createBadmintonOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
 
@@ -241,7 +243,7 @@ public class OrderController {
             case 104://篮球
                 timeParams(mer_price_id, play_time, timeStr, items);
                 resultBean = createOrderService.createBasketballOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
                 jsonR = new JSONObject(resultBean.getData());
@@ -251,7 +253,7 @@ public class OrderController {
             case 106://乒乓球
                 timeParams(mer_price_id, play_time, timeStr, items);
                 resultBean = createOrderService.createTableTennisOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
-                        423, 0, "", cid.toString(), mer_item_id, book_day,
+                        card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
                 jsonR = new JSONObject(resultBean.getData());

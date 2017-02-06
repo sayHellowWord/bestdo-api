@@ -106,6 +106,7 @@
 
     var longitude = '${coordinate.lng}';
     var latitude = '${coordinate.lat}';
+    var cardId = '${cardId}';
 
     // 百度地图API功能
     var map = new BMap.Map("allmap");
@@ -162,18 +163,6 @@
 
     $(function () {
 
-        //初始化加载
-        /* var merid = $("#sport-type").find(".on").data("merid");
-         var radius = $("#distance").find(".on").data("value");
-         var sort = $("#distance").find(".on").data("distanacesrot");
-         var price_sort;
-         var page = 1;
-         var pagesize = 10;
-         var district = $("#administrative-area").find(".on").data("value");
-         $("#googDetail-list").html('');
-
-         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
- */
         /*筛选条件*/
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -208,7 +197,7 @@
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
             var cid = $(this).data("cid");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid+ "&cardId=" + cardId;
         });
 
 
