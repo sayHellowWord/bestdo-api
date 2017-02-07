@@ -299,8 +299,8 @@ public class OrderController {
             int diffSeconds = Seconds.secondsBetween(createTimeDateTime, currentTimeDateTime).getSeconds() % 60;
             if (diffMinutes < 15 || (diffMinutes == 14 && diffSeconds < 30)) {//小于30秒 才让倒计时不然太快没意义（减少网络传输误差）
                 modelMap.addAttribute("canRepay", 1);
-              /*  modelMap.addAttribute("diffMinutes", 15 - diffMinutes);*/
-                modelMap.addAttribute("diffMinutes", 5 - diffMinutes);
+                modelMap.addAttribute("diffMinutes", 14- diffMinutes);
+                /*modelMap.addAttribute("diffMinutes", 5 - diffMinutes);*/
                 modelMap.addAttribute("diffSeconds", 60 - diffSeconds);
             } else {
                 modelMap.addAttribute("canRepay", 0);

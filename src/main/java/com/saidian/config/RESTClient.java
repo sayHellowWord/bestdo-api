@@ -1,5 +1,6 @@
 package com.saidian.config;
 
+import com.google.common.base.Strings;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -87,9 +88,11 @@ public class RESTClient {
                         "&district={district}&signState={signState}&shelves={shelves}&state={state}&page={page}" +
                         "&rows={rows}&time_sort={time_sort}",
                 null, String.class, name, project, district, signState, shelves, state, page, rows, time_sort);*/
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listTrainWX?district={district}&page={page}" +
-                        "&rows={rows}&time_sort={time_sort}",
-                null, String.class, district, page, rows, time_sort);
+        String url = "train/listTrainWX?page={page}&rows={rows}&time_sort={time_sort}";
+        if (!Strings.isNullOrEmpty(district))
+            url += "&district={district}";
+
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + url,null, String.class, page, rows, time_sort, district);
 
         return result;
     }

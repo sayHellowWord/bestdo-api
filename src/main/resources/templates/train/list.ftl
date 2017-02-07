@@ -42,7 +42,7 @@
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
 	<#if regions??>
 		<#list regions as regions>
-            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+            <a href="javascript:void(0)" data-value="${regions.name}">${regions.name}</a>
 		</#list>
 	</#if>
 	</div>
