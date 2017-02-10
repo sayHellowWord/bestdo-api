@@ -1,9 +1,11 @@
 package com.saidian.web.bean.cms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MatchDynamic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -37,8 +39,7 @@ public class MatchDynamic implements Serializable {
 
 	private String title;
 
-	public MatchDynamic() {
-	}
+	private String  createTimeStr;
 
 	public Integer getId() {
 		return this.id;
@@ -160,4 +161,11 @@ public class MatchDynamic implements Serializable {
 		this.title = title;
 	}
 
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
 }

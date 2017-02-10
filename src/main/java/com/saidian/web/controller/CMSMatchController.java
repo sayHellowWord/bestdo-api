@@ -10,6 +10,7 @@ import com.saidian.web.bean.cms.Match;
 import com.saidian.web.bean.cms.MatchDynamic;
 import com.saidian.web.platform.PublicService;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 体育赛事
@@ -73,10 +78,18 @@ public class CMSMatchController {
         }
 
         result = restClient.matchDynamicList(id, 1, 15);
-        Result<MatchDynamic> matchDynamicResult = null;
         try {
-            matchDynamicResult = objectMapper.readValue(result, Result.class);
-            modelMap.addAttribute("dynamic", matchDynamicResult.getData());
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            List<MatchDynamic> matchDynamics = new ArrayList<MatchDynamic>();
+            DateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject matchDynamicJson = jsonArray.getJSONObject(i);
+                MatchDynamic matchDynamic = objectMapper.readValue(matchDynamicJson.toString(), MatchDynamic.class);
+                matchDynamic.setCreateTimeStr(simpleDateFormat.format(matchDynamic.getCreateTime()));
+                matchDynamics.add(matchDynamic);
+            }
+            modelMap.addAttribute("dynamics", matchDynamics);
         } catch (IOException e) {
             logger.error(LOG_PRE + "获取赛事动态列表出错");
             e.printStackTrace();
@@ -103,7 +116,6 @@ public class CMSMatchController {
     /**
      * 体育赛事列表 接口
      *
-     * @param keyword
      * @param page
      * @param rows
      * @return

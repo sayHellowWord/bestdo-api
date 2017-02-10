@@ -63,6 +63,12 @@
         </ul>
     </div>
 
+    <!--场馆列表结束-->
+    <div id="no-result" class="empty">
+        <div class="icon"></div>
+        <p class="font14">暂无相关相关场地信息</p>
+    </div>
+
 </div>
 
 <!--地图图标-->
@@ -171,6 +177,10 @@
 
     //只负责查询和追加数据，如果需要刷新页面（如查询）请执行前自己情况list数据
     function search(area, order, page, rows) {
+
+        //没有结果提示隐藏
+        $("#no-result").hide();
+
         $.ajax({
             type: "POST",
             url: "/cms/match/list/yc",
@@ -181,8 +191,6 @@
                 "rows": rows
             },
             success: function (resultData) {
-                console.info(resultData);
-
                 resultHandler(resultData);
             }
         });
@@ -204,8 +212,15 @@
                     return "";
                 }
             });
-            var html = template(result.data);
-            $("#list").append(html);
+
+            //当前未分页所以这样做 TODO
+            if(result.data.length  > 0){
+                var html = template(result.data);
+                $("#list").append(html);
+            }else {
+                $("#no-result").show();
+            }
+
         } else {
             alert(result.data);
         }

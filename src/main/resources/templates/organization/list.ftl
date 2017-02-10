@@ -43,7 +43,7 @@
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
     <#if regions??>
         <#list regions as regions>
-            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+            <a href="javascript:void(0)" data-value="${regions.name}">${regions.name}</a>
         </#list>
     </#if>
     </div>
@@ -64,8 +64,11 @@
         </ul>
 
     </div>
-    <!--赛事列表结束-->
-
+    <!--场馆列表结束-->
+    <div id="no-result" class="empty">
+        <div class="icon"></div>
+        <p class="font14">暂无相关相关场地信息</p>
+    </div>
 </div>
 <!--城市地位-->
 

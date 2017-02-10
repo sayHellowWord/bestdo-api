@@ -27,7 +27,7 @@
 <div class="saishi">
 	<p class="font20">${dynamic.title}</p>
 	<span class="font12">${dynamic.eventContext}</span>
-	<img src="${dynamic.thumbnail}">
+	<img src="${dynamic.thumbnail?replace(";","")}">
 </div>
 
 </body>

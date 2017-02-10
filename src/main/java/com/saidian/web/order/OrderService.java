@@ -3,7 +3,6 @@ package com.saidian.web.order;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saidian.bean.OrderStatus;
-import com.saidian.bean.ReqOrigin;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
@@ -81,14 +80,6 @@ public class OrderService {
             if (!CollectionUtils.isEmpty(orders)) {
                 DateTime dateTime = new DateTime();
                 for (Order order : orders) {
-                    String orderCid = order.getCid();
-                    //日期型 109 游泳  108 健身 113 台球
-                    //时段性 101 网球 102 羽毛球  104 篮球   106 乒乓球 足球待定 todo
-                   /* if ("109".equals(orderCid) || "108".equals(orderCid) || "113".equals(orderCid)) {
-                        order.setTime(order.getPay_time());
-                    } else if ("101".equals(orderCid) || "102".equals(orderCid) || "104".equals(orderCid) || "106".equals(orderCid)) {
-                    }
-*/
                     dateTime = new DateTime(order.getBook_day());
                     order.setTime(dateTime.toString("MM月dd日") + " " + dateTime.toString("EE", Locale.CHINESE));
                     order.setMoney(Double.parseDouble(order.getOrder_money()) / 100);
@@ -217,6 +208,9 @@ public class OrderService {
         jsonObject.put("oid", oid);
         jsonObject.put("uid", uid);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+
+        System.out.println("oid:" + oid + "uid:" + uid + ">>>>>>>>>>>>>>>>>>订单详情获取:" + result);
+
         ResultBean<Order> orderResultBean = HttpResultUtil.result2Bean(result);
         if (200 == orderResultBean.getCode()) {
             Order order = null;

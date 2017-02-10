@@ -79,6 +79,12 @@
 			</li>-->
 		</ul>
 	</div>
+
+    <!--场馆列表结束-->
+    <div id="no-result" class="empty">
+        <div class="icon"></div>
+        <p class="font14">暂无相关相关场地信息</p>
+    </div>
 </div>
 
 
@@ -131,9 +137,15 @@ $(function(){
 
             //替换title
 			var ind = $(this).parent().parent().data('tab');
-			if ($(this).text() === '全部区域') {
+			/*if ($(this).text() === '全部区域') {
                 $(this).text() = '行政区';
-			}
+			}*/
+            var titleTxt = '';
+            if ($(this).text() === '全部区域') {
+                titleTxt = '行政区';
+            } else {
+                titleTxt = $(this).text();
+            }
 			$('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
 
 			$("body").click();
@@ -160,9 +172,15 @@ $(function(){
 			//替换title
 			//$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
             var ind = $(this).parent().parent().data('tab');
-			if ($(this).text() === '按照时间排序') {
+			/*if ($(this).text() === '按照时间排序') {
 				$(this).text() = '排序';
-			}
+			}*/
+            var titleTxt = '';
+            if ($(this).text() === '按时间排序') {
+                titleTxt = '排序';
+            } else {
+                titleTxt = $(this).text();
+            }
             $('div.chooseTabCont a').eq(ind).html($(this).text() + '<span></span>');
 			
 			$("body").click();
@@ -204,6 +222,9 @@ $(function(){
 })
 
 	function search(area, order, page, rows) {
+        //没有结果提示隐藏
+        $("#no-result").hide();
+
 		$.ajax({
 			type: "POST",
 			url: "/cms/train/list/yc",
@@ -237,12 +258,29 @@ $(function(){
 					return "";
 				}
 			});
-			var html = template(result.data);
-			$("#list").append(html);
+            Handlebars.registerHelper("prettifyDate", function(timestamp) {
+//                return new Date(timestamp).toString('yyyy-MM-dd');
+//                return new Date(timestamp).toLocaleString("yyyy-MM-dd");
+                var  da = new Date(timestamp);
+                var year = da.getFullYear();
+                var month = da.getMonth()+1;
+                var date = da.getDate();
+               return [year,month,date].join('-');
+            });
+
+            //当前未分页所以这样做 TODO
+            if(result.data.length  > 0){
+                var html = template(result.data);
+                $("#list").append(html);
+            }else {
+                $("#no-result").show();
+            }
+
 		} else {
 			alert(result.data);
 		}
 	}
+
 </script>
 
 <script src="/js/handlebars-v4.0.5.js"></script>
@@ -257,7 +295,7 @@ $(function(){
 		<div class="venuesdetial boxflex">
 			<h2 class="font16">{{name}} </h2>
 			<div class="address add3 font12">
-			<span class="p">报名时间：{{signStartTime}}-{{signEndTime}}</span>
+			<span class="p">报名时间：{{prettifyDate signStartTime}}-{{prettifyDate signEndTime}}</span>
 			</div>
 			<div class="address add3 font12">
 					<span class="p">课程时间：{{trainTime}}</span>

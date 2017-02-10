@@ -51,8 +51,8 @@
         <!-- 时段性  102 羽毛球  101 网球  106 乒乓球 104 篮球 -->
     <#if detail.cid?number == 101 || detail.cid?number == 102 || detail.cid?number == 104 || detail.cid?number == 106>
         <#include "detail-priceAndInventorySummaryCommon.ftl">
-        <!-- 时段性 109 游泳 108 健身 113 台球-->
-    <#elseif detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 113 >
+        <!-- 时段性 109 游泳 108 健身 122 台球-->
+    <#elseif detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122 >
         <#include "detail-showBookDays.ftl">
     <#--120 足球-->
     <#elseif detail.cid?number == 120 >
@@ -74,8 +74,8 @@
         <!--场馆服务-->
     <#include "detail-venue-services.ftl">
 
-    <!--109 游泳108 健身 113台球 -->
-    <#if detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 113>
+    <!--109 游泳108 健身 122台球 -->
+    <#if detail.cid?number == 108 || detail.cid?number == 109 || detail.cid?number == 122>
     <!--预订按钮-->
         <div id="venuesBook" data-info="${detail.price_info}">
            <#-- <div class="venuesBook">

@@ -80,7 +80,7 @@
         </div>
     </div>
     <div class="creatInfo orderDetail font14">
-    <#--//日期型 109 游泳  108 健身 113 台球-->
+
     <#--//时段性 101 网球 102 羽毛球  104 篮球   106 乒乓球 足球待定 todo-->
     <#if order.cid?number == 101 ||  order.cid?number == 102 ||  order.cid?number == 104 ||  order.cid?number == 106>
         <!-- 乒羽篮网 -->
@@ -95,7 +95,8 @@
         </span></p>
         <p class="box font14"><i>地点：</i><span>${order.stadium.address}</span></p>
     </#if>
-    <#if order.cid?number == 108 ||  order.cid?number == 109 ||  order.cid?number == 113>
+    <#--//日期型 109 游泳  108 健身 122 台球-->
+    <#if order.cid?number == 108 ||  order.cid?number == 109 ||  order.cid?number == 122>
         <div class="creatInfo">
             <h1 class="font15">${order.mer_item_name}</h1>
             <p class="box time font14"><i>日期：</i><span>${order.time} </span></p>

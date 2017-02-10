@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <title>青少年游泳基础培训班</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
     <link rel="stylesheet" href="/css/swiper-3.2.7.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 
 
@@ -28,9 +28,11 @@
 <div class="lunbo">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <#list train.shortIcon?split(";") as image>
-                <div class="swiper-slide" style="background-image: url(${image});"></div>
-            </#list>
+        <#list train.shortIcon?split(";") as image>
+            <#if image?? && image !="" && image?length gt 2>
+             <div class="swiper-slide" style="background-image: url(${image});"></div>
+            </#if>
+        </#list>
         </div>
 
     </div>
@@ -44,21 +46,24 @@
         <div class="venuesInfo">
             <ul>
                 <li class="ede font15"><p>${train.name}<i class="font12">(${train.minNum}人开赛)</i></p></li>
-                <li class="address font14"><p>${train.adress}</p></li>
+                <li class="address font14"><p>
+                    <#--<a href="/cms/exercisehoop/map?name=${train.name}&address=${train.address}&latitude=${train.bdLatitude}&longitude=${train.bdLongitude}">-->
+                        ${train.adress}
+                    <#--</a>-->
+                </p></li>
             </ul>
         </div>
-
 
 
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">教练风采</h3>
             <div id="scrolldateCont" class="scrolldateCont box font12">
-                 <#list coaches as item>
-                 <span >
-					<a href="/cms/coach/toDetail?id=${item.id}" class="sai">
+            <#list coaches as item>
+                <span>
+					<a href="/cms/train/coach/toDetail?id=${item.id}" class="sai">
 						<div class="box">
-							<img src="${item.photoIcon}">
-							<div >
+							<img src="${item.photoIcon?replace(";","")}">
+							<div>
 								<h2 class="font16">${item.name}</h2>
 								<P class="font12 now">${item.rank}</P>
 								<P class="font12">${item.experience}</P>
@@ -66,7 +71,7 @@
 						</div>
 					</a>
 				 </span>
-                 </#list>
+            </#list>
             </div>
         </div>
 
@@ -74,7 +79,7 @@
             <h1 class="font15">培训介绍</h1>
             <ul>
                 <li class="moreinfo box font14">
-                    <span class="tit">${train.phone}</span>
+                    <span class="tit">${train.description}</span>
                 </li>
             </ul>
         </div>
@@ -93,7 +98,7 @@
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="/js/swiper-3.2.7.min.js"></script>
 <script>
-    var mySwiper = new Swiper ('.swiper-container', {
+    var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
 

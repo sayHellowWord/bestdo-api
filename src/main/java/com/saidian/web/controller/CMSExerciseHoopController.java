@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.saidian.bean.Result;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.TenMinSite;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -63,6 +64,18 @@ public class CMSExerciseHoopController {
             e.printStackTrace();
         }
         return tenMinSiteResult;
+    }
+
+
+    @RequestMapping(value = "map")
+    public String map(String name,String address,String latitude, String longitude, ModelMap map) throws Exception {
+
+        map.addAttribute("name", name);
+        map.addAttribute("address", address);
+        map.addAttribute("latitude", latitude);
+        map.addAttribute("longitude",longitude);
+
+        return "exercisehoop/map";
     }
 
 }

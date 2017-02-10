@@ -92,7 +92,7 @@ public class RESTClient {
         if (!Strings.isNullOrEmpty(district))
             url += "&district={district}";
 
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + url,null, String.class, page, rows, time_sort, district);
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + url, null, String.class, page, rows, time_sort, district);
 
         return result;
     }
@@ -106,9 +106,13 @@ public class RESTClient {
 
     //教练列表
     public String coachList(String trainId, String name, String project, String rank, String state, Integer page, Integer rows) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listCoachWX?trainId={trainId}&name={name}&project={project}" +
+       /* String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listCoachWX?trainId={trainId}&name={name}&project={project}" +
                         "&rank={rank}&state={state}&page={page}&rows={rows}", null, String.class,
-                trainId, name, project, rank, state, page, rows);
+                trainId, name, project, rank, state, page, rows);*/
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "train/listCoachWX?trainId={trainId}&name={name}" +
+                        "&state={state}&page={page}&rows={rows}", null, String.class,
+                trainId, name, state, page, rows);
+
         return result;
     }
 
@@ -134,9 +138,11 @@ public class RESTClient {
 
     //组织列表
     public String organizationList(String name, String district, String state, Integer page, Integer rows) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "orgn/listOrganizationWX?name={name}" +
-                        "&district={district}&state={state}&page={page}&rows={rows}",
-                null, String.class, name, district, state, page, rows);
+        String url = "orgn/listOrganizationWX?name={name}&state={state}&page={page}&rows={rows}";
+        if (!Strings.isNullOrEmpty(district))
+            url += "&district={district}";
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + url,
+                null, String.class, name, state, page, rows, district);
         return result;
     }
 

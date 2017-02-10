@@ -32,7 +32,7 @@ public class CreateOrderService {
     private static String CREATE_FOOTBALL_ORDER = "order/createFootballOrder";
 
     //台球
-    private static String CREATE_MIX_ORDER = "order/createMixOrder";
+    private static String CREATE_MIX_ORDER = "order/createMixbodOrder";
 
     //篮球
     private static String CREATE_BASKETBALL_ORDER = "order/createBasketballOrder";
@@ -110,6 +110,12 @@ public class CreateOrderService {
                                           String note, String create_staff_id, JSONArray items, String is_sendsms, String order_money, int reduce_money, String pay_money) throws Exception {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_FOOTBALL_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+
+        System.out.println("========================足球订单开始==========================");
+        System.out.println(result);
+        System.out.println("========================足球订单结束==========================");
+
+
         return HttpResultUtil.result2Bean(result);
     }
 

@@ -34,6 +34,11 @@
 
         </ul>
     </div>
+    <!--场馆列表结束-->
+    <div id="no-result" class="empty">
+        <div class="icon"></div>
+        <p class="font14">暂无相关相关场地信息</p>
+    </div>
 </div>
 
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
@@ -44,6 +49,9 @@
 
     //只负责查询和追加数据，如果需要刷新页面（如查询）请执行前自己情况list数据
     function search(page, rows) {
+        //没有结果提示隐藏
+        $("#no-result").hide();
+
         $.ajax({
             type: "POST",
             url: "/cms/guidance/list/cms",
@@ -66,8 +74,18 @@
             Handlebars.registerHelper('if_bodyUrl', function(value, options) {
                 return value.split(';')[0];
             });
-            var html = template(result.data.list);
-            $("#list").append(html);
+
+           /* var html = template(result.data.list);
+            $("#list").append(html);*/
+
+            //当前未分页所以这样做 TODO
+            if(result.data.list.length  > 0){
+                var html = template(result.data.list);
+                $("#list").append(html);
+            }else {
+                $("#no-result").show();
+            }
+
         } else {
             alert(result.data);
         }
@@ -86,7 +104,7 @@
         <div class="bodydetail boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="address font12">
-                <span class="d">1.0km</span>
+               <#-- <span class="d">1.0km</span>-->
                 <span class="p">地点：{{address}}</span>
             </div>
         </div>

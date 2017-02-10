@@ -73,14 +73,7 @@
             选择支付方式
         </h1>
         <ul class="paystylelist">
-        <#--
-            <li class="wx" data-type="WEIXINJSAPI">
-                <span class="icon"></span><span class="txt font16">微信</span>
-            </li>
-            <li class="zfb  on" data-type="ALIPAYWAP">
-                <span class="icon"></span><span class="txt font16">支付宝</span>
-            </li>
--->
+
         </ul>
         <input id="pay_order_id" type="hidden">
         <input id="pay_goods_id" type="hidden">
@@ -224,9 +217,9 @@
             var num = parseInt($(".buycount input").val());
             if (num >= 2) {
                 var price = $(this).data("price") * (num - 1);
-
+                price = Math.floor(price) / 100;
                 $("#order-total").html("￥" + price)
-                $("#pay-total-total").html("￥" + price)
+                $("#pay-total").html("￥" + price)
 
                 $(".buycount input").val(num - 1);
             }
@@ -245,8 +238,9 @@
                 return;
             }
             var price = $(this).data("price") * num;
+            price = Math.floor(price) / 100;
             $("#order-total").html("￥" + price)
-            $("#pay-total-total").html("￥" + price)
+            $("#pay-total").html("￥" + price)
 
             $(".buycount input").val(num);
         })

@@ -64,26 +64,6 @@ public class CMSTrainController {
             e.printStackTrace();
         }
 
-        //获取教练 TODO
-      /*  List<Coach> coaches = new ArrayList<Coach>();
-        Coach coach = new Coach();
-        coach.setId(1l);
-        coach.setName("老王");
-        coach.setGender((byte) 1);
-        coach.setBirthday(new Date());
-        coach.setEducationalBg("中");
-        coach.setExperience("3年");
-        coach.setIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126439624/84Z58PICuRE_1024.jpg");
-        coach.setProject("网球");
-        coach.setRank("高级");
-        coach.setSiteName("网球中心;网球馆;");
-        coach.setPhotoIcon("http://ojhwcmd4b.bkt.clouddn.com/1484126442142/2.jpg");
-        coach.setCreateDate(new Date());
-        coach.setUpdateDate(new Date());
-        coaches.add(coach);
-        coaches.add(coach);*/
-
-
         result = restClient.coachList(id, "", "", "", "", 1, 15);
         List<Coach> coaches = null;
         try {
@@ -100,7 +80,6 @@ public class CMSTrainController {
     /**
      * 体育培训列表 接口
      *
-     * @param keyword
      * @param page
      * @param rows
      * @return
@@ -152,7 +131,7 @@ public class CMSTrainController {
             e.printStackTrace();
         }
         modelMap.addAttribute("coach", coache);
-        return "/train/coachdetail";
+        return "/train/trainer-introduction";
     }
 
 }

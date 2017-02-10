@@ -65,6 +65,7 @@ public class PayController {
 
     @RequestMapping(value = "paySucPage")
     public String paySucPage(String order_id, ModelMap modelMap) {
+        System.out.println("paySucPage >>>>>>>>>>>  " + order_id);
         modelMap.addAttribute("order_id", order_id);
         return "/order/paysuc";
     }

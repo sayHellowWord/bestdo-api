@@ -17,6 +17,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -62,7 +65,7 @@ public class ExampleControllerTest {
         //"mer_item_id=10200001000731&mer_price_id=1429&day=2017-01-14", String.class);
       //  String result = restTemplate.getForObject("http://localhost:" + port + "/order/detail", String.class);
         String result = restTemplate.getForObject("http://localhost:" + port + "/order/orderListsSearch?status=9", String.class);
-        assertNotNull(result);
+       // assertNotNull(result);
         System.out.println("*******************************************************");
         System.out.println(result);
         System.out.println("*******************************************************");
@@ -77,5 +80,20 @@ public class ExampleControllerTest {
         System.out.println("*******************************************************");
     }
 
-
+    @Test
+    public void test( ){
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        String tsStr = "";
+        DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            //方法一
+            tsStr = sdf.format(ts);
+            System.out.println(tsStr);
+            //方法二
+            tsStr = ts.toString();
+            System.out.println(tsStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

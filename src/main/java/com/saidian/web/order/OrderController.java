@@ -102,7 +102,7 @@ public class OrderController {
             //日期型
             case 108:
             case 109:
-            case 113:
+            case 122:
                 OneDayItemPrice oneDayItemPrice = bTiemService.getOneDayItemPrice(mer_item_id, mer_price_id, book_day).getObject();
                 //库存
                 OneDayItemPrice.InventoryInfo inventoryInfo = oneDayItemPrice.getInventoryInfos().get(0);
@@ -190,7 +190,7 @@ public class OrderController {
                         items, "1", order_money, 0, order_money);
                 dayResult(resultBean);
                 break;
-            case 113://台球
+            case 122://台球
                 jsonObject = new JSONObject();
                 jsonObject.put("mer_price_id", Integer.parseInt(mer_price_id));
                 jsonObject.put("order_money", Integer.parseInt(order_money));

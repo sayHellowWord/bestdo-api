@@ -28,7 +28,9 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
         <#list detail.headImage?split(";") as image>
-            <div class="swiper-slide" style="background-image: url(${image});"></div>
+            <#if image?? && image !="" && image?length gt 2>
+                <div class="swiper-slide" style="background-image: url(${image});"></div>
+            </#if>
         </#list>
         </div>
     </div>
@@ -64,15 +66,15 @@
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">赛事动态</h3>
             <div class="scrolldateCont box font12">
-            <#if dynamic?exists>
-                <#list dynamic as dynamic>
+            <#if dynamics?exists>
+                <#list dynamics as dynamic>
                     <span>
                             <a href="/cms/match/dynamicDetail?id=${dynamic.id}&matchName=${detail.name}" class="sai">
                                 <div class="box">
-                                    <img src="${dynamic.thumbnail}">
+                                    <img src="${dynamic.thumbnail?replace(";","")}">
                                     <div>
                                         <h2 class="font16">${dynamic.title}</h2>
-                                        <P class="font12 now">${dynamic.createTime}</P>
+                                        <P class="font12 now">${dynamic.createTimeStr}</P>
                                         <P class="font12">${dynamic.eventContext}</P>
                                     </div>
                                 </div>

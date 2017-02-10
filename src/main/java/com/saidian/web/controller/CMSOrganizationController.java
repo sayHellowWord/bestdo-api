@@ -1,6 +1,7 @@
 package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.saidian.bean.Result;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
@@ -56,7 +57,8 @@ public class CMSOrganizationController {
     @RequestMapping("/list/cms")
     @ResponseBody
     public Object organizationList(String name, String district, String state, Integer page, Integer rows) {
-        String resultStr = restClient.organizationList(name, district, state, null == page ? 1 : page, null == rows ? 10 : rows);
+        String resultStr = restClient.organizationList(Strings.isNullOrEmpty(name) ? "" : name,Strings.isNullOrEmpty(district) ? "" : district,
+                Strings.isNullOrEmpty(state) ? "" : state, null == page ? 1 : page, null == rows ? 10 : rows);
         Result result = new Result();
         List<Organization> organizations = null;
         try {

@@ -26,10 +26,10 @@
 <div class="wrapper center vip">
     <div class="centerTop font17 no">
         <div class="centerTopCont box">
-            <div class="imgtxt"><img src="images/2.png" ></div>
+            <div class="imgtxt"><img src="${coach.photoIcon?replace(";","")}" ></div>
             <div class="cont box2 boxflex">
-                <p>${name}</p>
-                <p class="font12 wit">${rank}</p>
+                <p>${coach.name!""}</p>
+                <p class="font12 wit">${coach.rank!""}</p>
             </div>
         </div>
     </div>
@@ -41,19 +41,19 @@
                 <li class="moreinfo box font14">
                     <span class="tit">教练等级：</span>
                     <div class="cont boxflex">
-                        ${rank}
+                        ${coach.rank!""}
                     </div>
                 </li>
                 <li class="moreinfo box font14">
                     <span class="tit">教育背景：</span>
                     <div class="cont boxflex">
-                        ${educationalBg}
+                        ${coach.educationalBg!""}
                     </div>
                 </li>
                 <li class="moreinfo box font14">
                     <span class="tit">个人简介：</span>
                     <div class="cont boxflex">
-                        ${introduction}
+                        ${coach.introduction!""}
                     </div>
                 </li>
             </ul>
@@ -63,7 +63,7 @@
             <h1 class="font15">详细介绍</h1>
             <ul>
                 <li class="moreinfo box font14">
-                    <span class="tit">${description}</span>
+                    <span class="tit">${coach.description!""}</span>
                 </li>
             </ul>
         </div>
