@@ -57,7 +57,8 @@
         <span class="tit">订单总额</span>
     </li>
     <li class="font14">
-        <span id="pay-total" class="p1 p2" data-price="${priceInfo.prepay_price}">￥${((priceInfo.prepay_price?number)/100)?string("#.##")}</span>
+        <span id="pay-total" class="p1 p2"
+              data-price="${priceInfo.prepay_price}">￥${((priceInfo.prepay_price?number)/100)?string("#.##")}</span>
         <span class="tit">支付金额</span>
     </li>
 </ul>
@@ -135,13 +136,16 @@
                 return;
             }
 
-          //  var order_money = $("#pay-total").text().replace("￥", "");
+            //  var order_money = $("#pay-total").text().replace("￥", "");
             var order_money = $("#pay-total").data("price");
+
+            var num = parseInt($(".buycount input").val());
 
             $.ajax({
                 type: "POST",
                 async: false,
                 url: "/order/submitOrder",
+                timeout: 3000, //超时时间设置，单位毫秒
                 data: {
                     "cid": cid,
                     "mer_item_id": mer_item_id,
@@ -151,7 +155,8 @@
                     "order_money": order_money,
                     "start_hour": ${priceInfo.start_hour},
                     "end_hour": ${priceInfo.end_hour},
-                    "play_time": '${priceInfo.play_time!}'
+                    "play_time": '${priceInfo.play_time!}',
+                    "count": num
                 },
                 success: function (result) {
                     if (200 == result.code) {
@@ -163,6 +168,11 @@
                         $("#pay_amount").val(result.object.pay_money);
                     } else {
                         alert("订单提交失败:" + result.msg)
+                    }
+                },
+                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                    if (status == 'timeout' || status == 'error等值的情况') {//超时,status还有success,error等值的情况
+                        openErrorPage();
                     }
                 }
             });
@@ -197,9 +207,9 @@
                         url = result.data;
                         sign = result.object;
                         //循环执行，每隔3秒钟执行一次 showalert（）
-                      /*  window.setInterval(function () {
-                            checkOrder(order_id);
-                        }, 3000);*/
+                        /*  window.setInterval(function () {
+                              checkOrder(order_id);
+                          }, 3000);*/
 
                     } else {
                         alert("创建订单失败")
@@ -217,10 +227,12 @@
             var num = parseInt($(".buycount input").val());
             if (num >= 2) {
                 var price = $(this).data("price") * (num - 1);
+
+                $("#pay-total").data("price",price);
+
                 price = Math.floor(price) / 100;
                 $("#order-total").html("￥" + price)
                 $("#pay-total").html("￥" + price)
-
                 $(".buycount input").val(num - 1);
             }
         })
@@ -238,10 +250,11 @@
                 return;
             }
             var price = $(this).data("price") * num;
+            $("#pay-total").data("price",price);
+
             price = Math.floor(price) / 100;
             $("#order-total").html("￥" + price)
             $("#pay-total").html("￥" + price)
-
             $(".buycount input").val(num);
         })
     })
@@ -274,11 +287,13 @@
     function openPaypage(url, order_id, amount, sign) {
         console.info(url);
         if (ua.match(/MicroMessenger/i) == 'micromessenger') {
-           // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
-            window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+            // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+            //window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900");
+            window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900";
             return;
         }
-        window.open(url);
+//        window.open(url);
+        window.location.href = url;
     }
 
 
@@ -292,7 +307,10 @@
         window.location.href = "/pay/payTimeOutPage";
     }
 
-
+    //打开支付页面
+    function openErrorPage() {
+        window.location.href = "/pay/error";
+    }
 </script>
 </body>
 </html>

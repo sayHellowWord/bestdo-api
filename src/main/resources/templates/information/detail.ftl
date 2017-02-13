@@ -11,7 +11,6 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 
-
 <body style="background:#fff;">
 <!--头部公用-->
 <div id="header">
@@ -32,6 +31,9 @@
         <img src="${image}">
         </#if>
     </#list>
+    <div>
+    ${news.description}
+    </div>
 </div>
 
 </body>

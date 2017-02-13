@@ -124,8 +124,11 @@ public class RESTClient {
 
     //十分钟健身圈列表
     public String excrciseHoodList(String keyword, Integer page, Integer rows) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "tenminsite/front_list?keyword={keyword}&page={page}&rows={rows}",
-                null, String.class, keyword, page, rows);
+        String url = "tenminsite/front_list?page={page}&rows={rows}";
+        if (!Strings.isNullOrEmpty(keyword))
+            url += "&name={keyword}&";
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + url,
+                null, String.class, page, rows, keyword);
         return result;
     }
 

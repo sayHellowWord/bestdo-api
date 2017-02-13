@@ -182,7 +182,6 @@ public class LoginController {
     @RequestMapping(value = "setAccountFindPassword")
     public ResultBean setAccountFindPassword(String telephone, String validId, String validCode, String password) throws Exception {
         return userService.setAccountFindPassword(telephone, validId, validCode, password);
-
     }
 
 

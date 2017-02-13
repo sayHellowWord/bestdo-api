@@ -35,7 +35,7 @@
         <!--场馆信息-->
         <div class="venuesInfo">
             <ul>
-                <li class="address font15"><p><a href="/site/map?mer_item_id=${detail.mer_item_id}">${detail.venue.stadium.address}</p></a></li>
+                <li class="address font15"><a href="/site/map?mer_item_id=${detail.mer_item_id}"><p>${detail.venue.stadium.address}</p></a></li>
                 <li class="tel font15"><p><a href="tel:${detail.venue.stadium.phone}">${detail.venue.stadium.phone}</a>
                 </p></li>
             </ul>

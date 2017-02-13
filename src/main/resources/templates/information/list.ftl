@@ -70,8 +70,17 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
+
             Handlebars.registerHelper('if_showImg', function(value, options) {
                 return value.split(';')[0];
+            });
+
+            Handlebars.registerHelper("prettifyDate", function(timestamp) {
+                var  da = new Date(timestamp);
+                var year = da.getFullYear();
+                var month = da.getMonth()+1;
+                var date = da.getDate();
+                return [year,month,date].join('-');
             });
 
             //当前未分页所以这样做 TODO
@@ -100,7 +109,7 @@
             <div class="bodydetail boxflex">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address font12">
-                    <span class="p">盐城体育局 2015-12-12</span>
+                    <span class="p">{{author}} {{prettifyDate createDate}}</span>
                 </div>
             </div>
         </a>

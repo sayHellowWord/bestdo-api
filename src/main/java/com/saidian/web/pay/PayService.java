@@ -109,8 +109,6 @@ public class PayService {
         String characterEncoding = "UTF-8";
         String mySign = createSign(characterEncoding, parameters);
 
-        System.out.println("mySign   :  " + mySign);
-
         mySign = mySign.substring(0, mySign.length() / 2);
         return mySign;
     }

@@ -38,7 +38,6 @@ public class UserController {
      */
     @RequestMapping(value = "/index")
     public String index(HttpSession httpSession, HttpServletRequest httpServletRequest, ModelMap map) throws Exception {
-        //TODO 测试
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             map.addAttribute("back_url", httpServletRequest.getRequestURI() + (Strings.isNullOrEmpty(httpServletRequest.getQueryString()) ? "" : "?" + httpServletRequest.getQueryString()));
@@ -52,7 +51,7 @@ public class UserController {
 
         map.addAttribute("userinfo", userinfo);
 
-        String name = userinfo.getString("telephone");
+        String name = userinfo.getString("loginTel");
         if (userinfo.has("realName"))
             name = userinfo.getString("realName");
         map.addAttribute("name", name);
@@ -61,17 +60,13 @@ public class UserController {
 
     @RequestMapping(value = "/personalprofile")
     public String personalprofile(HttpSession httpSession, ModelMap map) throws Exception {
-
         JSONObject jsonObject = new JSONObject(httpSession.getAttribute("userinfo").toString());
-
         map.addAttribute("userinfo", jsonObject);
-
-        String name = jsonObject.getString("telephone");
+        String name = jsonObject.getString("loginTel");
         if (jsonObject.has("realName")){
             name = jsonObject.getString("realName");
         }
         map.addAttribute("name", name);
-
         if (jsonObject.has("nickName")) {
             map.addAttribute("nickName", jsonObject.getString("nickName"));
         }else {
@@ -80,11 +75,15 @@ public class UserController {
         return "user/personalprofile";
     }
 
+    @RequestMapping(value = "/loginout")
+    public String loginout(HttpSession httpSession, ModelMap map) throws Exception {
+        httpSession.setAttribute("userinfo",null);
+        return "redirect:/";
+    }
 
     @ResponseBody
     @RequestMapping(value = "modifyUserInfo")
     public ResultBean modifyUserInfo(String key, String value, HttpSession httpSession) throws Exception {
-        //todo udi
         JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
         String uid = jsonObject.getString("uid");
         ResultBean resultBean = userService.modifyUserInfo(uid, key, value);
@@ -106,6 +105,8 @@ public class UserController {
     public String modifyrealname(){
         return "/user/modifyrealname";
     }
+
+
 
     @ResponseBody
     @RequestMapping(value = "accountRegister")

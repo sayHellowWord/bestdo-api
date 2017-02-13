@@ -129,14 +129,14 @@
             typing: "radio"
         })
         /*下拉加载更多*/
-        var i = 0;
+      /*  var i = 0;
         $(".orderList ul").loadmore({
             getData: function () {
                 i++;
                 var str = "<li>" + i + "</li>";
                 return str;
             }
-        });
+        });*/
 
         //订单状态点击
         $(".orderStadiusCont ul li").click(function () {
@@ -162,6 +162,7 @@
         $.ajax({
             type: "POST",
             url: "/order/orderListsSearch",
+            async: false,
             data: {
                 "status": status,
                 "cid": cid,
@@ -195,7 +196,7 @@
     <li>
         <a href="/order/detail?oid={{oid}}">
             <div class="lcont box">
-                <div class="imgwrap"><img src="{{thumb}}"></div>
+                <div class="imgwrap"><img src="{{stadium.thumb}}"></div>
                 <div class="imginfo boxflex font12">
                     <h1 class="font14">{{mer_item_name}}</h1>
                     <p>{{time}}</p>

@@ -370,6 +370,7 @@ public class BTiemService {
                 PriceAndInventorySummaryCommon priceAndInventorySummaryCommon = new PriceAndInventorySummaryCommon();
 
                 priceAndInventorySummaryCommon.setInventory_summaray(json.getInt("inventory_summaray"));
+                priceAndInventorySummaryCommon.setStatus(json.getInt("status"));
                 DateTime dateTime = null;
                 if (json.has("price_summaray") && json.optJSONObject("price_summaray") != null) {
                     JSONObject priceSummarayJSONObject = json.getJSONObject("price_summaray");

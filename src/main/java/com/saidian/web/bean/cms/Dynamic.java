@@ -41,6 +41,9 @@ public class Dynamic implements Serializable{
 	
 	private String auditMark;
 
+	private String timeStr;
+
+
 	public Long getAuditUser() {
 		return auditUser;
 	}
@@ -176,6 +179,16 @@ public class Dynamic implements Serializable{
 	public void setUpdateUser(Long updateUser) {
 		this.updateUser = updateUser;
 	}
-	
-	
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public String getTimeStr() {
+		return timeStr;
+	}
+
+	public void setTimeStr(String timeStr) {
+		this.timeStr = timeStr;
+	}
 }

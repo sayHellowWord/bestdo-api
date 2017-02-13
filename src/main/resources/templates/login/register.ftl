@@ -68,6 +68,7 @@
         </ul>
         <div class="applyBtn font17">
             <a id="register-password-submit" href="javascript:void(0)">完成</a>
+            <a id="go-login" href="/login/index" style="display: none;">去登录</a>
         </div>
     </div>
 
@@ -94,7 +95,8 @@
                 alert("请输入手机号!!");
                 return;
             }
-            var partten = /^1[3,5,8]\d{9}$/;
+//            var partten = /^1[3,5,8]\d{9}$/;
+            var partten = /^1[34578]\d{9}$/;
             if (!partten.test(telphone)) {
                 alert('手机号码格式不正确!');
                 return;
@@ -160,10 +162,6 @@
                     "validId": validId
                 },
                 success: function (result) {
-                    //todo  为了流程
-                    $("#register-div").hide();
-                    $("#register-password-div").show();
-
                     if (200 === result.code) {
                         $("#register-div").hide();
                         $("#register-password-div").show();
@@ -197,7 +195,9 @@
                     },
                     success: function (result) {
                         if (200 === result.code) {
+                            $("#register-password-submit").hide();
                             alert("注册成功!!");
+                            $("#go-login").show();
                         } else {
                             alert(result.msg);
                         }

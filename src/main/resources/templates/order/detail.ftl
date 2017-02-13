@@ -2,7 +2,15 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>订单详情-待下场</title>
+    <title>订单详情-
+    <#if order.status?number == 0>待付款</#if>
+    <#if order.status?number == 3>待下场</#if>
+    <#if order.status?number == 5>确认中</#if>
+    <#if order.status?number == 4>退订中</#if>
+    <#if order.status?number == 7>已取消</#if>
+    <#if order.status?number == -2>已退订</#if>
+    <#if order.status?number == 2>已完成</#if>
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!--忽略页面中的数字识别为电话号码-->
     <meta name="format-detection" content="telephone=no"/>
@@ -141,7 +149,7 @@
 <#--  支付状态  -->
 <#if order.status?number == 0>
 <div id="order-status-show" class="orderBtn font17">
-   <#-- ${canRepay}-->
+<#-- ${canRepay}-->
     <#if canRepay?number == 1>
         <div class="ordreBtnCont">
             <div class="orderBtnL">
@@ -151,7 +159,8 @@
         </div>
     <#else>
         <div class="ordreBtnCont">
-            <a href="/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}" class="buyBtn">重新预订</a>
+            <a href="/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}"
+               class="buyBtn">重新预订</a>
         </div>
     </#if>
 </div>
@@ -198,27 +207,28 @@
         var mer_item_id = '${order.mer_item_id}';
         var mer_price_id = '${order.items[0].mer_price_id}';
         var cid = '${order.cid}';
-        function lxfEndtime(){
-            if(second <= 0 && minute<=0){
-                document.getElementById('order-status-show').innerHTML ="<div class='ordreBtnCont'>" +
+        function lxfEndtime() {
+            if (second <= 0 && minute <= 0) {
+                document.getElementById('order-status-show').innerHTML = "<div class='ordreBtnCont'>" +
                         "<a href='/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}' class='buyBtn'>重新预订</a> </div>";
                 return false;
             }
-            if(second == 0) {
+            if (second == 0) {
                 second = 59;
             } else {
                 second--;
             }
-            second = second<10?('0'+second):second;
+            second = second < 10 ? ('0' + second) : second;
 
-            if(second == 59 && minute>0) {
+            if (second == 59 && minute > 0) {
                 minute--;
             }
             //minute = minute<10?('0'+minute):minute;
 
             document.getElementById('count-down-re-pay-time').innerHTML = minute + ":" + second;
-            var t = setTimeout("lxfEndtime()",1000);
-        };
+            var t = setTimeout("lxfEndtime()", 1000);
+        }
+        ;
 
 
         //判断是否为微信支付
@@ -228,7 +238,6 @@
             payType = "<li class='wx on' data-type='WEIXINJSAPI'><span class='icon'></span><span class='txt font16'>微信</span></li>";
         }
         $(".paystylelist").html(payType);
-
 
 
         var order_id = '${order.oid}';
@@ -317,10 +326,12 @@
             console.info(url);
             if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                 // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
-                window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+                //window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+                window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900";
                 return;
             }
-            window.open(url);
+//            window.open(url);
+            window.location.href = url;
         }
     </script>
 
@@ -334,7 +345,8 @@
 <#if order.status?number == 7 || order.status?number == -2 || order.status?number == 2>
 <div class="orderBtn font17">
     <div class="ordreBtnCont">
-        <a href="javascript:void(0)" class="buyBtn">重新预订</a>
+        <a href="/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}"
+           class="buyBtn">重新预订</a>
     </div>
 </div>
 </#if>

@@ -237,10 +237,12 @@
         console.info(url);
         if (ua.match(/MicroMessenger/i) == 'micromessenger') {
           //  window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
-            window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+           // window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
+            window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900";
             return;
         }
-        window.open(url);
+       // window.open(url);
+        window.location.href = url;
     }
 
 

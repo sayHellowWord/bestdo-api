@@ -53,7 +53,7 @@ public class CMSGuidanceController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        modelMap.addAttribute("phyContext", phyContextResult);
+        modelMap.addAttribute("phyContext", phyContextResult.getData());
         return "/guidance/detail";
     }
 

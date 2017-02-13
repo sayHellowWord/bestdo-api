@@ -79,7 +79,7 @@
 </div>
 <script>
     //返回页面
-    var backURL = '${back_url}';
+    var backURL = '${back_url!'/'}';
 </script>
 <script language="javascript" type="text/javascript" src="../js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="../js/bestdo.js"></script>

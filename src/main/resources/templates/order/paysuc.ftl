@@ -30,7 +30,7 @@
     <p class="word font14">您的订单已支付成功，百动正在努力为您确认中，其预订结果将会以短信的形式通知您！</p>
     <div class="applyBtn font17">
         <a href="/order/detail?oid=${order_id}" class="viewBtn">查看订单</a>
-        <a href="/site/index" class="backHome">返回首页</a>
+        <a href="/" class="backHome">返回首页</a>
     </div>
 </div>
 </body>

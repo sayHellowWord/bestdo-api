@@ -11,7 +11,6 @@ import com.saidian.web.bean.order.Order;
 import com.saidian.web.bean.siteinfo.OneDayItemPrice;
 import com.saidian.web.bean.siteinfo.PriceInfo;
 import org.joda.time.DateTime;
-import org.joda.time.Minutes;
 import org.joda.time.Seconds;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +51,7 @@ public class OrderController {
         System.out.println("mer_item_id = [" + mer_item_id + "], mer_price_id = [" + mer_price_id + "], book_day = [" + book_day + "], " +
                 "cid = [" + cid + "], timeStr = [" + timeStr + "], modelMap = [" + modelMap + "], httpSession = [" + httpSession + "], httpServletRequest = [" + httpServletRequest + "]");
         System.out.println("----------------------------------------------");
-        //判断是否登录 todo 待恢复
+
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             modelMap.addAttribute("back_url", httpServletRequest.getRequestURI() + (Strings.isNullOrEmpty(httpServletRequest.getQueryString()) ? "" : "?" + httpServletRequest.getQueryString()));
@@ -130,7 +130,7 @@ public class OrderController {
     public Object submitOrder(Integer card_id, String account_no,
                               Integer cid, String mer_item_id, String mer_price_id, String book_day, String other_money_name, String other_money,
                               String book_phone, String note, String create_staff_id, String order_money,
-
+                              @RequestParam(value="count", defaultValue="1") int count,
                               Integer start_hour, Integer end_hour, String play_time
             , String timeStr
             , HttpSession httpSession) throws Exception {
@@ -148,22 +148,10 @@ public class OrderController {
         JSONArray items = new JSONArray();
         ResultBean resultBean = null;
         JSONObject jsonObject = null;
-        JSONObject jsonR = null; //结果解析
         switch (cid) {
             //日期型
             case 108://健身
-                jsonObject = new JSONObject();
-                jsonObject.put("mer_price_id", Integer.parseInt(mer_price_id));
-                jsonObject.put("order_money", Integer.parseInt(order_money));
-                jsonObject.put("reduce_money", 0);
-                jsonObject.put("is_rights", 0);
-                jsonObject.put("pay_money", Integer.parseInt(order_money));
-                jsonObject.put("start_hour", start_hour);
-                jsonObject.put("end_hour", end_hour);
-                if (!Strings.isNullOrEmpty(play_time))
-                    jsonObject.put("play_time", play_time);
-                items.put(jsonObject);
-
+                dayParams(mer_price_id, order_money, count, start_hour, end_hour, play_time, items);
                 resultBean = createOrderService.createFitnessOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
                         card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "",
@@ -171,19 +159,7 @@ public class OrderController {
                 dayResult(resultBean);
                 break;
             case 109://游泳
-                //组织订单数据
-                jsonObject = new JSONObject();
-                jsonObject.put("mer_price_id", Integer.parseInt(mer_price_id));
-                jsonObject.put("order_money", Integer.parseInt(order_money));
-                jsonObject.put("reduce_money", 0);
-                jsonObject.put("is_rights", 0);
-                jsonObject.put("pay_money", Integer.parseInt(order_money));
-                jsonObject.put("start_hour", start_hour);
-                jsonObject.put("end_hour", end_hour);
-                if (!Strings.isNullOrEmpty(play_time))
-                    jsonObject.put("play_time", play_time);
-                items.put(jsonObject);
-
+                dayParams(mer_price_id, order_money, count, start_hour, end_hour, play_time, items);
                 resultBean = createOrderService.createSwimOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
                         card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "",
@@ -191,18 +167,7 @@ public class OrderController {
                 dayResult(resultBean);
                 break;
             case 122://台球
-                jsonObject = new JSONObject();
-                jsonObject.put("mer_price_id", Integer.parseInt(mer_price_id));
-                jsonObject.put("order_money", Integer.parseInt(order_money));
-                jsonObject.put("reduce_money", 0);
-                jsonObject.put("is_rights", 0);
-                jsonObject.put("pay_money", Integer.parseInt(order_money));
-                jsonObject.put("start_hour", start_hour);
-                jsonObject.put("end_hour", end_hour);
-                if (!Strings.isNullOrEmpty(play_time))
-                    jsonObject.put("play_time", play_time);
-                items.put(jsonObject);
-
+                dayParams(mer_price_id, order_money, count, start_hour, end_hour, play_time, items);
                 resultBean = createOrderService.createMixOrder(HttpParams.serviceId, HttpParams.ORDER_SOURCE, uid,
                         card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "",
@@ -225,9 +190,8 @@ public class OrderController {
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
 
-                jsonR = new JSONObject(resultBean.getData());
-                resultBean.setObject(ImmutableBiMap.of("oid", jsonR.getString("oid"), "mer_item_id", jsonR.getString("mer_item_id")
-                        , "pay_money", jsonR.getString("pay_money")));
+                timeResult(resultBean);
+
                 break;
             case 102://羽毛球
                 timeParams(mer_price_id, play_time, timeStr, items);
@@ -236,9 +200,7 @@ public class OrderController {
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
 
-                jsonR = new JSONObject(resultBean.getData());
-                resultBean.setObject(ImmutableBiMap.of("oid", jsonR.getString("oid"), "mer_item_id", jsonR.getString("mer_item_id")
-                        , "pay_money", jsonR.getString("pay_money")));
+                timeResult(resultBean);
                 break;
             case 104://篮球
                 timeParams(mer_price_id, play_time, timeStr, items);
@@ -246,9 +208,7 @@ public class OrderController {
                         card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
-                jsonR = new JSONObject(resultBean.getData());
-                resultBean.setObject(ImmutableBiMap.of("oid", jsonR.getString("oid"), "mer_item_id", jsonR.getString("mer_item_id")
-                        , "pay_money", jsonR.getString("pay_money")));
+                timeResult(resultBean);
                 break;
             case 106://乒乓球
                 timeParams(mer_price_id, play_time, timeStr, items);
@@ -256,12 +216,30 @@ public class OrderController {
                         card_id, 0, "", cid.toString(), mer_item_id, book_day,
                         "", "0", book_phone, "", "", items,
                         "1", order_money, 0, order_money);
-                jsonR = new JSONObject(resultBean.getData());
-                resultBean.setObject(ImmutableBiMap.of("oid", jsonR.getString("oid"), "mer_item_id", jsonR.getString("mer_item_id")
-                        , "pay_money", jsonR.getString("pay_money")));
+                timeResult(resultBean);
                 break;
         }
         return resultBean;
+    }
+
+    private void dayParams(String mer_price_id, String order_money, @RequestParam(value = "count", defaultValue = "1") int count, Integer start_hour, Integer end_hour, String play_time, JSONArray items) {
+        JSONObject jsonObject;
+
+        Integer money = Integer.parseInt(order_money) / count;
+
+        for (int i = 0; i < count; i++) {
+            jsonObject = new JSONObject();
+            jsonObject.put("mer_price_id", Integer.parseInt(mer_price_id));
+            jsonObject.put("order_money", money);
+            jsonObject.put("reduce_money", 0);
+            jsonObject.put("is_rights", 0);
+            jsonObject.put("pay_money",money);
+            jsonObject.put("start_hour", start_hour);
+            jsonObject.put("end_hour", end_hour);
+            if (!Strings.isNullOrEmpty(play_time))
+                jsonObject.put("play_time", play_time);
+            items.put(jsonObject);
+        }
     }
 
 
@@ -295,13 +273,24 @@ public class OrderController {
             String create_time = order.getCreate_time();
             DateTime createTimeDateTime = new DateTime(Long.parseLong(create_time) * 1000);
             DateTime currentTimeDateTime = new DateTime();
-            int diffMinutes = Minutes.minutesBetween(createTimeDateTime, currentTimeDateTime).getMinutes() % 60;
+          /*  int diffMinutes = Minutes.minutesBetween(createTimeDateTime, currentTimeDateTime).getMinutes() % 60;
             int diffSeconds = Seconds.secondsBetween(createTimeDateTime, currentTimeDateTime).getSeconds() % 60;
             if (diffMinutes < 15 || (diffMinutes == 14 && diffSeconds < 30)) {//小于30秒 才让倒计时不然太快没意义（减少网络传输误差）
                 modelMap.addAttribute("canRepay", 1);
-                modelMap.addAttribute("diffMinutes", 14- diffMinutes);
-                /*modelMap.addAttribute("diffMinutes", 5 - diffMinutes);*/
+                modelMap.addAttribute("diffMinutes", 14 - diffMinutes);
                 modelMap.addAttribute("diffSeconds", 60 - diffSeconds);
+            } else {
+
+            }*/
+            int diffMinutes = 0;
+            int diffSeconds = Seconds.secondsBetween(createTimeDateTime, currentTimeDateTime).getSeconds();
+            if (diffSeconds > 0 && diffSeconds < 15 * 60) {
+                diffSeconds = 15 * 60 - diffSeconds;
+                diffMinutes = diffSeconds / 60;
+                diffSeconds = diffSeconds % 60;
+                modelMap.addAttribute("canRepay", 1);
+                modelMap.addAttribute("diffMinutes", diffMinutes);
+                modelMap.addAttribute("diffSeconds", diffSeconds);
             } else {
                 modelMap.addAttribute("canRepay", 0);
             }
@@ -366,6 +355,24 @@ public class OrderController {
                 resultBean.setCode(-1);
                 resultBean.setMsg(json.toString());
             }
+        }
+    }
+
+    //时段性型返回结果处理
+    private void timeResult(ResultBean resultBean) {
+        JSONObject jsonR;
+        int code;
+        String msg;
+        jsonR = new JSONObject(resultBean);
+        code = jsonR.getInt("code");
+        msg = jsonR.getString("msg");
+        resultBean.setCode(code);
+        if (200 == code) {
+            jsonR = new JSONObject(resultBean.getData());
+            resultBean.setObject(ImmutableBiMap.of("oid", jsonR.getString("oid"), "mer_item_id", jsonR.getString("mer_item_id")
+                    , "pay_money", jsonR.getString("pay_money")));
+        } else {
+            resultBean.setMsg(msg);
         }
     }
 

@@ -1,23 +1,6 @@
-<div class="scrolldate">
+<div class="scrolldate" style="height:2.8rem; ">
     <div  id="priceAndInventorySummaryCommon-list" class="scrolldateCont box font12">
-			<#--	<span class="on"><a href="/site/toOneDayMerItemPrice">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="price font13">
-						<em>￥3510起</em><i></i>
-					</div>
-					<P>门市价￥180</P>
-				</a></span>
-        <span><a href="javascript:void(0)">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="price font13">
-						<em>￥3510起</em><i></i>
-					</div>
-					<P>门市价￥180</P>
-				</a></span>
-        <span class="gray"><a href="javascript:void(0)">
-					<div class="tit  font14">11月13日<i>今日</i></div>
-					<div class="noprice">不可预订</div>
-				</a></span>-->
+
     </div>
 </div>
 <script src="/js/jquery.js"></script>
@@ -49,6 +32,14 @@
                         return Math.floor(value) / 100;
                     });
 
+                    Handlebars.registerHelper("if_canbook",function(value,options){
+                        if(value == 1){
+                            return options.fn(this);
+                        }
+                        return options.inverse(this);
+                    });
+
+
                     var html = template(result.lists);
                    $("#priceAndInventorySummaryCommon-list").append(html);
                 } else {
@@ -64,12 +55,12 @@
 
 <script id="priceAndInventorySummaryCommon-template" type="text/x-handlebars-template">
     {{#each this}}
-        <span  {{#if inventory_summaray}} class="on"  {{/if}}>
-        {{#if inventory_summaray}}
-        <a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&cid={{cid}}&day={{priceSummaray.day}}">
+        <span  {{#if_canbook status}} class="on"  {{/if_canbook}}>
+        {{#if_canbook status}}
+            <a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&cid={{cid}}&day={{priceSummaray.day}}">
         {{else}}
-        <a href="javascript:void(0)">
-        {{/if}}
+            <a href="javascript:void(0)">
+        {{/if_canbook}}
 					<div class="tit  font14">{{formatDay}}<i>{{week}}</i></div>
                     {{#if inventory_summaray}}
                         <div class="price font13">

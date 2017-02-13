@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>盐城市羽毛球协会</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>${organization.name}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
     <link rel="stylesheet" href="/css/swiper-3.2.7.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 
 
@@ -29,10 +29,11 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
         <#list organization.shortIcon?split(";") as image>
-            <div class="swiper-slide" style="background-image: url(${image});"></div>
+            <#if image?? && image !="" && image?length gt 2>
+                <div class="swiper-slide" style="background-image: url(${image});"></div>
+            </#if>
         </#list>
         </div>
-
     </div>
 </div>
 
@@ -45,39 +46,32 @@
             <ul>
                 <li class="ede font15"><p>${organization.name}</p></li>
                 <li class="moreinfo box font14">
-                    <span class="tit">组织性质：</span>
-                    <div class="cont boxflex">
-                        ${organization.type}
-                    </div>
-                </li>
-                <li class="moreinfo box font14">
                     <span class="tit">组织简介：</span>
                     <div class="cont boxflex">
-                        ${organization.name}
+                    ${organization.name}
                     </div>
                 </li>
             </ul>
         </div>
 
 
-
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">体育组织动态</h3>
             <div class="scrolldateCont box font12">
-                <#list dynamics as item>
-				<span>
+            <#list dynamics as item>
+                <span>
 					<a href="/cms/organization//toDynamicDetail?id=${item.id}" class="sai">
 						<div class="box">
 							<img src="${item.shortIcon}">
-							<div >
-								<#--<h2 class="font16">${item.title}</h2>
-								<P class="font12 now">${item.title}</P>
-								<P class="font12">${item.title}</P>-->
+							<div>
+                                <h2 class="font16">${item.title}</h2>
+								<P class="font12 now">${item.timeStr}</P>
+								<P class="font12">${item.orgnName}</P>
 							</div>
 						</div>
 					</a>
 				</span>
-                </#list>
+            </#list>
             </div>
         </div>
 
@@ -104,15 +98,15 @@
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="/js/swiper-3.2.7.min.js"></script>
 <script>
-    var mySwiper = new Swiper ('.swiper-container', {
+    <#assign  shortIconArr = organization.shortIcon?split(";")/>
+    <#if shortIconArr?size gt 1>
+    var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
-
         // 如果需要分页器
         pagination: '.swiper-pagination',
-
-
     })
+    </#if>
 </script>
 </body>
 </html>

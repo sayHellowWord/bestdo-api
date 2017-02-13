@@ -93,12 +93,17 @@
         <p class="font14">暂无相关相关场地信息</p>
     </div>
 </div>
+
 <!--城市地位-->
-<#--
-<div class="loading">
-    <div class="loadCont"></div>
-    <div class="loadBg"></div>
-</div>-->
+<div class="position" style="bottom: 3.625rem;">
+    <div class="positionCont">
+        <div class="positionContBg box font16">
+            <div class="icon"></div>
+            <div id="user-position" class="txt boxflex">盐城</div>
+            <div id="user-position-refresh" class="refresh"></div>
+        </div>
+    </div>
+</div>
 
 <!--导航-->
 <div id="nav">
@@ -127,7 +132,10 @@
     map.centerAndZoom(point, 12);
 
     var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
+    var gc = new BMap.Geocoder();
+    baiduLocation();
+
+  /*  geolocation.getCurrentPosition(function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
             var mk = new BMap.Marker(r.point);
             map.addOverlay(mk);
@@ -159,7 +167,7 @@
             venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
         }
-    }, {enableHighAccuracy: true})
+    }, {enableHighAccuracy: true})*/
 
 
     $(function () {
@@ -201,6 +209,11 @@
             window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid+ "&cardId=" + cardId;
         });
 
+        //重新定位
+        $("body").on("click", "#user-position-refresh", function () {
+            $("#googDetail-list").html('');
+            baiduLocation();
+        });
 
     });
 
@@ -214,6 +227,9 @@
         var page = 1;
         var pagesize = 10;
         var district = $("#administrative-area").find(".on").data("value");
+        if(sort.length > 1){
+            radius = 10000000000000000;
+        }
         $("#googDetail-list").html('');
         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
     }
@@ -222,9 +238,11 @@
     //场馆列表搜索
     function venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
         //$(".load-container").show();
+        $("#no-result").hide();
         $.ajax({
             type: "POST",
             url: "/odds/search",
+            async: false,
             data: {
                 "merid": merid,
                 "radius": radius,
@@ -257,6 +275,47 @@
             }
         });
     }
+
+    //百度定位
+    function baiduLocation() {
+
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                var mk = new BMap.Marker(r.point);
+                map.addOverlay(mk);
+                map.panTo(r.point);
+                longitude = r.point.lng;
+                latitude = r.point.lat;
+                var merid = $("#sport-type").find(".on").data("merid");
+                var radius = $("#distance").find(".on").data("value");
+                var sort = $("#distance").find(".on").data("distanacesrot");
+                var price_sort;
+                var page = 1;
+                var pagesize = 10;
+                var district = $("#administrative-area").find(".on").data("value");
+                $("#googDetail-list").html('');
+
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+
+                var pt = r.point;
+                gc.getLocation(pt, function(rs){
+                    var addComp = rs.addressComponents;
+                    $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
+                });
+            }else {
+                var merid = $("#sport-type").find(".on").data("merid");
+                var radius = $("#distance").find(".on").data("value");
+                var sort = $("#distance").find(".on").data("distanacesrot");
+                var price_sort;
+                var page = 1;
+                var pagesize = 10;
+                var district = $("#administrative-area").find(".on").data("value");
+                $("#googDetail-list").html('');
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+            }
+        }, {enableHighAccuracy: true})
+    }
+
 </script>
 
 

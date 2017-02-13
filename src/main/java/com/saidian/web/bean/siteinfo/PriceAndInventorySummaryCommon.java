@@ -9,7 +9,7 @@ public class PriceAndInventorySummaryCommon {
 
     private PriceSummaray priceSummaray;
 
-    private String status;
+    private int status;
 
     private String week;//星期几，如果是当天则显示今日
 
@@ -38,11 +38,11 @@ public class PriceAndInventorySummaryCommon {
         this.priceSummaray = priceSummaray;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

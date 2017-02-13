@@ -29,7 +29,7 @@
 		<div class="centerTopCont box">
 			<div class="imgtxt"><img src="../images/2.png" ></div>
 			<div class="cont box2 boxflex">
-				<p>${name!}</p>
+                <a href="/user/personalprofile"><p>${name!}</p></a>
 			</div>
 		</div>
 	</div>
@@ -45,9 +45,12 @@
 		</li>
 	</ul>
 	<ul class="centerOrder centerOther">
-		<li class="all i1 font14"><a href="/user/personalprofile">
+		<#--<li class="all i1 font14"><a href="/user/personalprofile">
 			<span></span>设置
-		</a></li>
+		</a></li>-->
+            <li class="all i1 font14"><a href="/user/loginout">
+                <#--<span></span>-->退出
+            </a></li>
 </ul>
 	
 </div>

@@ -70,8 +70,8 @@
     <div id="distance" class="slidemenuCont font14">
         <a href="javascript:void(0)" data-value="10000000000000000" data-distanacesrot="" class="on">不限距离</a>
         <a href="javascript:void(0)" data-value="" data-distanacesrot="asc">距离最近</a>
-        <a href="javascript:void(0)" data-value="5000" data-distanacesrot="">附近5km</a>
-        <a href="javascript:void(0)" data-value="10000" data-distanacesrot="">附近10km</a>
+        <a href="javascript:void(0)" data-value="5" data-distanacesrot="">附近5km</a>
+        <a href="javascript:void(0)" data-value="10" data-distanacesrot="">附近10km</a>
     </div>
 </div>
 <!--场馆列表-->
@@ -93,19 +93,25 @@
         <p class="font14">暂无相关相关场地信息</p>
     </div>
 </div>
+
 <!--城市地位-->
-<#--
-<div class="loading">
-    <div class="loadCont"></div>
-    <div class="loadBg"></div>
-</div>-->
+<div class="position">
+    <div class="positionCont">
+        <div class="positionContBg box font16">
+            <div class="icon"></div>
+            <div id="user-position" class="txt boxflex">盐城</div>
+            <div id="user-position-refresh" class="refresh"></div>
+        </div>
+    </div>
+</div>
+
 <!--地图图标-->
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
 
-    var longitude = '${coordinate.lng}';
-    var latitude = '${coordinate.lat}';
+    var longitude = '';
+    var latitude = '';
     var cardId = '${cardId}';
 
     // 百度地图API功能
@@ -114,52 +120,9 @@
     map.centerAndZoom(point, 12);
 
     var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            var mk = new BMap.Marker(r.point);
-            map.addOverlay(mk);
-            map.panTo(r.point);
-            //alert('您的位置：'+r.point.lng+','+r.point.lat);
-            longitude = r.point.lng;
-            latitude = r.point.lat;
-            var merid = $("#sport-type").find(".on").data("merid");
-            var radius = $("#distance").find(".on").data("value");
-            var sort = $("#distance").find(".on").data("distanacesrot");
-            var price_sort;
-            var page = 1;
-            var pagesize = 10;
-            var district = $("#administrative-area").find(".on").data("value");
-            $("#googDetail-list").html('');
+    var gc = new BMap.Geocoder();
 
-            venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-
-        }
-        else {
-            var merid = $("#sport-type").find(".on").data("merid");
-            var radius = $("#distance").find(".on").data("value");
-            var sort = $("#distance").find(".on").data("distanacesrot");
-            var price_sort;
-            var page = 1;
-            var pagesize = 10;
-            var district = $("#administrative-area").find(".on").data("value");
-            $("#googDetail-list").html('');
-
-            venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-
-        }
-    }, {enableHighAccuracy: true})
-
-    //关于状态码
-    //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
-    //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
-    //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
-    //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
-    //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
-    //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
-    //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
-    //BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
-    //BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
-
+    baiduLocation();
 
     $(function () {
 
@@ -200,6 +163,11 @@
             window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid+ "&cardId=" + cardId;
         });
 
+        //重新定位
+        $("body").on("click", "#user-position-refresh", function () {
+            $("#googDetail-list").html('');
+            baiduLocation();
+        });
 
     });
 
@@ -214,6 +182,12 @@
         var pagesize = 10;
         var district = $("#administrative-area").find(".on").data("value");
         $("#googDetail-list").html('');
+
+        if(sort.length > 1){
+            radius = 10000000000000000;
+        }
+
+
         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
     }
 
@@ -221,9 +195,12 @@
     //场馆列表搜索
     function venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
         //$(".load-container").show();
+        //没有结果提示隐藏
+        $("#no-result").hide();
         $.ajax({
             type: "POST",
             url: "/site/search",
+            async: false,
             data: {
                 "merid": merid,
                 "radius": radius,
@@ -256,6 +233,47 @@
             }
         });
     }
+
+    //百度定位
+    function baiduLocation() {
+
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                var mk = new BMap.Marker(r.point);
+                map.addOverlay(mk);
+                map.panTo(r.point);
+                longitude = r.point.lng;
+                latitude = r.point.lat;
+                var merid = $("#sport-type").find(".on").data("merid");
+                var radius = $("#distance").find(".on").data("value");
+                var sort = $("#distance").find(".on").data("distanacesrot");
+                var price_sort;
+                var page = 1;
+                var pagesize = 10;
+                var district = $("#administrative-area").find(".on").data("value");
+                $("#googDetail-list").html('');
+
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+
+                var pt = r.point;
+                gc.getLocation(pt, function(rs){
+                    var addComp = rs.addressComponents;
+                    $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
+                });
+            }else {
+                var merid = $("#sport-type").find(".on").data("merid");
+                var radius = $("#distance").find(".on").data("value");
+                var sort = $("#distance").find(".on").data("distanacesrot");
+                var price_sort;
+                var page = 1;
+                var pagesize = 10;
+                var district = $("#administrative-area").find(".on").data("value");
+                $("#googDetail-list").html('');
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+            }
+        }, {enableHighAccuracy: true})
+    }
+
 </script>
 
 

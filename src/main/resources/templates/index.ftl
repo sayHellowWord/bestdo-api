@@ -21,15 +21,15 @@
 <div class="lunbo">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background-image: url(images/bg4.jpg);"><a href=""  style="display:block;height:100%;z-index:9999;"></a>
+            <div class="swiper-slide" style="background-image: url(images/bg4.jpg);"><a href="/site/index"  style="display:block;height:100%;z-index:9999;"></a>
             </div>
-            <div class="swiper-slide" style="background-image: url(images/bg1.jpg);"><a href="" style="display:block;height:100%;z-index:9999;"></a>
+            <div class="swiper-slide" style="background-image: url(images/bg1.jpg);"><a href="/cms/exercisehoop/list" style="display:block;height:100%;z-index:9999;"></a>
             </div>
-            <div class="swiper-slide" style="background-image: url(images/bg3.jpg);"><a href="" style="display:block;height:100%;z-index:9999;"></a>
+            <div class="swiper-slide" style="background-image: url(images/bg3.jpg);"><a href="/cms/train/list" style="display:block;height:100%;z-index:9999;"></a>
             </div>
-            <div class="swiper-slide" style="background-image: url(images/bg2.jpg);"><a href=""  style="display:block;height:100%;z-index:9999;"></a>
+            <div class="swiper-slide" style="background-image: url(images/bg2.jpg);"><a href="/cms/match/list"  style="display:block;height:100%;z-index:9999;"></a>
             </div>
-            <div class="swiper-slide" style="background-image: url(images/bg5.jpg);"><a href="" style="display:block;height:100%;z-index:9999;"></a>
+            <div class="swiper-slide" style="background-image: url(images/bg5.jpg);"><a href="/cms/guidance/list" style="display:block;height:100%;z-index:9999;"></a>
             </div>
         </div>
         <!-- 如果需要分页器 -->
@@ -69,7 +69,7 @@
 
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
-<script src="js/swiper-3.2.7.min.js"></script>
+<script src="/js/swiper-3.2.7.min.js"></script>
 <script>
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
@@ -77,7 +77,6 @@
 
         // 如果需要分页器
         pagination: '.swiper-pagination',
-
 
     })
 </script>
