@@ -9,7 +9,8 @@
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a"></script>
+<#--   <script src="http://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a"></script>-->
+    <script src="https://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a&s=1"></script>
 </head>
 
 <body>
@@ -160,7 +161,7 @@
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
             var cid = $(this).data("cid");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid+ "&cardId=" + cardId;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid + "&cardId=" + cardId;
         });
 
         //重新定位
@@ -183,7 +184,7 @@
         var district = $("#administrative-area").find(".on").data("value");
         $("#googDetail-list").html('');
 
-        if(sort.length > 1){
+        if (sort.length > 1) {
             radius = 10000000000000000;
         }
 
@@ -256,11 +257,11 @@
                 venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
                 var pt = r.point;
-                gc.getLocation(pt, function(rs){
+                gc.getLocation(pt, function (rs) {
                     var addComp = rs.addressComponents;
                     $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
                 });
-            }else {
+            } else {
                 var merid = $("#sport-type").find(".on").data("merid");
                 var radius = $("#distance").find(".on").data("value");
                 var sort = $("#distance").find(".on").data("distanacesrot");

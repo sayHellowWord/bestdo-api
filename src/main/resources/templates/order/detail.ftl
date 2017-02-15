@@ -105,12 +105,10 @@
     </#if>
     <#--//日期型 109 游泳  108 健身 122 台球-->
     <#if order.cid?number == 108 ||  order.cid?number == 109 ||  order.cid?number == 122>
-        <div class="creatInfo">
             <h1 class="font15">${order.mer_item_name}</h1>
             <p class="box time font14"><i>日期：</i><span>${order.time} </span></p>
             <p class="box font14"><i>服务：</i><span>${order.items[0].price_info}</span></p>
             <p class="box font14"><i>地址：</i><span>${order.stadium.address}</span></p>
-        </div>
     </#if>
 
     </div>
@@ -327,7 +325,7 @@
             if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                 // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
                 //window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
-                window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900";
+                window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5";
                 return;
             }
 //            window.open(url);

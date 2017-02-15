@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <title>体质监测</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 
 
@@ -61,7 +61,6 @@
             },
             success: function (resultData) {
                 console.info(resultData);
-
                 resultHandler(resultData);
             }
         });
@@ -71,18 +70,18 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
-            Handlebars.registerHelper('if_bodyUrl', function(value, options) {
+            Handlebars.registerHelper('if_bodyUrl', function (value, options) {
                 return value.split(';')[0];
             });
 
-           /* var html = template(result.data.list);
-            $("#list").append(html);*/
+            /* var html = template(result.data.list);
+             $("#list").append(html);*/
 
             //当前未分页所以这样做 TODO
-            if(result.data.list.length  > 0){
+            if (result.data.list.length > 0) {
                 var html = template(result.data.list);
                 $("#list").append(html);
-            }else {
+            } else {
                 $("#no-result").show();
             }
 
@@ -98,17 +97,19 @@
     {{#each this}}
     <li class="box">
         <div class="bodyimg">
-            <img src="{{#if_bodyUrl bodyUrl}} {{bodyUrl}} {{/if_bodyUrl}}">
+            <a href="/cms/guidance/toDetail?id={{id}}">
+                <img src="{{#if_bodyUrl bodyUrl}} {{bodyUrl}} {{/if_bodyUrl}}">
+            </a>
         </div>
-        <a href="/cms/guidance/toDetail?id={{id}}">
-        <div class="bodydetail boxflex">
-            <h2 class="font16">{{name}}</h2>
-            <div class="address font12">
-               <#-- <span class="d">1.0km</span>-->
-                <span class="p">地点：{{address}}</span>
+            <div class="bodydetail boxflex">
+                <a href="/cms/guidance/toDetail?id={{id}}">
+                    <h2 class="font16">{{name}}</h2>
+                    <div class="address font12">
+                    <#-- <span class="d">1.0km</span>-->
+                        <span class="p">地点：{{address}}</span>
+                    </div>
+                </a>
             </div>
-        </div>
-        </a>
     </li>
     {{/each}}
 </script>

@@ -30,7 +30,7 @@
  <#--   <p class="word font14">请点击“重新支付”对订单进行支付，<span>13分12秒</span>后订单将因超时未支付被自动取消！</p>-->
     <div class="applyBtn font17">
         <a href="/order/detail?oid=${order_id}" class="viewBtn">查看订单</a>
-        <a href="/site/index" class="backHome">返回首页</a>
+        <a href="/" class="backHome">返回首页</a>
     </div>
 </div>
 </body>

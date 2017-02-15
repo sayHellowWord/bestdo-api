@@ -206,7 +206,6 @@
                 <div class="otherinfo"><p class="font13">{{statusName}}</p></div>
                 {{else}}
                 <div class="otherinfo font12">
-                    <#--<div class="timeout">剩余：<span>{{remain_time}}</span></div>-->
                     <a href="/order/detail?oid={{oid}}" class="topaybtn">去支付</a>
                 </div>
                 {{/if}}

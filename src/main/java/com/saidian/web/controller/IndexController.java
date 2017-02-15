@@ -16,4 +16,10 @@ public class IndexController {
     public String boot() {
         return "index";
     }
+
+    @RequestMapping("/contactus")
+    public String contactus() {
+        return "contactus";
+    }
+
 }

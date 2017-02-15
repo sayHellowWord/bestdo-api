@@ -2174,7 +2174,7 @@ body {
 
 .orderStadiusCont ul li {
     float: left;
-    width: 25%;
+    width: 20%;
     height: 2.2rem;
     line-height: 2.2rem;
     padding: 0;
@@ -2194,7 +2194,7 @@ body {
     height: 0;
     overflow: hidden;
     position: absolute;
-    left: 0.8rem;
+    left: 0.6rem;
     bottom: 0;
     border-bottom: 2px solid #3ea1df;
 }
@@ -2516,7 +2516,8 @@ body {
 }
 
 .blockinput li .count {
-    float: right;
+    display:block;
+    text-align: right;
     height: 2.2rem;
     line-height: 2.2rem;
     margin-right: 0.6rem;
@@ -4021,8 +4022,54 @@ add by wub  需同步
     border-radius: 2px;
 }
 
-
-
+.scrolldateCont .gray .noprice{
+    height:1.9rem;
+    line-height:1.9rem;
+    color:#ccc;
+}
+/*联系我们*/
+.relation{
+    width: 100%;
+}
+.relation .img22{
+    width: 5.7375rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+.relation .img22 img{
+    width: 5.7375rem;
+    height: 5.7375rem;
+}
+.relation .img22 p{
+    text-align: center;
+    color: #229fd6;
+    margin-top: 0.6rem;
+}
+.relation .img22 i{
+    font-style: normal;
+    text-align: center;
+    color: #999999;
+    display: block;
+    margin-top: 0.4rem;
+}
+.relation ul{
+    padding: 0 0.8rem;
+}
+.relation ul li{
+    border-bottom: 1px solid #bebebe;
+    height: 2.975rem;
+    line-height: 2.975rem;
+}
+.relation ul li p:first-child{
+    color: #333333;
+}
+.relation ul li p:last-child{
+    color: #999999;
+    text-align: right;
+}
+.relation ul li:last-child{
+    border-bottom: 0px;
+}
 
 
 

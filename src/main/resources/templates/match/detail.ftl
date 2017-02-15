@@ -75,7 +75,7 @@
                                     <div>
                                         <h2 class="font16">${dynamic.title}</h2>
                                         <P class="font12 now">${dynamic.createTimeStr}</P>
-                                        <P class="font12">${dynamic.eventContext}</P>
+                                      <#--  <P class="font12">${dynamic.eventContext}</P>-->
                                     </div>
                                 </div>
                             </a>

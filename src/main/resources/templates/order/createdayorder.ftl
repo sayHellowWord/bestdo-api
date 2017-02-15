@@ -45,7 +45,7 @@
         <span class="tit2">手机</span>
         <div class="cont2 boxflex">
             <a href="javascript:void(0)" class="close"></a>
-            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}">
+            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}"  readonly="readonly" >
         </div>
     </li>
 </ul>
@@ -289,7 +289,7 @@
         if (ua.match(/MicroMessenger/i) == 'micromessenger') {
             // window.open("http://test.weixin.bestdo.com/paybank/topay?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5");
             //window.open(url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900");
-            window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5&time_expire=900";
+            window.location.href = url + "?o=" + order_id + "&a=" + amount + "&s=" + sign + "&l=5";
             return;
         }
 //        window.open(url);

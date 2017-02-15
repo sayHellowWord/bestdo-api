@@ -53,7 +53,7 @@
                 <li class="moreinfo box font14">
                     <span class="tit">从业经历：</span>
                     <div class="cont boxflex">
-                        ${coach.introduction!""}
+                        ${coach.experience!""}
                     </div>
                 </li>
             </ul>

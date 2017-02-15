@@ -5,10 +5,10 @@
     <title>体育组织</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!--忽略页面中的数字识别为电话号码-->
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 
 <body>
@@ -73,12 +73,11 @@
 <!--城市地位-->
 
 
-
 <!--地图图标-->
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
-    $(function(){
+    $(function () {
 
         // 获取行政区字段
         var area = $('.nearby .on').data('value');
@@ -106,14 +105,14 @@
         })*/
 
         $(".chooseTab a").tabEve({
-            cls:".slidemenu",
-            selected:"on",
-            empty:"gray",
-            typing:"slidemenu"
+            cls: ".slidemenu",
+            selected: "on",
+            empty: "gray",
+            typing: "slidemenu"
         })
 
         //区域
-        $("div.nearby a").click(function(){
+        $("div.nearby a").click(function () {
 
             //替换title
             //$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
@@ -127,7 +126,7 @@
             $('div.chooseTabCont a').eq(ind).html(titleTxt + '<span></span>');
             $("body").click();
 
-            $("div.nearby").children('a').each(function(index, item){
+            $("div.nearby").children('a').each(function (index, item) {
                 $(item).removeClass('on');
             });
 
@@ -144,7 +143,7 @@
         });
 
         //排序
-        $("div.sort a").click(function(){
+        $("div.sort a").click(function () {
 
             //替换title
             //$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
@@ -159,7 +158,7 @@
 
             $("body").click();
 
-            $("div.sort").children('a').each(function(index, item){
+            $("div.sort").children('a').each(function (index, item) {
                 $(item).removeClass('on');
             });
 
@@ -218,7 +217,7 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
-            Handlebars.registerHelper('if_showImg', function(value, options) {
+            Handlebars.registerHelper('if_showImg', function (value, options) {
                 return value.split(';')[0];
             });
             var html = template(result.data);
@@ -234,10 +233,12 @@
     {{#each this}}
     <li class="box vip">
         <div class="venuesimg">
-            <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+            <a href="/cms/organization/toDetail?id={{id}}">
+                <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+            </a>
         </div>
-        <a href="/cms/organization/toDetail?id={{id}}">
-            <div class="venuesdetial boxflex">
+        <div class="venuesdetial boxflex">
+            <a href="/cms/organization/toDetail?id={{id}}">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address add3 font12">
                     <span class="p">组织名称：{{name}}</span>
@@ -245,8 +246,8 @@
                 <div class="address add3 font12">
                     <span class="p">最新简介：{{description}}</span>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </li>
     {{/each}}
 </script>

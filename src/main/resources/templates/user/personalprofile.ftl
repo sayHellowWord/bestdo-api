@@ -26,18 +26,18 @@
 <div class="wrapper">
     <div class="set">
         <ul class="blockinput">
-            <li class="font14">
-                <span id="monity-nick-name" class="count">${nickName!}</span>
+            <li class="font14 box">
                 <span class="tit">昵称</span>
+                <span id="monity-nick-name" class="count boxflex">${nickName!}</span>
             </li>
-            <li class="font14">
-                <span id="monity-real-name"  class="count">${name!}</span>
+            <li class="font14 box">
                 <span class="tit">姓名</span>
+                <span id="monity-real-name"  class="count boxflex">${name!}</span>
             </li>
-            <li class="sex font14">
-                <span class="count"><#if userinfo.sex == 'MALE'>男<#elseif  userinfo.sex == 'FAMALE'>女<#else>
-                    未知</#if></span>
+            <li class="sex font14 box">
                 <span class="tit">性别</span>
+                <span class="count boxflex"><#if userinfo.sex == 'MALE'>男<#elseif  userinfo.sex == 'FAMALE'>女<#else>
+                    未知</#if></span>
             </li>
         </ul>
 

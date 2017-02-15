@@ -32,6 +32,10 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(value = "/accountLogin")
     public ResultBean accountLogin(String account, String password, HttpSession httpSession) throws Exception {
+        System.out.println("======================  普通登录    begin   ==================================");
+        System.out.println(httpSession.getId());
+        System.out.println("======================  普通登录    end   ==================================");
+
         ResultBean resultBean = userService.accountLogin(account, password);
 
         if (200 == resultBean.getCode()) {
@@ -51,9 +55,7 @@ public class LoginController {
             resultBean = userService.findUserInfo(user.getUid());
             JSONObject userinfo = new JSONObject(resultBean.getData());
             httpSession.setAttribute("userinfo", userinfo);
-
         }
-
         return resultBean;
     }
 
@@ -94,12 +96,15 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(value = "fastlogin")
     public ResultBean fastlogin(String account, String identifying, String validId, HttpSession httpSession) throws Exception {
+
+        System.out.println("======================  快速登录    begin   ==================================");
+        System.out.println(httpSession.getId());
+        System.out.println("======================  快速登录    end   ==================================");
+
         ResultBean resultBean = userService.accountValidLoginRegister(account, validId, identifying);
         if (200 == resultBean.getCode()) {
             JSONObject dataJSONObject = new JSONObject(resultBean.getData());
-
             User user = new User();
-
             user.setId(dataJSONObject.getInt("id"));
             user.setSid(dataJSONObject.getString("sid"));
             user.setUid(dataJSONObject.getString("uid"));
@@ -108,11 +113,8 @@ public class LoginController {
             user.setLoginType(dataJSONObject.getString("loginType"));
             user.setScopeTime(dataJSONObject.getInt("scopeTime"));
             //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
-
             httpSession.setAttribute("user", user);
-
             resultBean.setData(StringUtils.EMPTY);
-
             resultBean = userService.findUserInfo(user.getUid());
             JSONObject userinfo = new JSONObject(resultBean.getData());
             httpSession.setAttribute("userinfo", userinfo);

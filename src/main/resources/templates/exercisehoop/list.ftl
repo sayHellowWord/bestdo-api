@@ -84,10 +84,10 @@
         <ul id="list" class="list">
 
         </ul>
-        <#--<div class="load-container font12">
-            <div class="loader"></div>
-            数据加载中...
-        </div>-->
+    <#--<div class="load-container font12">
+        <div class="loader"></div>
+        数据加载中...
+    </div>-->
     </div>
     <!--场馆列表结束-->
     <div id="no-result" class="empty">
@@ -117,7 +117,7 @@
 
         //点击搜索按钮
         var btnSearch = $('#btn-search');
-        btnSearch.on("click", function() {
+        btnSearch.on("click", function () {
             $("#list").html('');
             searchKeyword = $('#search-keyword').val();
             search(searchKeyword, 1, 15);
@@ -222,15 +222,15 @@
         if (200 === result.code) {
             var source = $("#template").html();
             var template = Handlebars.compile(source);
-            Handlebars.registerHelper('if_showImg', function(value, options) {
+            Handlebars.registerHelper('if_showImg', function (value, options) {
                 return value.split(';')[0];
             });
 
             //当前未分页所以这样做 TODO
-            if(result.data.length  > 0){
+            if (result.data.length > 0) {
                 var html = template(result.data);
                 $("#list").append(html);
-            }else {
+            } else {
                 $("#no-result").show();
             }
 
@@ -246,17 +246,19 @@
     {{#each this}}
     <li class="box vip">
         <div class="venuesimg">
-            <img src="{{#if_showImg showImg}} {{showImg}} {{/if_showImg}}">
+            <a href="/cms/exercisehoop/toDetail?id={{id}}">
+                <img src="{{#if_showImg showImg}} {{showImg}} {{/if_showImg}}">
+            </a>
         </div>
-        <a href="/cms/exercisehoop/toDetail?id={{id}}">
-            <div class="venuesdetial boxflex">
+        <div class="venuesdetial boxflex">
+            <a href="/cms/exercisehoop/toDetail?id={{id}}">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address add2 font12">
-                    <#--<span class="d">1.0km</span>-->
+                <#--<span class="d">1.0km</span>-->
                     <span class="p">{{address}}</span>
                 </div>
-            </div>
-        </a>
+                </a>
+        </div>
     </li>
     {{/each}}
 </script>

@@ -214,10 +214,10 @@
             });
 
             //当前未分页所以这样做 TODO
-            if(result.data.length  > 0){
+            if (result.data.length > 0) {
                 var html = template(result.data);
                 $("#list").append(html);
-            }else {
+            } else {
                 $("#no-result").show();
             }
 
@@ -234,10 +234,13 @@
     {{#each this}}
     <li class="box vip">
         <div class="venuesimg">
-            <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}">
+            <a href="/cms/match/detail?id={{id}}">
+                <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}">
+            </a>
         </div>
-        <a href="/cms/match/detail?id={{id}}">
-            <div class="venuesdetial boxflex">
+
+        <div class="venuesdetial boxflex">
+            <a href="/cms/match/detail?id={{id}}">
                 <h2 class="font16">{{name}} </h2>
                 <div class="address add3 font12">
                     <span class="p">报名时间：{{startDate}}-{{endDate}}</span>
@@ -248,8 +251,8 @@
                 <div class="address add3 font12">
                     <span class="p">赛事地点：{{address}}</span>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
         <div class="xiajia"><p class="font14 on">{{#if_status entryStatus}} {{entryStatus}} {{else}} {{entryStatus}}
             {{/if_status}}</p></div>
     </li>

@@ -1,4 +1,4 @@
-<div class="scrolldate" style="height:2.8rem; ">
+<div class="scrolldate">
     <div  id="priceAndInventorySummaryCommon-list" class="scrolldateCont box font12">
 
     </div>
@@ -39,7 +39,6 @@
                         return options.inverse(this);
                     });
 
-
                     var html = template(result.lists);
                    $("#priceAndInventorySummaryCommon-list").append(html);
                 } else {
@@ -55,23 +54,21 @@
 
 <script id="priceAndInventorySummaryCommon-template" type="text/x-handlebars-template">
     {{#each this}}
-        <span  {{#if_canbook status}} class="on"  {{/if_canbook}}>
+        <span  {{#if_canbook status}} class="on"  {{else}} class="gray" {{/if_canbook}}>
         {{#if_canbook status}}
             <a href="/site/toOneDayMerItemPrice?mer_item_id={{mer_item_id}}&mer_price_id={{mer_price_id}}&cid={{cid}}&day={{priceSummaray.day}}">
         {{else}}
             <a href="javascript:void(0)">
         {{/if_canbook}}
 					<div class="tit  font14">{{formatDay}}<i>{{week}}</i></div>
-                    {{#if inventory_summaray}}
+                    {{#if_canbook status}}
                         <div class="price font13">
-                        <#--    <em>￥{{priceSummaray.min_price}}起</em><i></i>-->
                             <em>￥{{#if_price priceSummaray.min_price}} {{priceSummaray.min_price}} {{/if_price}}起</em><i></i>
                         </div>
-                      <#--  <P>门市价￥{{priceSummaray.max_price}}</P>-->
                         <P>门市价￥{{#if_price priceSummaray.max_price}} {{priceSummaray.max_price}} {{/if_price}}</P>
                     {{else}}
                        <div class="noprice">不可预订</div>
-                    {{/if}}
+                    {{/if_canbook}}
         </a></span>
     {{/each}}
 </script>

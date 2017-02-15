@@ -88,9 +88,6 @@ public class OrderService {
             }
             orderResult.setOrders(orders);
 
-
-            System.out.println(orderResult.toString());
-
             resultBean.setObject(orderResult);
             resultBean.setData(StringUtils.EMPTY);
 

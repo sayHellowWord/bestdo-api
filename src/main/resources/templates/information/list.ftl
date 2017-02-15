@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <title>体育信息</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
 
 
@@ -41,7 +41,6 @@
 </div>
 
 
-
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
@@ -71,23 +70,23 @@
             var source = $("#template").html();
             var template = Handlebars.compile(source);
 
-            Handlebars.registerHelper('if_showImg', function(value, options) {
+            Handlebars.registerHelper('if_showImg', function (value, options) {
                 return value.split(';')[0];
             });
 
-            Handlebars.registerHelper("prettifyDate", function(timestamp) {
-                var  da = new Date(timestamp);
+            Handlebars.registerHelper("prettifyDate", function (timestamp) {
+                var da = new Date(timestamp);
                 var year = da.getFullYear();
-                var month = da.getMonth()+1;
+                var month = da.getMonth() + 1;
                 var date = da.getDate();
-                return [year,month,date].join('-');
+                return [year, month, date].join('-');
             });
 
             //当前未分页所以这样做 TODO
-            if(result.data.length  > 0){
+            if (result.data.length > 0) {
                 var html = template(result.data);
                 $("#list").append(html);
-            }else {
+            } else {
                 $("#no-result").show();
             }
 
@@ -103,16 +102,18 @@
     {{#each this}}
     <li class="box">
         <div class="bodyimg">
-            <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+            <a href="/cms/information//toDetail?id={{id}}">
+                <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+            </a>
         </div>
-        <a href="/cms/information//toDetail?id={{id}}">
-            <div class="bodydetail boxflex">
+        <div class="bodydetail boxflex">
+            <a href="/cms/information//toDetail?id={{id}}">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address font12">
                     <span class="p">{{author}} {{prettifyDate createDate}}</span>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </li>
     {{/each}}
 </script>

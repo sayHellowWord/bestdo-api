@@ -138,7 +138,11 @@ public class OrderController {
         JSONObject userObject = (JSONObject) httpSession.getAttribute("userinfo");
         String uid = userObject.getString("uid");
 
-        card_id = Integer.parseInt((String) httpSession.getAttribute("cardid"));
+        String cardid = (String) httpSession.getAttribute("cardid");
+        if(Strings.isNullOrEmpty(cardid))
+            cardid = HttpParams.cardId;
+
+        card_id = Integer.parseInt(cardid);
 
         //魏继鹏测试环境数据 todo
         //  String uid = "522160521120318tRS";
