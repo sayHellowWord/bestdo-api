@@ -1,7 +1,9 @@
 package com.saidian.web.Btiem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
+import com.google.common.primitives.Doubles;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
 import com.saidian.utils.HttpResultUtil;
@@ -112,23 +114,25 @@ public class BTiemService {
                                      String radius, String longitude, String latitude, String sort, String price_sort, int page,
                                      int pagesize, int district) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("merid", merid);
+        jsonObject.put("mer_id", merid);
         jsonObject.put("mer_item_ids", mer_item_ids);
         jsonObject.put("mer_price_id", mer_price_id);
         jsonObject.put("city", city);
-        jsonObject.put("q", q);
+        if (!Strings.isNullOrEmpty(q))
+            jsonObject.put("q", q);
         jsonObject.put("card_type_id", card_type_id);
         jsonObject.put("radius", radius);
         jsonObject.put("longitude", longitude);
         jsonObject.put("latitude", latitude);
-        jsonObject.put("sort", sort);
-        jsonObject.put("price_sort", price_sort);
+        if (!Strings.isNullOrEmpty(sort))
+            jsonObject.put("sort", sort);
+        if (!Strings.isNullOrEmpty(price_sort))
+            jsonObject.put("price_sort", price_sort);
         jsonObject.put("page", page);
         jsonObject.put("pagesize", pagesize);
         jsonObject.put("district", district);
 
-
-        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + MER_GET_ITEM_LIST, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+        String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL_LIST + MER_GET_ITEM_LIST, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY_LIST);
         ResultBean<GoogDetail> resultBean = HttpResultUtil.result2Bean(result);
         if (200 == resultBean.getCode()) {
             List<GoogDetail> lists = new ArrayList<GoogDetail>();
@@ -147,6 +151,14 @@ public class BTiemService {
                     HttpResultUtil.item2GoodDetail(googDetail, goodDetailJsonObject);
                     lists.add(googDetail);
                 }
+            }
+            if (!Strings.isNullOrEmpty(sort) && "asc".equals(sort)) {
+                Ordering<GoogDetail> ordering = new Ordering<GoogDetail>() {
+                    public int compare(GoogDetail left, GoogDetail right) {
+                        return Doubles.compare(left.getGeodist(), right.getGeodist());
+                    }
+                };
+                lists = ordering.sortedCopy(lists);
             }
             resultBean.setLists(lists);
         }
@@ -391,7 +403,7 @@ public class BTiemService {
                     }
                     priceAndInventorySummaryCommon.setFormatDay(dateTime.toString("MM月dd日"));*/
                     priceAndInventorySummaryCommon.setPriceSummaray(priceSummaray);
-                } else{
+                } else {
                     //未配置价格异常处理
                     PriceSummaray priceSummaray = new PriceSummaray();
                     priceSummaray.setMin_price("0.00");

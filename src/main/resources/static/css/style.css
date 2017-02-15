@@ -2921,6 +2921,7 @@ body {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    text-align: right;
     padding-right: 0.7rem;
     background-image: url(../images/arrow_3.png);
     background-size: 14px 14px;
@@ -4070,10 +4071,10 @@ add by wub  需同步
 .relation ul li:last-child{
     border-bottom: 0px;
 }
-
-
-
-
+/*体育赛事列表页*/
+.venueslist li.vip2 {
+    height: 3.4rem;
+}
 
 
 

@@ -45,7 +45,7 @@
         <span class="tit2">手机</span>
         <div class="cont2 boxflex">
             <a href="javascript:void(0)" class="close"></a>
-            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}"  readonly="readonly" >
+            <input id="telphone-id" type="tel" placeholder="请填写联系人手机" value="${telephone!}"  >
         </div>
     </li>
 </ul>

@@ -232,7 +232,7 @@
 
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
-    <li class="box vip">
+    <li class="box vip vip2">
         <div class="venuesimg">
             <a href="/cms/match/detail?id={{id}}">
                 <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}">

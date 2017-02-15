@@ -60,8 +60,8 @@ public class OrderController {
         if (null == cid)
             throw new Exception("运动类型不能为空");
         JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
-        if (null != jsonObject && jsonObject.has("telephone")) {
-            String telephone = jsonObject.getString("telephone");
+        if (null != jsonObject && jsonObject.has("loginTel")) {
+            String telephone = jsonObject.getString("loginTel");
             modelMap.addAttribute("telephone", telephone);
         }
 

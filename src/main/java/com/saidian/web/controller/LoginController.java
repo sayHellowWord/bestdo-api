@@ -39,18 +39,7 @@ public class LoginController {
         ResultBean resultBean = userService.accountLogin(account, password);
 
         if (200 == resultBean.getCode()) {
-            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
-            User user = new User();
-            user.setId(dataJSONObject.getInt("id"));
-            user.setSid(dataJSONObject.getString("sid"));
-            user.setUid(dataJSONObject.getString("uid"));
-            user.setLoginAccount(dataJSONObject.getString("loginAccount"));
-            user.setAccountType(dataJSONObject.getString("accountType"));
-            user.setLoginType(dataJSONObject.getString("loginType"));
-            user.setScopeTime(dataJSONObject.getInt("scopeTime"));
-            //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
-            httpSession.setAttribute("user", user);
-            resultBean.setData(StringUtils.EMPTY);
+            User user = parseUserInfo(httpSession, resultBean);
 
             resultBean = userService.findUserInfo(user.getUid());
             JSONObject userinfo = new JSONObject(resultBean.getData());
@@ -58,7 +47,6 @@ public class LoginController {
         }
         return resultBean;
     }
-
 
     @RequestMapping(value = "register")
     public String accountRegister() throws Exception {
@@ -78,7 +66,6 @@ public class LoginController {
                 "", ReqOrigin.C_QUICK_LOGIN.toString(), "【快速登录】");
         if (200 == resultBean.getCode()) {
             JSONObject data = new JSONObject(resultBean.getData());
-            System.out.println(data.get("validId"));
             resultBean.setObject(data.getString("validId"));
         }
         return resultBean;
@@ -103,18 +90,7 @@ public class LoginController {
 
         ResultBean resultBean = userService.accountValidLoginRegister(account, validId, identifying);
         if (200 == resultBean.getCode()) {
-            JSONObject dataJSONObject = new JSONObject(resultBean.getData());
-            User user = new User();
-            user.setId(dataJSONObject.getInt("id"));
-            user.setSid(dataJSONObject.getString("sid"));
-            user.setUid(dataJSONObject.getString("uid"));
-            user.setLoginAccount(dataJSONObject.getString("loginAccount"));
-            user.setAccountType(dataJSONObject.getString("accountType"));
-            user.setLoginType(dataJSONObject.getString("loginType"));
-            user.setScopeTime(dataJSONObject.getInt("scopeTime"));
-            //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
-            httpSession.setAttribute("user", user);
-            resultBean.setData(StringUtils.EMPTY);
+            User user = parseUserInfo(httpSession, resultBean);
             resultBean = userService.findUserInfo(user.getUid());
             JSONObject userinfo = new JSONObject(resultBean.getData());
             httpSession.setAttribute("userinfo", userinfo);
@@ -186,5 +162,27 @@ public class LoginController {
         return userService.setAccountFindPassword(telephone, validId, validCode, password);
     }
 
+
+    /**
+     * 解析用户信息
+     * @param httpSession
+     * @param resultBean
+     * @return
+     */
+    private User parseUserInfo(HttpSession httpSession, ResultBean resultBean) {
+        JSONObject dataJSONObject = new JSONObject(resultBean.getData());
+        User user = new User();
+        user.setId(dataJSONObject.getInt("id"));
+        user.setSid(dataJSONObject.getString("sid"));
+        user.setUid(dataJSONObject.getString("uid"));
+        user.setLoginAccount(dataJSONObject.getString("loginAccount"));
+        user.setAccountType(dataJSONObject.getString("accountType"));
+        user.setLoginType(dataJSONObject.getString("loginType"));
+        user.setScopeTime(dataJSONObject.getInt("scopeTime"));
+      //  user.setLoginCookie(dataJSONObject.getString("loginCookie"));
+        httpSession.setAttribute("user", user);
+        resultBean.setData(StringUtils.EMPTY);
+        return user;
+    }
 
 }

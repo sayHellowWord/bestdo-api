@@ -130,7 +130,7 @@ public class VenueBookingController {
         }
 
         ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, "", mer_price_id,
-                HttpParams.cityId, "", "", radius, longitude, latitude, "", "",
+                HttpParams.cityId, "", "", radius, longitude, latitude, sort, "",
                 null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, null == district ? 0 : district);
 
         //讲接口返回jsondata 置空

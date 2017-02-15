@@ -69,7 +69,7 @@
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="distance" class="slidemenuCont font14">
-        <a href="javascript:void(0)" data-value="10000000000000000" data-distanacesrot="" class="on">不限距离</a>
+        <a href="javascript:void(0)" data-value="10000" data-distanacesrot="" class="on">不限距离</a>
         <a href="javascript:void(0)" data-value="" data-distanacesrot="asc">距离最近</a>
         <a href="javascript:void(0)" data-value="5" data-distanacesrot="">附近5km</a>
         <a href="javascript:void(0)" data-value="10" data-distanacesrot="">附近10km</a>
@@ -185,7 +185,7 @@
         $("#googDetail-list").html('');
 
         if (sort.length > 1) {
-            radius = 10000000000000000;
+            radius = 10000;
         }
 
 
