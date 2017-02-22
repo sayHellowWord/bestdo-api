@@ -33,7 +33,7 @@
     <div class="lunbo">
         <div class="swiper-container">
             <div class="swiper-wrapper">
-            <#list dynamic.thumbnail?split(";") as image>
+            <#list dynamic.headImage?split(";") as image>
                 <#if image?? && image !="" && image?length gt 2>
                     <div class="swiper-slide" style="background-image: url(${image});"></div>
                 </#if>

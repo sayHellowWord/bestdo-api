@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title>体质监测</title>
+    <title>体测指导站</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
     <meta name="format-detection" content="telephone=no"/>
@@ -19,7 +19,7 @@
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex">
-                <p class="font17">体质监测站</p>
+                <p class="font17">体测指导站</p>
             </div>
         </div>
 

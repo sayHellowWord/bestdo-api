@@ -32,10 +32,6 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(value = "/accountLogin")
     public ResultBean accountLogin(String account, String password, HttpSession httpSession) throws Exception {
-        System.out.println("======================  普通登录    begin   ==================================");
-        System.out.println(httpSession.getId());
-        System.out.println("======================  普通登录    end   ==================================");
-
         ResultBean resultBean = userService.accountLogin(account, password);
 
         if (200 == resultBean.getCode()) {
@@ -83,11 +79,6 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(value = "fastlogin")
     public ResultBean fastlogin(String account, String identifying, String validId, HttpSession httpSession) throws Exception {
-
-        System.out.println("======================  快速登录    begin   ==================================");
-        System.out.println(httpSession.getId());
-        System.out.println("======================  快速登录    end   ==================================");
-
         ResultBean resultBean = userService.accountValidLoginRegister(account, validId, identifying);
         if (200 == resultBean.getCode()) {
             User user = parseUserInfo(httpSession, resultBean);

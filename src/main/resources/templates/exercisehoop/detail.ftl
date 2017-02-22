@@ -35,8 +35,8 @@
             </#list>
         </div>
         <div class="textready">
-            <span class="left font15">亭湖健身社区</span>
-            <span class="right font12">灯光篮球场</span>
+            <span class="left font15">${tenMinSite.name}</span>
+            <span class="right font12">${tenMinSite.secondType}</span>
         </div>
     </div>
 </div>
@@ -49,11 +49,11 @@
         <div class="venuesInfo">
             <ul>
                 <li class="address font15"><p><a href="/cms/exercisehoop/map?name=${tenMinSite.name}&address=${tenMinSite.address}&latitude=${tenMinSite.bdLatitude}&longitude=${tenMinSite.bdLongitude}">${tenMinSite.address}</a></p></li>
-                <li class="date font15">
+              <#--  <li class="date font15">
                     <p>
                         工作日：${tenMinSite.workDayStartHour}: ${tenMinSite.workDayStartMin}--${tenMinSite.workDayEndHour}: ${tenMinSite.workDayEndMin}
                         周末：${tenMinSite.restDayStartHour}: ${tenMinSite.restDayStartMin}--${tenMinSite.restDayEndHour}: ${tenMinSite.restDayEndMin}
-                    </p></li>
+                    </p></li>-->
             </ul>
         </div>
 

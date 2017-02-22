@@ -45,12 +45,12 @@
         <div class="venuesInfo">
             <ul>
                 <li class="ede font15"><p>${organization.name}</p></li>
-                <li class="moreinfo box font14">
+               <#-- <li class="moreinfo box font14">
                     <span class="tit">组织简介：</span>
                     <div class="cont boxflex">
-                    ${organization.name}
+                    ${organization.description}
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
 
@@ -79,7 +79,7 @@
             <h1 class="font15">组织介绍</h1>
             <ul>
                 <li class="moreinfo box font14">
-                    <span class="tit">${organization.name}</span>
+                    <span class="tit">${organization.description}</span>
                 </li>
             </ul>
         </div>

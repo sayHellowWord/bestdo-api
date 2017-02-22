@@ -51,7 +51,7 @@ public class CMSMatchController {
         try {
             regionsResultBean = publicService.regionGetChildren(HttpParams.cityId);
         } catch (Exception e) {
-            logger.error(LOG_PRE + "获取运动类型出错");
+            logger.error(LOG_PRE + "获取行政区出错");
             e.printStackTrace();
         }
         modelMap.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());

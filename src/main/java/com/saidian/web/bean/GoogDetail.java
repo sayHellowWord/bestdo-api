@@ -32,6 +32,8 @@ public class GoogDetail {
     private double _geodist;
     private double geodist;
 
+    private String geodistStr;
+
     private String title;
     private String is_book;
     private String is_show;
@@ -432,6 +434,14 @@ public class GoogDetail {
 
     public void setVerify_time(String verify_time) {
         this.verify_time = verify_time;
+    }
+
+    public String getGeodistStr() {
+        return geodistStr;
+    }
+
+    public void setGeodistStr(String geodistStr) {
+        this.geodistStr = geodistStr;
     }
 
     @Override

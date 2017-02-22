@@ -10,7 +10,11 @@
     <meta name="format-detection" content="email=no"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 <#--   <script src="http://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a"></script>-->
-    <script src="https://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a&s=1"></script>
+<#--<script src="https://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a&s=1"></script>-->
+    <script language="javascript" type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=31ZZ5PhZPGyzmA5UlGYEDG29"></script>
+    <script language="javascript" type="text/javascript"
+            src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 </head>
 
 <body>
@@ -111,17 +115,17 @@
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
 
-    var longitude = '';
-    var latitude = '';
+    var longitude = '120.164505';
+    var latitude = '33.346308';
     var cardId = '${cardId}';
 
     // 百度地图API功能
-    var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398, 39.897445);
-    map.centerAndZoom(point, 12);
+    /*  var map = new BMap.Map("allmap");
+      var point = new BMap.Point(116.331398, 39.897445);
+      map.centerAndZoom(point, 12);
 
-    var geolocation = new BMap.Geolocation();
-    var gc = new BMap.Geocoder();
+      var geolocation = new BMap.Geolocation();
+      var gc = new BMap.Geocoder();*/
 
     baiduLocation();
 
@@ -165,9 +169,14 @@
         });
 
         //重新定位
-        $("body").on("click", "#user-position-refresh", function () {
-            $("#googDetail-list").html('');
-            baiduLocation();
+       /* $("body").on("click", "#user-position-refresh", function () {
+            /!* $("#googDetail-list").html('');
+             baiduLocation();*!/
+            window.location.href = document.URL;
+            location.reload();
+        });*/
+        $("#user-position-refresh").click(function(){
+            window.location.href=window.location.href;
         });
 
     });
@@ -238,11 +247,30 @@
     //百度定位
     function baiduLocation() {
 
-        geolocation.getCurrentPosition(function (r) {
-            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                var mk = new BMap.Marker(r.point);
-                map.addOverlay(mk);
-                map.panTo(r.point);
+        //安卓
+        if (typeof(android) != "undefined") {
+            if (typeof android.getCurrentPosition === 'undefined') {
+                android.requestMap = {};
+                android.requestId = 0;
+                android.getCurrentPosition = function (request) {
+                    var requestId = android.requestId++;
+                    android.requestMap[requestId] = request;
+                    android._getLocation(requestId)
+                }
+                android.reciveResponce = function (requestId, text) {
+                    android.requestMap[requestId](JSON.parse(text));
+                }
+            }
+        }
+
+        if (typeof(android) != "undefined" && android.getCurrentPosition) {
+            android.getCurrentPosition(showPosition)
+            return
+        }
+
+
+        new BMap.Geolocation().getCurrentPosition(function (r) {
+            if (r.accuracy != null && this.getStatus() == BMAP_STATUS_SUCCESS) {
                 longitude = r.point.lng;
                 latitude = r.point.lat;
                 var merid = $("#sport-type").find(".on").data("merid");
@@ -256,8 +284,8 @@
 
                 venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
-                var pt = r.point;
-                gc.getLocation(pt, function (rs) {
+                var pt = new BMap.Point(longitude, latitude);
+                new BMap.Geocoder().getLocation(pt, function (rs) {
                     var addComp = rs.addressComponents;
                     $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
                 });
@@ -275,6 +303,32 @@
         }, {enableHighAccuracy: true})
     }
 
+
+    //安卓获取经纬度
+    function showPosition(position) {
+        if (position.code == 0) {
+            longitude = position.longitude;
+            latitude = position.latitude;
+        }
+
+        var merid = $("#sport-type").find(".on").data("merid");
+        var radius = $("#distance").find(".on").data("value");
+        var sort = $("#distance").find(".on").data("distanacesrot");
+        var price_sort;
+        var page = 1;
+        var pagesize = 10;
+        var district = $("#administrative-area").find(".on").data("value");
+        $("#googDetail-list").html('');
+
+        venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+
+        var pt = new BMap.Point(longitude, latitude);
+        new BMap.Geocoder().getLocation(pt, function (rs) {
+            var addComp = rs.addressComponents;
+            $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
+        })
+
+    }
 </script>
 
 
@@ -291,7 +345,7 @@
                 <span class="font18">￥{{#if_price price}} {{price}} {{/if_price}}</span>
             </div>
             <div class="address font12">
-                <span class="d">{{geodist}}km</span>
+                <span class="d"><#--{{geodist}}km-->{{geodistStr}}</span>
             <#-- <span class="q">{{region}}</span>-->
                 <span class="p">{{region}}</span>
             </div>

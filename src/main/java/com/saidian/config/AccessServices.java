@@ -47,10 +47,11 @@ public class AccessServices {
     /**
      * 初始化方法
      *
-     * @param accessServices
+     * @param accessService
      */
-    public static void init(Map<String, ServiceBean> accessServices) {
-        accessServices = accessServices;
+    public static void init(Map<String, ServiceBean> accessService) {
+
+        accessServices = accessService;
 
         USER_SERVICE_URL = accessServices.get("04").getGoalServiceUrl() + "/";
         USER_SERVICE_KEY = accessServices.get("04").getSercertKey();

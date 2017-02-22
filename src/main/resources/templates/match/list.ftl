@@ -235,7 +235,7 @@
     <li class="box vip vip2">
         <div class="venuesimg">
             <a href="/cms/match/detail?id={{id}}">
-                <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}">
+                <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}" onerror="this.src='/images/default.jpg'" >
             </a>
         </div>
 

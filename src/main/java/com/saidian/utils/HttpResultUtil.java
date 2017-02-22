@@ -94,7 +94,14 @@ public class HttpResultUtil {
         }
         if (goodDetailJsonObject.has("geodist")) {
             DecimalFormat decimalFormat = new DecimalFormat("#.00");
-            googDetail.setGeodist(Double.parseDouble(decimalFormat.format(goodDetailJsonObject.getDouble("geodist") / 1000)));
+            double geodistTmp = goodDetailJsonObject.getDouble("geodist") / 1000;
+            googDetail.setGeodist(Double.parseDouble(decimalFormat.format(geodistTmp)));
+            if (geodistTmp >= 1) {
+                googDetail.setGeodistStr(Double.parseDouble(decimalFormat.format(geodistTmp)) + "km");
+            } else {
+                googDetail.setGeodistStr( goodDetailJsonObject.getDouble("geodist") + "m");
+            }
+
         }
 
         if (goodDetailJsonObject.has("title")) {

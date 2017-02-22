@@ -624,7 +624,7 @@ public class BTiemService {
                             hourInfo.setStatus(status);
                             double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
                             hourInfo.setPrepay_price(price);
-                            if (1 == status && price > 2) {
+                            if (1 == status && price > 0) {
                                 hourInfo.setCanbook(1);
                             } else {
                                 hourInfo.setCanbook(0);
@@ -649,7 +649,7 @@ public class BTiemService {
                             hourInfo.setStatus(status);
                             double price = null == timePrice.get(hour) ? 0 : timePrice.get(hour);
                             hourInfo.setPrepay_price(price);
-                            if (1 == status && price > 2) {
+                            if (1 == status && price > 0) {
                                 hourInfo.setCanbook(1);
                             } else {
                                 hourInfo.setCanbook(0);

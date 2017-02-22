@@ -130,7 +130,7 @@ public class OrderController {
     public Object submitOrder(Integer card_id, String account_no,
                               Integer cid, String mer_item_id, String mer_price_id, String book_day, String other_money_name, String other_money,
                               String book_phone, String note, String create_staff_id, String order_money,
-                              @RequestParam(value="count", defaultValue="1") int count,
+                              @RequestParam(value = "count", defaultValue = "1") int count,
                               Integer start_hour, Integer end_hour, String play_time
             , String timeStr
             , HttpSession httpSession) throws Exception {
@@ -139,7 +139,7 @@ public class OrderController {
         String uid = userObject.getString("uid");
 
         String cardid = (String) httpSession.getAttribute("cardid");
-        if(Strings.isNullOrEmpty(cardid))
+        if (Strings.isNullOrEmpty(cardid))
             cardid = HttpParams.cardId;
 
         card_id = Integer.parseInt(cardid);
@@ -237,7 +237,7 @@ public class OrderController {
             jsonObject.put("order_money", money);
             jsonObject.put("reduce_money", 0);
             jsonObject.put("is_rights", 0);
-            jsonObject.put("pay_money",money);
+            jsonObject.put("pay_money", money);
             jsonObject.put("start_hour", start_hour);
             jsonObject.put("end_hour", end_hour);
             if (!Strings.isNullOrEmpty(play_time))
@@ -394,10 +394,17 @@ public class OrderController {
                 jsonObject.put("is_rights", 0);
                 jsonObject.put("order_money", Integer.parseInt(timeArrbeanArr[0]));
                 jsonObject.put("pay_money", Integer.parseInt(timeArrbeanArr[0]));
-                jsonObject.put("start_hour", timeArrbeanArr[2]);
-                jsonObject.put("end_hour", timeArrbeanArr[3]);
-                if (!Strings.isNullOrEmpty(play_time))
-                    jsonObject.put("play_time", play_time);
+
+                String start_hour = timeArrbeanArr[2];
+                String end_hour = timeArrbeanArr[3];
+                if (Integer.parseInt(timeArrbeanArr[2]) < 10)
+                    start_hour = "0" + timeArrbeanArr[2];
+                if (Integer.parseInt(timeArrbeanArr[3]) < 10)
+                    end_hour = "0" + timeArrbeanArr[3];
+                jsonObject.put("start_hour", Integer.parseInt(timeArrbeanArr[2]));
+                jsonObject.put("end_hour", Integer.parseInt(timeArrbeanArr[3]));
+               // if (!Strings.isNullOrEmpty(play_time))
+                    jsonObject.put("play_time", start_hour + ":00");
                 jsonObject.put("piece_id", timeArrbeanArr[1]);
                 items.put(jsonObject);
             }

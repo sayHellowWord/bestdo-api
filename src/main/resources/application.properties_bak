@@ -1,17 +1,18 @@
 #=================      自定义参数       =====================
 #接口服务地址
-service.url=http://api.config.bestdo.com/
+#service.url=http://dev.api.config.bestdo.com/
+service.url=http://test.api.config.bestdo.com/
 #基础服务信息
 service.base.serviceId=0h
 service.base.serviceVersion=1.0.0
 service.base.serviceType=1
 service.base.key=thDbctWsPaW9iyb1VSMfOE72
 #项目编号
-service.project.no=5p2
+service.project.no=10w
 #卡种
-service.card.id=152
+service.card.id=423
 #特惠卡种
-service.card.id.odds=153
+service.card.id.odds=429
 #城市
 server.city.id=230
 #商品id
@@ -19,7 +20,9 @@ server.mer.id=1020519-1020525
 #商品价格ID
 server.merPrice.id=1020519-1020525
 #cms服务地址
-server.cms.url=http://mp.yc.bestdo.com/
+#server.cms.url=http://192.168.1.102:8090/
+#server.cms.url=http://192.168.18.13:8089/
+server.cms.url=http://192.168.18.13:8088/
 #订单来源 [1] =>微信 [2] =>Android [3] =>IOS [4] =>PC [5]=>电话 [6]=>pos [7]=>B端标准预定
 service.order.source=7
 //支付系统
@@ -37,8 +40,6 @@ application.externalIp=10.14.22.65
 application.externalPort=8080
 #===============    日志配置    ===============
 logging.file=/app-log/logs/app.log
-logging.level.com.saidian=info
-
 server.tomcat.max-threads=800
 server.tomcat.uri-encoding=UTF-8
 server.tomcat.basedir=/tomcat-log
