@@ -96,23 +96,26 @@
 </div>
 
 <div class="jianju"></div>
-
-<!-- 底部电话 -->
-<div class="ditel box">
-    <p class="boxflex font15">电话号码：${detail.hotline}</p>
-    <a class="font15" href="tel:${detail.hotline}">立即咨询</a>
-</div>
-
+<#if detail.hotline??>
+    <!-- 底部电话 -->
+    <div class="ditel box">
+        <p class="boxflex font15">电话号码：${detail.hotline}</p>
+        <a class="font15" href="tel:${detail.hotline}">立即咨询</a>
+    </div>
+</#if>
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="/js/swiper-3.2.7.min.js"></script>
 <script>
+    <#assign  shortIconArr = detail.headImage?split(";")/>
+    <#if shortIconArr?size gt 1>
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
         // 如果需要分页器
         pagination: '.swiper-pagination',
     })
+    </#if>
 </script>
 </body>
 </html>

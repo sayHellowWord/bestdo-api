@@ -108,7 +108,7 @@
         </div>
         <div class="bodydetail boxflex">
             <a href="/cms/information//toDetail?id={{id}}">
-                <h2 class="font16">{{name}}</h2>
+                <h2 class="font16">{{title}}</h2>
                 <div class="address font12">
                     <span class="p">{{author}} {{prettifyDate createDate}}</span>
                 </div>

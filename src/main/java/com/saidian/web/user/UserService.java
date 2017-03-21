@@ -90,9 +90,9 @@ public class UserService {
 
         String result = HttpUtil.doPost(AccessServices.USER_SERVICE_URL + ACCOUNT_MODIFY_PASSWORD, jsonObject.toString(), AccessServices.USER_SERVICE_KEY);
         ResultBean resultBean = HttpResultUtil.result2Bean(result);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        System.out.println(resultBean);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+//        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+//        System.out.println(resultBean);
+//        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     }
 
 

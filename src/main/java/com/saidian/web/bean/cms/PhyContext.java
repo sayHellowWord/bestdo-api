@@ -63,6 +63,8 @@ public class PhyContext implements Serializable {
 	
 	private Date updateDate;
 
+	private String phyDate;
+
 	public int getId() {
 		return id;
 	}
@@ -220,5 +222,13 @@ public class PhyContext implements Serializable {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public String getPhyDate() {
+		return phyDate;
+	}
+
+	public void setPhyDate(String phyDate) {
+		this.phyDate = phyDate;
 	}
 }

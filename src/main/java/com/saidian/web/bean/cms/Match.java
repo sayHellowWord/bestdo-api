@@ -1,8 +1,11 @@
 package com.saidian.web.bean.cms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Match implements Serializable {
 	private static final long serialVersionUID = 1L;
 

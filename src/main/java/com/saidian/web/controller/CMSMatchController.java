@@ -66,7 +66,7 @@ public class CMSMatchController {
      * @return
      */
     @RequestMapping("/detail")
-    public String detail(String id, ModelMap modelMap) {
+    public String detail(String id, Integer page, Integer rows, ModelMap modelMap) {
         String result = restClient.matchDetail(id);
         Result<Match> matchDetailResult = null;
         try {
@@ -77,7 +77,8 @@ public class CMSMatchController {
             e.printStackTrace();
         }
 
-        result = restClient.matchDynamicList(id, 1, 15);
+        result = restClient.matchDynamicList(id,  null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         try {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -124,7 +125,8 @@ public class CMSMatchController {
     @RequestMapping("/list/yc")
     @ResponseBody
     public Result<Match> ycMatchList(String district, Integer page, Integer rows) throws Exception {
-        String result = restClient.matchList(Strings.isNullOrEmpty(district) ? "" : district, null == page ? 1 : page, null == rows ? 10 : rows);
+        String result = restClient.matchList(Strings.isNullOrEmpty(district) ? "" : district, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<Match> matchResult = null;
         try {

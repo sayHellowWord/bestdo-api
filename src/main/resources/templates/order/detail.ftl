@@ -3,13 +3,14 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>订单详情-
+    <#if order.status?number == -2>已退订</#if>
+    <#if order.status?number == -1>已取消</#if>
     <#if order.status?number == 0>待付款</#if>
+    <#if order.status?number == 2>已完成</#if>
     <#if order.status?number == 3>待下场</#if>
     <#if order.status?number == 5>确认中</#if>
     <#if order.status?number == 4>退订中</#if>
     <#if order.status?number == 7>已取消</#if>
-    <#if order.status?number == -2>已退订</#if>
-    <#if order.status?number == 2>已完成</#if>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!--忽略页面中的数字识别为电话号码-->
@@ -63,7 +64,7 @@
                 <p class="font12">等待百动确认</p>
             </div>
         </#if>
-        <#if order.status?number == 7>
+        <#if order.status?number == 7 || order.status?number == -1>
             <span class="icon i5"></span>
             <div class="cont boxflex">
                 <h1 class="font17">已取消</h1>
@@ -89,8 +90,8 @@
     </div>
     <div class="creatInfo orderDetail font14">
 
-    <#--//时段性 101 网球 102 羽毛球  104 篮球   106 乒乓球 足球待定 todo-->
-    <#if order.cid?number == 101 ||  order.cid?number == 102 ||  order.cid?number == 104 ||  order.cid?number == 106>
+    <#--//时段性 101 网球 102 羽毛球  104 篮球   106 乒乓球  120 足球 -->
+    <#if order.cid?number == 101 ||  order.cid?number == 102 ||  order.cid?number == 104 ||  order.cid?number == 106  ||  order.cid?number == 120>
         <!-- 乒羽篮网 -->
         <h1 class="font15">${order.mer_item_name}</h1>
         <p class="box time font14">
@@ -105,10 +106,10 @@
     </#if>
     <#--//日期型 109 游泳  108 健身 122 台球-->
     <#if order.cid?number == 108 ||  order.cid?number == 109 ||  order.cid?number == 122>
-            <h1 class="font15">${order.mer_item_name}</h1>
-            <p class="box time font14"><i>日期：</i><span>${order.time} </span></p>
-            <p class="box font14"><i>服务：</i><span>${order.items[0].price_info}</span></p>
-            <p class="box font14"><i>地址：</i><span>${order.stadium.address}</span></p>
+        <h1 class="font15">${order.mer_item_name}</h1>
+        <p class="box time font14"><i>日期：</i><span>${order.time} </span></p>
+        <p class="box font14"><i>服务：</i><span>${order.items[0].price_info}</span></p>
+        <p class="box font14"><i>地址：</i><span>${order.stadium.address}</span></p>
     </#if>
 
     </div>
@@ -340,7 +341,7 @@
     <a href="/order/unsubscribe?order_id=${order.oid}" class="unsubscribe">申请退订</a>
 </div>
 </#if>
-<#if order.status?number == 7 || order.status?number == -2 || order.status?number == 2>
+<#if order.status?number == 7 || order.status?number == -1 || order.status?number == -2 || order.status?number == 2>
 <div class="orderBtn font17">
     <div class="ordreBtnCont">
         <a href="/site/toDetail?mer_item_id=${order.mer_item_id}&mer_price_id=${order.items[0].mer_price_id}&cid=${order.cid}"

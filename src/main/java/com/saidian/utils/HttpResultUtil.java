@@ -99,7 +99,7 @@ public class HttpResultUtil {
             if (geodistTmp >= 1) {
                 googDetail.setGeodistStr(Double.parseDouble(decimalFormat.format(geodistTmp)) + "km");
             } else {
-                googDetail.setGeodistStr( goodDetailJsonObject.getDouble("geodist") + "m");
+                googDetail.setGeodistStr(Double.parseDouble(decimalFormat.format(goodDetailJsonObject.getDouble("geodist"))) + "m");
             }
 
         }

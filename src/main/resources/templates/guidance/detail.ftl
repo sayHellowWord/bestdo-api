@@ -48,12 +48,11 @@
                     <a href="/cms/exercisehoop/map?name=${phyContext.name!''}&address=${phyContext.address}&latitude=${phyContext.bdLatitude}&longitude=${phyContext.bdLongitude}">
                         <p>${phyContext.address}</p></a></li>
                 <li class="date font15"><p>
-                    工作日:${phyContext.workDayStartHour}:${phyContext.workDayStartMin}--${phyContext.workDayEndHour}:${phyContext.workDayEndMin}
-                    周末:${phyContext.restDayStartHour}:${phyContext.restDayStartMin}--${phyContext.restDayEndHour}:${phyContext.restDayEndMin}</p>
+                    工作日:${phyContext.phyDate}
+                 <#--   周末:${phyContext.restDayStartHour}:${phyContext.restDayStartMin}--${phyContext.restDayEndHour}:${phyContext.restDayEndMin}--></p>
                 </li>
             </ul>
         </div>
-
 
         <div class="venuesInfo">
             <h1 class="font15">监测站点介绍</h1>
@@ -70,15 +69,15 @@
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="/js/swiper-3.2.7.min.js"></script>
 <script>
+    <#assign  shortIconArr = phyContext.headUrl?split(";")/>
+    <#if shortIconArr?size gt 1>
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
-
         // 如果需要分页器
         pagination: '.swiper-pagination',
-
-
     })
+    </#if>
 </script>
 </body>
 </html>

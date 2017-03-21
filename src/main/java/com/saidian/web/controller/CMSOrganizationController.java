@@ -64,7 +64,8 @@ public class CMSOrganizationController {
     @ResponseBody
     public Object organizationList(String name, String district, String state, Integer page, Integer rows) {
         String resultStr = restClient.organizationList(Strings.isNullOrEmpty(name) ? "" : name, Strings.isNullOrEmpty(district) ? "" : district,
-                Strings.isNullOrEmpty(state) ? "" : state, null == page ? 1 : page, null == rows ? 10 : rows);
+                Strings.isNullOrEmpty(state) ? "" : state, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         Result result = new Result();
         List<Organization> organizations = null;
         try {
@@ -89,7 +90,8 @@ public class CMSOrganizationController {
             e.printStackTrace();
         }
 
-        resultStr = restClient.findOrganizationDynamic(id, null == page ? 1 : page, null == rows ? 10 : rows);
+        resultStr = restClient.findOrganizationDynamic(id, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
   /*        List<Dynamic> dynamics = null;
       try {
             dynamics = objectMapper.readValue(resultStr, List.class);

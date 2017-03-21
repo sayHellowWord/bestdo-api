@@ -1,8 +1,11 @@
 package com.saidian.web.bean.cms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Train implements Serializable{
 
 	private static final long serialVersionUID = 7994760805580533468L;

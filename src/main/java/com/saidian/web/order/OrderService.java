@@ -130,12 +130,12 @@ public class OrderService {
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_CANCEL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
 
         ResultBean<BookDay> resultBean = HttpResultUtil.result2Bean(result);
-        if (200 == resultBean.getCode()) {
+       /* if (200 == resultBean.getCode()) {
 
             System.out.println(resultBean.getData());
 
         }
-
+*/
         return resultBean;
     }
 
@@ -205,8 +205,10 @@ public class OrderService {
         jsonObject.put("oid", oid);
         jsonObject.put("uid", uid);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + ORDER_DETAIL, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
+/*
 
         System.out.println("oid:" + oid + "uid:" + uid + ">>>>>>>>>>>>>>>>>>订单详情获取:" + result);
+*/
 
         ResultBean<Order> orderResultBean = HttpResultUtil.result2Bean(result);
         if (200 == orderResultBean.getCode()) {

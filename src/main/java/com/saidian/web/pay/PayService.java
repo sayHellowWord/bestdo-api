@@ -67,7 +67,7 @@ public class PayService {
         String characterEncoding = "UTF-8";
         String mySign = createSign(characterEncoding, parameters);
 
-        System.out.println("mySign   :  " + mySign);
+//        System.out.println("mySign   :  " + mySign);
 
         mySign = mySign.substring(0, mySign.length() / 2);
 
@@ -86,7 +86,7 @@ public class PayService {
         Object obj = response.getResponseData();
         String result = obj == null ? "" : obj.toString();
 
-        System.out.println(result);
+//        System.out.println(result);
 
 
         return null;

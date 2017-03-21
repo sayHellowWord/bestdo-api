@@ -47,11 +47,11 @@ public class OrderController {
     public String createOrder(String mer_item_id, String mer_price_id, String book_day, Integer cid
             , String timeStr, String totalMoney
             , ModelMap modelMap, HttpSession httpSession, HttpServletRequest httpServletRequest) throws Exception {
-        System.out.println("----------------------------------------------");
+     /*   System.out.println("----------------------------------------------");
         System.out.println("mer_item_id = [" + mer_item_id + "], mer_price_id = [" + mer_price_id + "], book_day = [" + book_day + "], " +
                 "cid = [" + cid + "], timeStr = [" + timeStr + "], modelMap = [" + modelMap + "], httpSession = [" + httpSession + "], httpServletRequest = [" + httpServletRequest + "]");
         System.out.println("----------------------------------------------");
-
+*/
         User user = (User) httpSession.getAttribute("user");
         if (null == user) {
             modelMap.addAttribute("back_url", httpServletRequest.getRequestURI() + (Strings.isNullOrEmpty(httpServletRequest.getQueryString()) ? "" : "?" + httpServletRequest.getQueryString()));
@@ -267,7 +267,6 @@ public class OrderController {
 
     @RequestMapping(value = "detail")
     public String orderDeail(String oid, ModelMap modelMap, HttpSession httpSession) throws Exception {
-        //todo udi
         JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
         String uid = jsonObject.getString("uid");
 
@@ -316,7 +315,7 @@ public class OrderController {
 
     @RequestMapping(value = "paytimeout")
     public String paySucPage(String order_id, ModelMap modelMap) {
-        System.out.println("========    suc     ====" + order_id);
+     /*   System.out.println("========    suc     ====" + order_id);*/
         modelMap.addAttribute("order_id", order_id);
         return "/order/paytimeout";
     }

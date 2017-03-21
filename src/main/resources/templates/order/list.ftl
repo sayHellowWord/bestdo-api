@@ -96,14 +96,16 @@
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
+
+    var page = 1;
+    var pagesize = 100;
+
     $(function () {
 
         //页面加载完后执行
         window.onload = function () {
             var status = $("#ul-order-status").find(".on").data("status");
             var cid = $("#div-order-type").find(".on").data("cid");
-            var page = 1;
-            var pagesize = 10;
             search(status, cid, page, pagesize, 1);
         }
 
@@ -112,31 +114,39 @@
             var ix = $(".slidemenuCont a").index($(this));
             var status = $("#ul-order-status").find(".on").data("status");
             var cid = $("#div-order-type").find(".on").data("cid");
-            var page = 1;
-            var pagesize = 10;
+            page = 1;
+            pagesize = 10;
             $("#ul-order-list").html('');
             search(status, cid, page, pagesize, 1);
         })
+
         $(".headerR .txt").tabEve({
             cls: ".slidemenu",
             selected: "on",
             empty: "gray",
             typing: "slidemenu"
         })
+
         $(".slidemenu a").tabEve({
             cls: ".slidemenu",
             selected: "on",
             typing: "radio"
         })
+
         /*下拉加载更多*/
-      /*  var i = 0;
         $(".orderList ul").loadmore({
             getData: function () {
-                i++;
+              /*  i++;
                 var str = "<li>" + i + "</li>";
-                return str;
+                return str;*/
+                page =  page + 1;
+                var ix = $(".slidemenuCont a").index($(this));
+                var status = $("#ul-order-status").find(".on").data("status");
+                var cid = $("#div-order-type").find(".on").data("cid");
+                search(status, cid, page, pagesize, 1);
+              return "";
             }
-        });*/
+        });
 
         //订单状态点击
         $(".orderStadiusCont ul li").click(function () {
@@ -144,8 +154,8 @@
             $(this).addClass("on");
             var status = $("#ul-order-status").find(".on").data("status");
             var cid = $("#div-order-type").find(".on").data("cid");
-            var page = 1;
-            var pagesize = 10;
+            page = 1;
+            pagesize = 10;
             $("#ul-order-list").html('');
             search(status, cid, page, pagesize, 1);
         })

@@ -91,7 +91,7 @@ public class CMSTrainController {
     public Result ycTrainList(String name, String project, String district, String signState, String shelves, String state, Integer page, Integer rows, String time_sort) throws Exception {
 
         String resultStr = restClient.ycTrainhList(name, project, Strings.isNullOrEmpty(district) ? "" : district, signState, shelves, state,
-                null == page ? 1 : page, null == rows ? 10 : rows, Strings.isNullOrEmpty(time_sort) ? "asc" : time_sort);
+                null == page ? HttpParams.DEFAULT_PAGE_CMS : page, null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows, Strings.isNullOrEmpty(time_sort) ? "asc" : time_sort);
 
         Result result = new Result();
         List<Train> trains = null;
@@ -108,7 +108,8 @@ public class CMSTrainController {
     @RequestMapping("/coach/list")
     @ResponseBody
     public Object coachList(String name, String project, String rank, String state, Integer page, Integer rows) throws Exception {
-        String resultStr = restClient.coachList("",name, project, rank, state, null == page ? 1 : page, null == rows ? 10 : rows);
+        String resultStr = restClient.coachList("",name, project, rank, state, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         List<Coach> coaches = null;
         try {
             coaches = objectMapper.readValue(resultStr, List.class);

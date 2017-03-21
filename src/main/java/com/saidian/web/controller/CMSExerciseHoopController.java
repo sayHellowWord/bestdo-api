@@ -3,9 +3,9 @@ package com.saidian.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.saidian.bean.Result;
+import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.TenMinSite;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +26,8 @@ public class CMSExerciseHoopController {
 
     @RequestMapping("/list")
     public String list(ModelMap modelMap) {
+        modelMap.addAttribute("page", HttpParams.DEFAULT_PAGE_CMS);
+        modelMap.addAttribute("pagesize", 10);
         return "/exercisehoop/list";
     }
 
@@ -39,7 +41,7 @@ public class CMSExerciseHoopController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        modelMap.addAttribute("tenMinSite",tenMinSite.getData());
+        modelMap.addAttribute("tenMinSite", tenMinSite.getData());
         return "/exercisehoop/detail";
     }
 
@@ -55,7 +57,8 @@ public class CMSExerciseHoopController {
     @RequestMapping("/list/yc")
     @ResponseBody
     public Result<TenMinSite> ycExerciseHoopList(String keyword, Integer page, Integer rows) throws Exception {
-        String result = restClient.excrciseHoodList(Strings.isNullOrEmpty(keyword) ? "" : keyword, null == page ? 1 : page, null == rows ? 10 : rows);
+        String result = restClient.excrciseHoodList(Strings.isNullOrEmpty(keyword) ? "" : keyword, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<TenMinSite> tenMinSiteResult = null;
         try {
@@ -63,17 +66,30 @@ public class CMSExerciseHoopController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        result = restClient.excrciseHoodListTotal(Strings.isNullOrEmpty(keyword) ? "" : keyword, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
+
+        Result<Integer> total = null;
+        try {
+            total = objectMapper.readValue(result, Result.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (null != total && 200 == total.getCode()) {
+            tenMinSiteResult.setTotal(total.getData());
+        }
         return tenMinSiteResult;
     }
 
 
     @RequestMapping(value = "map")
-    public String map(String name,String address,String latitude, String longitude, ModelMap map) throws Exception {
+    public String map(String name, String address, String latitude, String longitude, ModelMap map) throws Exception {
 
         map.addAttribute("name", name);
         map.addAttribute("address", address);
         map.addAttribute("latitude", latitude);
-        map.addAttribute("longitude",longitude);
+        map.addAttribute("longitude", longitude);
 
         return "exercisehoop/map";
     }

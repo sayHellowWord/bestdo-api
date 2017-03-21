@@ -111,9 +111,9 @@ public class CreateOrderService {
         JSONObject jsonObject = requestParam(service_id, source, uid, card_type_id, card_id, account_no, cid, mer_item_id, book_day, other_money_name, other_money, book_phone, note, create_staff_id, items, is_sendsms, order_money, reduce_money, pay_money);
         String result = HttpUtil.doPost(AccessServices.B_TIEM_SERVICE_URL + CREATE_FOOTBALL_ORDER, jsonObject.toString(), AccessServices.B_TIEM_SERVICE_KEY);
 
-        System.out.println("========================足球订单开始==========================");
+     /*   System.out.println("========================足球订单开始==========================");
         System.out.println(result);
-        System.out.println("========================足球订单结束==========================");
+        System.out.println("========================足球订单结束==========================");*/
 
 
         return HttpResultUtil.result2Bean(result);

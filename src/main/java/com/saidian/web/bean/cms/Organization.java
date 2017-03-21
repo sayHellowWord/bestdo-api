@@ -1,8 +1,11 @@
 package com.saidian.web.bean.cms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Organization implements Serializable{
 
 	private static final long serialVersionUID = -2538623820822039958L;

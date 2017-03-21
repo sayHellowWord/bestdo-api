@@ -51,15 +51,15 @@
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="/js/swiper-3.2.7.min.js"></script>
 <script>
-    var mySwiper = new Swiper ('.swiper-container', {
+    <#assign  shortIconArr = dynamic.photoIcon?split(";")/>
+    <#if shortIconArr?size gt 1>
+    var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
-
         // 如果需要分页器
         pagination: '.swiper-pagination',
-
-
     })
+    </#if>
 </script>
 </body>
 </html>

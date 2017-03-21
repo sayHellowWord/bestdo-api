@@ -37,9 +37,9 @@ public class PayController {
     public Object payBank(String order_id, String goods_id, String desc, String amount,
                           String channel_id, String appid, String time_expir, String openid, HttpServletRequest request, HttpSession httpSession) throws Exception {
 
-        System.out.println("order_id = [" + order_id + "], goods_id = [" + goods_id + "], desc = [" + desc + "]," +
+     /*   System.out.println("order_id = [" + order_id + "], goods_id = [" + goods_id + "], desc = [" + desc + "]," +
                 " amount = [" + amount + "], channel_id = [" + channel_id + "], appid = [" + appid + "], " +
-                "time_expir = [" + time_expir + "], openid = [" + openid + "]");
+                "time_expir = [" + time_expir + "], openid = [" + openid + "]");*/
 
         JSONObject jsonObject = (JSONObject) httpSession.getAttribute("userinfo");
         String uid = jsonObject.getString("uid");
@@ -70,7 +70,7 @@ public class PayController {
 
     @RequestMapping(value = "paySucPage")
     public String paySucPage(String order_id, ModelMap modelMap) {
-        System.out.println("paySucPage >>>>>>>>>>>  " + order_id);
+//        System.out.println("paySucPage >>>>>>>>>>>  " + order_id);
         modelMap.addAttribute("order_id", order_id);
         return "/order/paysuc";
     }
@@ -91,7 +91,7 @@ public class PayController {
     @RequestMapping(value = "payBankCallBack")
     @ResponseBody
     public Object payBankCallBack(String data) {
-        System.out.println("data = [" + data + "]");
+//        System.out.println("data = [" + data + "]");
         logger.error(LOG_PRE + "加密前:data = [" + data + "]");
         try {
             String result = DesBase64Tool.desDecrypt(data, AccessServices.PAY_BACK_KEY);

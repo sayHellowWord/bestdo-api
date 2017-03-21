@@ -21,9 +21,9 @@ public class HttpUtil {
      * @throws Exception
      */
     public static String doPost(String url, String data,String key) throws Exception {
-        System.out.println("服务地址 begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> begin");
+     /*   System.out.println("服务地址 begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> begin");
         System.out.println(url);
-        System.out.println("服务地址 end >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end");
+        System.out.println("服务地址 end >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end");*/
 
         HttpClient client = new HttpClient();
         Request request = new Request();
@@ -40,9 +40,9 @@ public class HttpUtil {
         Object obj = response.getResponseData();
         String result = obj == null ? "" : obj.toString();
 
-        System.out.println("begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> begin");
+      /*  System.out.println("begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> begin");
         System.out.println(result);
-        System.out.println("end >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end");
+        System.out.println("end >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end");*/
         return result;
     }
 

@@ -30,7 +30,7 @@
         <div class="swiper-wrapper">
         <#list train.shortIcon?split(";") as image>
             <#if image?? && image !="" && image?length gt 2>
-             <div class="swiper-slide" style="background-image: url(${image});"></div>
+                <div class="swiper-slide" style="background-image: url(${image});"></div>
             </#if>
         </#list>
         </div>
@@ -47,7 +47,7 @@
             <ul>
                 <li class="ede font15"><p>${train.name}<i class="font12">(${train.minNum}人开赛)</i></p></li>
                 <li class="address font14"><p>
-                    <#--<a href="/cms/exercisehoop/map?name=${train.name}&address=${train.address}&latitude=${train.bdLatitude}&longitude=${train.bdLongitude}">-->
+                <#--<a href="/cms/exercisehoop/map?name=${train.name}&address=${train.address}&latitude=${train.bdLatitude}&longitude=${train.bdLongitude}">-->
                         ${train.adress}
                     <#--</a>-->
                 </p></li>
@@ -98,13 +98,15 @@
 <script language="javascript" type="text/javascript" src="/js/myproject.js"></script>
 <script src="/js/swiper-3.2.7.min.js"></script>
 <script>
+    <#assign  shortIconArr = train.shortIcon?split(";")/>
+    <#if shortIconArr?size gt 1>
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
-
         // 如果需要分页器
         pagination: '.swiper-pagination',
     })
+    </#if>
 </script>
 </body>
 </html>

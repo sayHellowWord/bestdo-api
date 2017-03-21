@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<div id="allmap" style="display: none;"></div>
+<#--<div id="allmap" style="display: none;"></div>-->
 <!--头部公用-->
 <div id="header">
     <div class="header">
@@ -119,14 +119,6 @@
     var latitude = '33.346308';
     var cardId = '${cardId}';
 
-    // 百度地图API功能
-    /*  var map = new BMap.Map("allmap");
-      var point = new BMap.Point(116.331398, 39.897445);
-      map.centerAndZoom(point, 12);
-
-      var geolocation = new BMap.Geolocation();
-      var gc = new BMap.Geocoder();*/
-
     baiduLocation();
 
     $(function () {
@@ -169,14 +161,8 @@
         });
 
         //重新定位
-       /* $("body").on("click", "#user-position-refresh", function () {
-            /!* $("#googDetail-list").html('');
-             baiduLocation();*!/
-            window.location.href = document.URL;
-            location.reload();
-        });*/
-        $("#user-position-refresh").click(function(){
-            window.location.href=window.location.href;
+        $("#user-position-refresh").click(function () {
+            window.location.href = window.location.href;
         });
 
     });
@@ -200,6 +186,63 @@
 
         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
     }
+
+    //场馆列表搜索
+    function venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
+        //没有结果提示隐藏
+        $("#no-result").hide();
+
+        var result = "";
+
+        $("#sport-type a").each(function () {
+            $.ajax({
+                type: "POST",
+                url: "/site/search",
+                async: false,
+                data: {
+                    "merid": $(this).data("merid"),
+                    "radius": radius,
+                    "longitude": longitude,
+                    "latitude": latitude,
+                    "sort": sort,
+                    "price_sort": price_sort,
+                    "page": 5,
+                    "pagesize": pagesize,
+                    "district": district
+                },
+                success: function (result) {
+                    if (200 === result.code) {
+                        if (result.total > 0) {
+                            var source = $("#googDetail-template").html();
+                            var template = Handlebars.compile(source);
+
+                            Handlebars.registerHelper('if_price', function (value, options) {
+                                return Math.floor(value) / 100;
+                            });
+
+                            result  += template(result.lists);
+
+                        }
+                    }
+                }
+            });
+
+            if(result.length > 0){
+
+            }
+
+
+
+
+        })
+
+
+
+
+
+
+    }
+
 
 
     //场馆列表搜索
@@ -264,7 +307,7 @@
         }
 
         if (typeof(android) != "undefined" && android.getCurrentPosition) {
-            android.getCurrentPosition(showPosition)
+            android.getCurrentPosition(showPosition);
             return
         }
 

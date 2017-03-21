@@ -114,7 +114,7 @@ public class UserController {
         //userService.accountRegister("15810045437", "", "", "000000", "TELEPHONE");
         //userService.accountLogin("15810045437","000000");
         //userService.accountModifyPassword("0h1170105151026m47","000000","000000");
-        System.out.println(ValidType.TEL_CODE.toString());
+//        System.out.println(ValidType.TEL_CODE.toString());
         userService.securityVerificationSend("0h1170105151026m47", ValidType.TEL_CODE.toString(), "15810045436", "", ReqOrigin.FIND_PASSWORD.toString(), "找回密码");
         return "user";
     }

@@ -1,8 +1,11 @@
 package com.saidian.web.bean.cms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 十分钟健身圈
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TenMinSite {
 
     private String name;

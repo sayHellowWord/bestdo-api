@@ -2,6 +2,7 @@ package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saidian.bean.Result;
+import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.PageModel;
 import com.saidian.web.bean.cms.PhyContext;
@@ -33,7 +34,8 @@ public class CMSGuidanceController {
     @RequestMapping("/list/cms")
     @ResponseBody
     public Object guidanceList(Integer page, Integer rows) {
-        String resultStr = restClient.guidanceList(null == page ? 1 : page, null == rows ? 10 : rows);
+        String resultStr = restClient.guidanceList(null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<PageModel> pageModelResult = null;
         try {

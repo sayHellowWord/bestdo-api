@@ -2,6 +2,7 @@ package com.saidian.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saidian.bean.Result;
+import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
 import com.saidian.web.bean.cms.News;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ public class CMSInformationController {
     @ResponseBody
     public Object guidanceList(String title, String label, String state, Integer page, Integer rows, String startDate, String endDate) {
 
-        String resultStr = restClient.informationiList(title, label, state, null == page ? 1 : page, null == rows ? 10 : rows, startDate, endDate);
+        String resultStr = restClient.informationiList(title, label, state, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+                null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows, startDate, endDate);
         List<News> newsList = null;
         try {
             newsList = objectMapper.readValue(resultStr, List.class);

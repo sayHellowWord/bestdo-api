@@ -31,52 +31,7 @@
         </div>
     </div>
 </div>
-<#--<div class="chooseTab www25 font13">
-    <div class="chooseTabCont">
-        <a href="javascript:void(0)" data-tab="0" class="gray">
-            区域<span></span>
-        </a>
-        <a href="javascript:void(0)" data-tab="1">
-            排序<span></span>
-        </a>
-        <a href="javascript:void(0)" data-tab="2">
-            距离<span></span>
-        </a>
-    </div>
-</div>-->
-<!--区域-->
-<#--<div class="slidemenu">
-    <div class="slidebg"></div>
-    <div class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on">不限距离</a>
-        <a href="javascript:void(0)">附近1km</a>
-        <a href="javascript:void(0)">附近2km</a>
-        <a href="javascript:void(0)">附近5km</a>
-        <a href="javascript:void(0)">附近10km</a>
-    </div>
-</div>
-<!--排序&ndash;&gt;
-<div class="slidemenu">
-    <div class="slidebg"></div>
-    <div class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on">不限距离</a>
-        <a href="javascript:void(0)">距离最近</a>
-        <a href="javascript:void(0)">优惠最多</a>
-        <a href="javascript:void(0)">附近5km</a>
-        <a href="javascript:void(0)">附近10km</a>
-    </div>
-</div>
-<!--距离&ndash;&gt;
-<div class="slidemenu">
-    <div class="slidebg"></div>
-    <div class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on">不限距离</a>
-        <a href="javascript:void(0)">距离最近</a>
-        <a href="javascript:void(0)">优惠最多</a>
-        <a href="javascript:void(0)">附近5km</a>
-        <a href="javascript:void(0)">附近10km</a>
-    </div>
-</div>-->
+
 <!--场馆列表-->
 <div class="wrapper">
     <!--场馆列表-->
@@ -95,44 +50,36 @@
         <p class="font14">暂无相关相关场地信息</p>
     </div>
 </div>
-<!--城市地位-->
-
-<#--<div class="loading">
-    <div class="loadCont"></div>
-    <div class="loadBg"></div>
-</div>-->
 
 
 <!--地图图标-->
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
+
+    var page = ${page};
+    var pagesize = ${pagesize};
+
+    var total = -1;
+    var totalPage = -1;
+
     $(function () {
 
         // 获取搜索关键词
         var searchKeyword = $('#search-keyword').val();
 
         //初始化加载数据
-        search(searchKeyword, 1, 15);
+        search(searchKeyword, page, pagesize);
 
         //点击搜索按钮
         var btnSearch = $('#btn-search');
         btnSearch.on("click", function () {
             $("#list").html('');
             searchKeyword = $('#search-keyword').val();
-            search(searchKeyword, 1, 15);
+            page = 1;
+//            pagesize = 10;
+            search(searchKeyword, page, pagesize);
         })
-
-        /*var xmlhttp = new XMLHttpRequest();
-        if (xmlhttp.readyState < 4 || xmlhttp.status != 200) {
-            $(".loading").hide();
-        }
-        document.onreadystatechange = completeLoading;
-        function completeLoading() {
-            if (document.readyState == "complete") {
-                $(".loading").hide();
-            }
-        }*/
 
         /*筛选条件*/
         $(".chooseTab a").tabEve({
@@ -141,60 +88,17 @@
             empty: "gray",
             typing: "slidemenu"
         })
-        /*下拉加载更多*/
 
-        /*var i = 0;
-        $(".list").loadmore({
-            getData: function (obj) {
-                var sh = $(window).height();
-                var ch = obj.height();
-                var st = $(window).scrollTop();
-                if (st > ch - sh && $(".load-container").is(":hidden")) {
-                    $(".load-container").show();
-                    i++;
-                    var str = "<li>" + i + "</li>";
-                    //return str;
-                }
-                else {
-                    return false;
-                }
+        /*下拉加载更多*/
+        $(".venueslist ul").loadmore({
+            getData: function () {
+                page = page + 1;
+//                pagesize = 10;
+                search(searchKeyword, page, pagesize);
+                return "";
             }
         });
 
-        var beforeST = $(window).scrollTop();
-        var i = 0;
-        $(window).scroll(function () {
-            var sh = $(window).height();
-            var ch = $(".venueslist").height();
-            var afterST = $(window).scrollTop();
-            var t;
-            var str = "";
-            var x;
-            var a
-            var t2 = setInterval(function () {
-                a = $("body").attr("a");
-            }, 1);
-            if (afterST - beforeST > 0 && afterST > ch - sh) {
-                $("body").attr("a", "down");
-                $(".load-container").css("visibility", "visible");
-                t = setTimeout(function () {
-                    i++;
-                    $(".load-container").css("visibility", "hidden");
-                    $("body").attr("a", "0");
-                    if (a != 0) {
-                        str += '<li>' + i + '</li>';
-                        $(".list").append(str);
-                    }
-                }, 3000)
-            }
-            if (st > ch - sh) {
-                $(".load-container").css("visibility", "visible");
-                t = setTimeout(function () {
-                    $(".load-container").css("visibility", "hidden");
-                }, 3000)
-            }
-            beforeST = afterST;
-        })*/
     })
 
 
@@ -203,6 +107,10 @@
 
         //没有结果提示隐藏
         $("#no-result").hide();
+
+        if(totalPage != -1 && page > totalPage){
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -214,10 +122,15 @@
             },
             success: function (resultData) {
                 resultHandler(resultData);
+
+                total = resultData.total;
+                totalPage =Math.ceil( total / pagesize );
+
             }
         });
     }
 
+    //页面渲染
     function resultHandler(result) {
         if (200 === result.code) {
             var source = $("#template").html();
@@ -257,7 +170,7 @@
                 <#--<span class="d">1.0km</span>-->
                     <span class="p">{{address}}</span>
                 </div>
-                </a>
+            </a>
         </div>
     </li>
     {{/each}}

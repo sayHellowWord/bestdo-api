@@ -132,6 +132,17 @@ public class RESTClient {
         return result;
     }
 
+
+    //十分钟健身圈列表_total
+    public String excrciseHoodListTotal(String keyword, Integer page, Integer rows) {
+        String url = "tenminsite/front_count?page={page}&rows={rows}";
+        if (!Strings.isNullOrEmpty(keyword))
+            url += "&name={keyword}&";
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + url,
+                null, String.class, page, rows, keyword);
+        return result;
+    }
+
     //十分钟健身圈详情
     public String excrciseHoodDetail(String id) {
         String result = restTemplate.postForObject(HttpParams.CMS_URL + "tenminsite/front_findById?id={id)}",

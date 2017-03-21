@@ -9,11 +9,7 @@
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
-    <#--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=524ebd4c1028f2b5ad93673b0a541d57"></script>-->
 
-    <script src="/js/jquery.js"></script>
-    <script src="/js/bestdo.js"></script>
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a"></script>
 <body>
 <style>
     .map{ width:100%;height:100%;position:relative; }
@@ -29,6 +25,11 @@
 <span class="myposition"></span>
 <div id="bdmap" class="map" style="width:100%; height:570px;top:0px;"></div>
 </body>
+
+<script src="/js/jquery.js"></script>
+<script src="/js/bestdo.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a"></script>
+
 <script>
     function genHtml(name, addr){
         return "<h1 style='width:100%;height:25px;padding-bottom:6px;border-bottom:1px solid #ddd;font-size:12px;background:#fff;'>" + name + "</h1><div style='margin-top:10px;font-size:12px'>" + addr + "</div>";

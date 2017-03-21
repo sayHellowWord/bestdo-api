@@ -1,234 +1,235 @@
 package com.saidian.web.bean.cms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-/**
- * todo 待删除
- */
-public class Coach implements Serializable{
 
-	private static final long serialVersionUID = 8525978046829379003L;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Coach implements Serializable {
 
-	private Long id;
-	
-	private String name;
-	
-	private byte gender;
-	
-	private Date birthday;
-	
-	private String educationalBg;
-	
-	private String experience;
-	
-	private String icon;
-	
-	private String project;
-	
-	private String rank;
-	
-	private String siteName;
-	
-	private String photoIcon;
-	
-	private String introduction;
-	
-	private String description;
-	
-	private byte state;
-	
-	private Date createDate;
-	
-	private Long createUser;
-	
-	private Date updateDate;
-	
-	private Long updateUser;
-	
-	private List<String> trainNames;
-	
-	private Long auditUser;
-	
-	private Date auditDate;
-	
-	private String auditMark;
+    private static final long serialVersionUID = 8525978046829379003L;
 
-	public Long getAuditUser() {
-		return auditUser;
-	}
+    private Long id;
 
-	public void setAuditUser(Long auditUser) {
-		this.auditUser = auditUser;
-	}
+    private String name;
 
-	public Date getAuditDate() {
-		return auditDate;
-	}
+    private byte gender;
 
-	public void setAuditDate(Date auditDate) {
-		this.auditDate = auditDate;
-	}
+    private Date birthday;
 
-	public String getAuditMark() {
-		return auditMark;
-	}
+    private String educationalBg;
 
-	public void setAuditMark(String auditMark) {
-		this.auditMark = auditMark;
-	}
+    private String experience;
 
-	public List<String> getTrainNames() {
-		return trainNames;
-	}
+    private String icon;
 
-	public void setTrainNames(List<String> trainNames) {
-		this.trainNames = trainNames;
-	}
+    private String project;
 
-	public Date getBirthday() {
-		return birthday;
-	}
+    private String rank;
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
+    private String siteName;
 
-	public Long getId() {
-		return id;
-	}
+    private String photoIcon;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private String introduction;
 
-	public String getName() {
-		return name;
-	}
+    private String description;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private byte state;
 
-	public byte getGender() {
-		return gender;
-	}
+    private Date createDate;
 
-	public void setGender(byte gender) {
-		this.gender = gender;
-	}
+    private Long createUser;
 
-	public String getEducationalBg() {
-		return educationalBg;
-	}
+    private Date updateDate;
 
-	public void setEducationalBg(String educationalBg) {
-		this.educationalBg = educationalBg;
-	}
+    private Long updateUser;
 
-	public String getExperience() {
-		return experience;
-	}
+    private List<String> trainNames;
 
-	public void setExperience(String experience) {
-		this.experience = experience;
-	}
+    private Long auditUser;
 
-	public String getIcon() {
-		return icon;
-	}
+    private Date auditDate;
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    private String auditMark;
 
-	public String getProject() {
-		return project;
-	}
+    public Long getAuditUser() {
+        return auditUser;
+    }
 
-	public void setProject(String project) {
-		this.project = project;
-	}
+    public void setAuditUser(Long auditUser) {
+        this.auditUser = auditUser;
+    }
 
-	public String getRank() {
-		return rank;
-	}
+    public Date getAuditDate() {
+        return auditDate;
+    }
 
-	public void setRank(String rank) {
-		this.rank = rank;
-	}
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
 
-	public String getSiteName() {
-		return siteName;
-	}
+    public String getAuditMark() {
+        return auditMark;
+    }
 
-	public void setSiteName(String siteName) {
-		this.siteName = siteName;
-	}
+    public void setAuditMark(String auditMark) {
+        this.auditMark = auditMark;
+    }
 
-	public String getPhotoIcon() {
-		return photoIcon;
-	}
+    public List<String> getTrainNames() {
+        return trainNames;
+    }
 
-	public void setPhotoIcon(String photoIcon) {
-		this.photoIcon = photoIcon;
-	}
+    public void setTrainNames(List<String> trainNames) {
+        this.trainNames = trainNames;
+    }
 
-	public String getIntroduction() {
-		return introduction;
-	}
+    public Date getBirthday() {
+        return birthday;
+    }
 
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public byte getState() {
-		return state;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setState(byte state) {
-		this.state = state;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public byte getGender() {
+        return gender;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public void setGender(byte gender) {
+        this.gender = gender;
+    }
 
-	public Long getCreateUser() {
-		return createUser;
-	}
+    public String getEducationalBg() {
+        return educationalBg;
+    }
 
-	public void setCreateUser(Long createUser) {
-		this.createUser = createUser;
-	}
+    public void setEducationalBg(String educationalBg) {
+        this.educationalBg = educationalBg;
+    }
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public String getExperience() {
+        return experience;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
 
-	public Long getUpdateUser() {
-		return updateUser;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public void setUpdateUser(Long updateUser) {
-		this.updateUser = updateUser;
-	}
-	
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public String getPhotoIcon() {
+        return photoIcon;
+    }
+
+    public void setPhotoIcon(String photoIcon) {
+        this.photoIcon = photoIcon;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public byte getState() {
+        return state;
+    }
+
+    public void setState(byte state) {
+        this.state = state;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Long getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Long createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public Long getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Long updateUser) {
+        this.updateUser = updateUser;
+    }
+
 }
