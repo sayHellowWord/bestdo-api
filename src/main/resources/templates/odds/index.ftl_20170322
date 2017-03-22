@@ -2,27 +2,24 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title>场馆列表</title>
+    <title>特惠商品</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!--忽略页面中的数字识别为电话号码-->
     <meta name="format-detection" content="telephone=no"/>
     <!--忽略页面中的邮箱格式为邮箱-->
     <meta name="format-detection" content="email=no"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <script language="javascript" type="text/javascript"
-            src="http://api.map.baidu.com/api?v=2.0&ak=31ZZ5PhZPGyzmA5UlGYEDG29"></script>
-    <script language="javascript" type="text/javascript"
-            src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=18682494ecab57ae8fa581c98f0d0d7a"></script>
 </head>
 
 <body>
-<#--<div id="allmap" style="display: none;"></div>-->
+<div id="allmap" style="display: none;"></div>
 <!--头部公用-->
 <div id="header">
     <div class="header">
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
-            <div class="headerC boxflex"><p class="font17">场馆预订</p></div>
+            <div class="headerC boxflex"><p class="font17">特惠</p></div>
             <div class="headerR"></div>
         </div>
     </div>
@@ -30,7 +27,7 @@
 <div class="chooseTab www25 font13">
     <div class="chooseTabCont">
         <a href="javascript:void(0)" data-tab="0">
-            运动类型<span></span>
+            特惠项目<span></span>
         </a>
         <a href="javascript:void(0)" data-tab="1">
             行政区<span></span>
@@ -44,24 +41,15 @@
 <div class="slidemenu">
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on" data-merid="-1">全部</a>
-        <a href="javascript:void(0)" data-merid="1020545">羽毛球</a>
-        <a href="javascript:void(0)" data-merid="1020544">网球</a>
-        <a href="javascript:void(0)" data-merid="1020538">游泳</a>
-        <a href="javascript:void(0)" data-merid="1020551">乒乓球</a>
-        <a href="javascript:void(0)" data-merid="1020552">器械健身</a>
-        <a href="javascript:void(0)" data-merid="1020549">足球</a>
-        <a href="javascript:void(0)" data-merid="1020550">篮球</a>
-        <a href="javascript:void(0)" data-merid="1020546">综合资源</a>
-    <#--<#if goodsTypes?? >-->
-        <#--<#list goodsTypes as goodsType>-->
-        <#-- <#if goodsType_index == 0  >
-             <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.sport}</a>
-         <#else >-->
-            <#--<a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>-->
-        <#--</#if>-->
-        <#--</#list>-->
-    <#--</#if>-->
+    <#if goodsTypes?? >
+        <#list goodsTypes as goodsType>
+            <#if goodsType_index == 0  >
+                <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.client_name}</a>
+            <#else >
+                <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.client_name}</a>
+            </#if>
+        </#list>
+    </#if>
     </div>
 </div>
 <!--行政区-->
@@ -107,7 +95,7 @@
 </div>
 
 <!--城市地位-->
-<div class="position">
+<div class="position" style="bottom: 3.625rem;">
     <div class="positionCont">
         <div class="positionContBg box font16">
             <div class="icon"></div>
@@ -116,6 +104,18 @@
         </div>
     </div>
 </div>
+
+<!--导航-->
+<div id="nav">
+    <div class="nav font12">
+        <div class="navCont box">
+            <a href="/" class="boxflex"><span></span>首页</a>
+            <a href="/odds/index" class="boxflex  on"><span></span>特惠</a>
+            <a href="/user/index" class="boxflex"><span></span>我的</a>
+        </div>
+    </div>
+</div>
+
 
 <!--地图图标-->
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
@@ -126,8 +126,13 @@
     var latitude = '33.346308';
     var cardId = '${cardId}';
 
-    var resultTmp = "";
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
 
+    var geolocation = new BMap.Geolocation();
+    var gc = new BMap.Geocoder();
     baiduLocation();
 
     $(function () {
@@ -166,12 +171,17 @@
             var merid = $(this).data("mer_item_id");
             var mer_price_id = $(this).data("mer_price_id");
             var cid = $(this).data("cid");
-            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid + "&cardId=" + cardId;
+            window.location.href = "/site/toDetail?mer_item_id=" + merid + "&mer_price_id=" + mer_price_id + "&cid=" + cid+ "&cardId=" + cardId;
         });
 
         //重新定位
-        $("#user-position-refresh").click(function () {
-            window.location.href = window.location.href;
+      /*  $("body").on("click", "#user-position-refresh", function () {
+          /!*  $("#googDetail-list").html('');
+            baiduLocation();*!/
+            window.location.href=window.location.href;
+        });*/
+        $("#user-position-refresh").click(function(){
+            window.location.href=window.location.href;
         });
 
     });
@@ -186,75 +196,21 @@
         var page = 1;
         var pagesize = 10;
         var district = $("#administrative-area").find(".on").data("value");
-        $("#googDetail-list").html('');
-
-        if (sort.length > 1) {
+        if(sort.length > 1){
             radius = 10000;
         }
-
-        //点击全部 每个类型获取五次
-        if (merid == -1) {
-            venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-        }
-
+        $("#googDetail-list").html('');
         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-    }
-
-    //场馆列表搜索
-    function venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
-        //没有结果提示隐藏
-        $("#no-result").hide();
-
-        $("#sport-type a").each(function () {
-            if ($(this).data("merid") == -1) {
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: "/site/search",
-                async: false,
-                data: {
-                    "merid": $(this).data("merid"),
-                    "radius": radius,
-                    "longitude": longitude,
-                    "latitude": latitude,
-                    "sort": sort,
-                    "price_sort": price_sort,
-                    "page": 1,
-                    "pagesize": 5,
-                    "district": district
-                },
-                success: function (result) {
-                    if (200 === result.code) {
-                        if (result.total > 0) {
-                            var source = $("#googDetail-template").html();
-                            var template = Handlebars.compile(source);
-                            Handlebars.registerHelper('if_price', function (value, options) {
-                                return Math.floor(value) / 100;
-                            });
-                            resultTmp += template(result.lists);
-                            $("#googDetail-list").append(template(result.lists));
-                        }
-                    }
-                }
-            });
-        })
-        if (resultTmp.length > 0) {
-            $(".load-container").hide();
-        } else {
-            $("#no-result").show();
-        }
     }
 
 
     //场馆列表搜索
     function venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district) {
         //$(".load-container").show();
-        //没有结果提示隐藏
         $("#no-result").hide();
         $.ajax({
             type: "POST",
-            url: "/site/search",
+            url: "/odds/search",
             async: false,
             data: {
                 "merid": merid,
@@ -291,31 +247,30 @@
 
     //百度定位
     function baiduLocation() {
-
         //安卓
-        if (typeof(android) != "undefined") {
-            if (typeof android.getCurrentPosition === 'undefined') {
-                android.requestMap = {};
-                android.requestId = 0;
-                android.getCurrentPosition = function (request) {
-                    var requestId = android.requestId++;
-                    android.requestMap[requestId] = request;
+        if(typeof(android) != "undefined" ){
+            if(typeof android.getCurrentPosition  === 'undefined'){
+                android.requestMap ={};
+                android.requestId=0;
+                android.getCurrentPosition=function(request){
+                    var requestId =android.requestId++;
+                    android.requestMap[requestId]=request;
                     android._getLocation(requestId)
                 }
-                android.reciveResponce = function (requestId, text) {
+                android.reciveResponce =function(requestId,text){
                     android.requestMap[requestId](JSON.parse(text));
                 }
             }
         }
 
         if (typeof(android) != "undefined" && android.getCurrentPosition) {
-            android.getCurrentPosition(showPosition);
+            android.getCurrentPosition(showPosition)
             return
         }
 
 
         new BMap.Geolocation().getCurrentPosition(function (r) {
-            if (r.accuracy != null && this.getStatus() == BMAP_STATUS_SUCCESS) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
                 longitude = r.point.lng;
                 latitude = r.point.lat;
                 var merid = $("#sport-type").find(".on").data("merid");
@@ -327,14 +282,13 @@
                 var district = $("#administrative-area").find(".on").data("value");
                 $("#googDetail-list").html('');
 
-                venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
                 var pt = new BMap.Point(longitude, latitude);
                 new BMap.Geocoder().getLocation(pt, function (rs) {
                     var addComp = rs.addressComponents;
                     $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
                 });
-
             } else {
                 var merid = $("#sport-type").find(".on").data("merid");
                 var radius = $("#distance").find(".on").data("value");
@@ -344,7 +298,7 @@
                 var pagesize = 10;
                 var district = $("#administrative-area").find(".on").data("value");
                 $("#googDetail-list").html('');
-                venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
             }
         }, {enableHighAccuracy: true})
     }
@@ -366,14 +320,13 @@
         var district = $("#administrative-area").find(".on").data("value");
         $("#googDetail-list").html('');
 
-        venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+        venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
 
         var pt = new BMap.Point(longitude, latitude);
         new BMap.Geocoder().getLocation(pt, function (rs) {
             var addComp = rs.addressComponents;
             $("#user-position").html(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
         })
-
     }
 </script>
 
@@ -391,7 +344,7 @@
                 <span class="font18">￥{{#if_price price}} {{price}} {{/if_price}}</span>
             </div>
             <div class="address font12">
-                <span class="d"><#--{{geodist}}km-->{{geodistStr}}</span>
+                <span class="d">{{geodist}}km</span>
             <#-- <span class="q">{{region}}</span>-->
                 <span class="p">{{region}}</span>
             </div>

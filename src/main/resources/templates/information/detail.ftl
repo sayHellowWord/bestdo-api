@@ -18,7 +18,7 @@
     <div class="header">
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
-            <div class="headerC boxflex"><p class="font17">${news.title}</p></div>
+            <div class="headerC boxflex"><p>新闻详情</p></div>
         </div>
     </div>
 </div>
@@ -27,17 +27,18 @@
 
 <!-- 赛事具体内容 -->
 <div class="saishi">
+    <p class="font17">${news.title}</p>
     <p class="font20">${news.subTitle}</p>
     <span class="font12">${news.createDate?string('yyyy年MM月dd HH:mm:ss')}&nbsp&nbsp${news.author}</span>
     <!--banner-->
     <div class="lunbo">
         <div class="swiper-container">
             <div class="swiper-wrapper">
-               <#-- <div class="swiper-slide" style="background-image: url(/images/bg1.png);"></div>
-                <div class="swiper-slide" style="background-image: url(/images/bg2.jpg);"></div>-->
+            <#-- <div class="swiper-slide" style="background-image: url(/images/bg1.png);"></div>
+             <div class="swiper-slide" style="background-image: url(/images/bg2.jpg);"></div>-->
             <#list news.icon?split(";") as image>
                 <#if image?? && image !="" && image?length gt 2>
-                   <#-- <img src="${image}">-->
+                <#-- <img src="${image}">-->
                     <div class="swiper-slide" style="background-image: url(${image});"></div>
                 </#if>
             </#list>

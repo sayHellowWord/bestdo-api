@@ -143,13 +143,15 @@ public class BTiemService {
             resultBean.setTotal(total);
             resultBean.setTotalPage(resultJsonObject.getInt("totalPage"));
             if (resultJsonObject.has("items") && total > 0) {
-                JSONObject items = resultJsonObject.getJSONObject("items");
-                for (String key : items.keySet()) {
-                    GoogDetail googDetail = new GoogDetail();
-                    googDetail.setId(key);
-                    JSONObject goodDetailJsonObject = items.getJSONObject(key);
-                    HttpResultUtil.item2GoodDetail(googDetail, goodDetailJsonObject);
-                    lists.add(googDetail);
+                JSONObject items = resultJsonObject.optJSONObject("items");
+                if (null != items) {
+                    for (String key : items.keySet()) {
+                        GoogDetail googDetail = new GoogDetail();
+                        googDetail.setId(key);
+                        JSONObject goodDetailJsonObject = items.getJSONObject(key);
+                        HttpResultUtil.item2GoodDetail(googDetail, goodDetailJsonObject);
+                        lists.add(googDetail);
+                    }
                 }
             }
             if (!Strings.isNullOrEmpty(sort) && "asc".equals(sort)) {

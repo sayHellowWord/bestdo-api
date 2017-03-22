@@ -262,7 +262,7 @@ public class OrderController {
         String uid = jsonObject.getString("uid");
 
         // return orderService.orderLists(status, HttpParams.project_no, cid, "0h1170114160444ihv", null == page ? 1 : page, null == pagesize ? 10 : pagesize);
-        return orderService.orderLists(status, HttpParams.project_no, cid, uid, null == page ? 1 : page, null == pagesize ? 10 : pagesize);
+        return orderService.orderLists(status, HttpParams.project_no, cid, uid, null == page ? HttpParams.DEFAULT_PAGE : page, null == pagesize ? HttpParams.DEFAULT_PAGE_SIZE : pagesize);
     }
 
     @RequestMapping(value = "detail")
@@ -402,8 +402,8 @@ public class OrderController {
                     end_hour = "0" + timeArrbeanArr[3];
                 jsonObject.put("start_hour", Integer.parseInt(timeArrbeanArr[2]));
                 jsonObject.put("end_hour", Integer.parseInt(timeArrbeanArr[3]));
-               // if (!Strings.isNullOrEmpty(play_time))
-                    jsonObject.put("play_time", start_hour + ":00");
+                // if (!Strings.isNullOrEmpty(play_time))
+                jsonObject.put("play_time", start_hour + ":00");
                 jsonObject.put("piece_id", timeArrbeanArr[1]);
                 items.put(jsonObject);
             }

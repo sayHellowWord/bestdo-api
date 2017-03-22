@@ -284,22 +284,22 @@
 
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
-    <li class="box vip">
-        <div class="venuesimg">
+    <li class="box vip heit4">
+        <div class="venuesimg martop">
             <a href="/cms/train/toDetail?id={{id}}">
-                <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+                <img height="100%" src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
             </a>
         </div>
         <div class="venuesdetial boxflex">
             <a href="/cms/train/toDetail?id={{id}}">
                 <h2 class="font16">{{name}} </h2>
-                <div class="address add3 font12">
+                <div class="martop address add3 font12">
                     <span class="p">报名时间：{{prettifyDate signStartTime}}-{{prettifyDate signEndTime}}</span>
                 </div>
-                <div class="address add3 font12">
+                <div class="martop address add3 font12">
                     <span class="p">课程时间：{{trainTime}}</span>
                 </div>
-                <div class="address add3 font12">
+                <div class="martop address add3 font12">
                     <span class="p">培训地点：{{adress}}</span>
                 </div>
             </a>

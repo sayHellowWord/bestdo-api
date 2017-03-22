@@ -103,13 +103,13 @@
     <li class="box">
         <div class="bodyimg">
             <a href="/cms/information//toDetail?id={{id}}">
-                <img src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
+                <img height="100%" src="{{#if_showImg icon}} {{icon}} {{/if_showImg}}">
             </a>
         </div>
         <div class="bodydetail boxflex">
             <a href="/cms/information//toDetail?id={{id}}">
-                <h2 class="font16">{{title}}</h2>
-                <div class="address font12">
+                <h2 class="font16" id="normal">{{title}}</h2>
+                <div class="address font12" id="martop7">
                     <span class="p">{{author}} {{prettifyDate createDate}}</span>
                 </div>
             </a>

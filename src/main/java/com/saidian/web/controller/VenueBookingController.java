@@ -1,13 +1,16 @@
 package com.saidian.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Ordering;
+import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.web.Btiem.BTiemService;
 import com.saidian.web.bean.GoodsType;
+import com.saidian.web.bean.Region;
 import com.saidian.web.bean.siteinfo.OneDayItemPrice;
 import com.saidian.web.platform.PublicService;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -40,6 +44,8 @@ public class VenueBookingController {
 
     @Autowired
     PublicService publicService;//公共服务
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public int hashCode() {
@@ -66,6 +72,8 @@ public class VenueBookingController {
         if (null != goodsResultBean && null != goodsResultBean.getLists()) {
             goodsTypes = goodsResultBean.getLists();
         }
+
+
         //行政区
         ResultBean regionsResultBean = null;
         try {
@@ -74,23 +82,28 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取行政区出错");
             e.printStackTrace();
         }
-     /*   //获取经纬度
-        ResultBean lntAndLatResultBean = null;
-        try {
-            lntAndLatResultBean = publicService.getCityLngAndLat(HttpParams.cityId);
-            //lntAndLatResultBean = publicService.getCityLngAndLat("52");
-        } catch (Exception e) {
-            logger.error(LOG_PRE + "获取距离出错出错");
-            e.printStackTrace();
-        }*/
 
+        List<Region> regionList = new ArrayList<Region>();
+        JSONArray jsonArray = new JSONArray(regionsResultBean.getData());
+        int length = jsonArray.length();
+        Region region = new Region();
+        for (int i = 0; i < length; i++) {
+            try {
+                region = objectMapper.readValue(jsonArray.get(i).toString(), Region.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            regionList.add(region);
+        }
+        Ordering<Region> ordering = new Ordering<Region>() {
+            public int compare(Region left, Region right) {
+                return Doubles.compare(left.getSequence(), right.getSequence());
+            }
+        };
+        regionList = ordering.sortedCopy(regionList);
 
         map.addAttribute("goodsTypes", goodsTypes);
-        map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
-        // map.addAttribute("lng", lntAndLatResultBean);
-       //map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
-
-
+        map.addAttribute("regions", regionList);
         map.addAttribute("cardId", HttpParams.cardId);
 
         return "site/index";
@@ -131,7 +144,7 @@ public class VenueBookingController {
 
         ResultBean goodsDetailResultBean = bTiemService.getMerItemList(merid, "", mer_price_id,
                 HttpParams.cityId, "", "", radius, longitude, latitude, sort, "",
-                null == page ? HttpParams.DEFAULT_PAGE : page, HttpParams.DEFAULT_PAGE_SIZE, null == district ? 0 : district);
+                null == page ? HttpParams.DEFAULT_PAGE : page, null == pagesize ? HttpParams.DEFAULT_PAGE_SIZE : pagesize, null == district ? 0 : district);
 
         //讲接口返回jsondata 置空
         goodsDetailResultBean.setData(StringUtils.EMPTY);
@@ -139,7 +152,7 @@ public class VenueBookingController {
     }
 
     @RequestMapping(value = "toDetail")
-    public String toDetail(String mer_item_id, String mer_price_id, String cid,String cardId, ModelMap map,HttpSession httpSession) throws Exception {
+    public String toDetail(String mer_item_id, String mer_price_id, String cid, String cardId, ModelMap map, HttpSession httpSession) throws Exception {
         String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
         JSONObject dataJsonObject = new JSONObject(detailResultBean);
 //        if(dataJsonObject.has("data") && dataJsonObject.optJSONObject("data") != null){
@@ -167,7 +180,7 @@ public class VenueBookingController {
         map.addAttribute("cid", Strings.isNullOrEmpty(cid) ? "" : cid);
 
         //TODO  卡种id 当用户打开两个页面下单时会出现卡种id错误 待修正（注 app和微信不会出现）
-        httpSession.setAttribute("cardid",cardId);
+        httpSession.setAttribute("cardid", cardId);
 
         return "site/detail";
     }

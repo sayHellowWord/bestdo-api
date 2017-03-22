@@ -1,4 +1,4 @@
-/*格式化*/
+﻿/*格式化*/
 html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -23,6 +23,7 @@ img {
     display: inline;
     border: none;
     vertical-align: middle;
+    width: 100%;
 }
 
 a {
@@ -97,7 +98,6 @@ body {
 .font24 {
     font-size: 1.2rem;
 }
-
 /*公用样式*/
 .orderInfo .orderInfoList .code,
 .orderInfo .orderInfoList .code .txt {
@@ -490,7 +490,7 @@ body {
 }
 
 .venueslist li .address.add3 .p {
-    width: 100%;
+    width: 125%;
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -4075,34 +4075,24 @@ add by wub  需同步
 .venueslist li.vip2 {
     height: 3.4rem;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*2017-03-21*/
+#list .box .martop{
+    margin-top: 0.2rem;
+}
+#list .heit4{
+    height: 4.2rem;
+}
+.bodylist .list2 li .bodydetail #normal{
+    white-space: normal;
+}
+.bodylist .list2 li .bodydetail #martop7{
+    margin-top: 0.7rem;
+}
+/*2017-03-22*/
+.scrolldate #scrolldateCont{
+    height: 14rem;
+}
+.detailinfo .scrolldate.yu{
+    margin-bottom: 0rem;
+    height: 15rem;
+}
