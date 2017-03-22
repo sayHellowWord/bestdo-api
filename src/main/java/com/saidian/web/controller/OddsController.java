@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 特惠
@@ -41,83 +44,10 @@ public class OddsController {
     @Autowired
     BTiemService bTiemService;//场馆
 
+    @Autowired
+    private Environment env;
+
     private ObjectMapper objectMapper = new ObjectMapper();
-
-//
-//    @RequestMapping("/index")
-//    public String index(ModelMap map) {
-//        //运动类型
-//        ResultBean goodsResultBean = null;
-//        try {
-//            goodsResultBean = bTiemService.getGoodsByCardId(HttpParams.cardId);
-//        } catch (Exception e) {
-//            logger.error(LOG_PRE + "获取运动类型出错");
-//            e.printStackTrace();
-//        }
-//        List<GoodsType> goodsTypes = null;
-//        if (null != goodsResultBean && null != goodsResultBean.getLists()) {
-//            goodsTypes = goodsResultBean.getLists();
-//        }
-//        //行政区
-//        ResultBean regionsResultBean = null;
-//        try {
-//            regionsResultBean = publicService.regionGetChildren(HttpParams.cityId);
-//        } catch (Exception e) {
-//            logger.error(LOG_PRE + "获取行政区出错");
-//            e.printStackTrace();
-//        }
-//        //获取经纬度
-//        ResultBean lntAndLatResultBean = null;
-//        try {
-//            //lntAndLatResultBean = publicService.getCityLngAndLat(HttpParams.cityId);
-//            lntAndLatResultBean = publicService.getCityLngAndLat("52");
-//        } catch (Exception e) {
-//            logger.error(LOG_PRE + "获取距离出错出错");
-//            e.printStackTrace();
-//        }
-//
-//
-//        map.addAttribute("goodsTypes", goodsTypes);
-//        map.addAttribute("regions", new JSONArray(regionsResultBean.getData()).toList());
-//        map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
-//        return "odds/index";
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value = "search")
-//    public Object search(String merid, Integer page, Integer pagesize, Integer district) throws Exception {
-//
-//
-//        //TODO 调用cms接口获取场馆id
-//        String ids = "10205351000000;10205341000000;";
-//
-//        ResultBean resultBean = new ResultBean();
-//        resultBean.setCode(200);
-//        List<GoogDetail> list = new ArrayList<GoogDetail>();
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        String[] idArr =  ids.split(";");
-//
-//        for (String mer_item_id :idArr) {
-//            String detailResultBean = bTiemService.itemGetMerchandiseItemInfo(mer_item_id);
-//            JSONObject dataJsonObject = new JSONObject(detailResultBean);
-//            dataJsonObject = new JSONObject(dataJsonObject.getString("data"));
-//            GoogDetail googDetail = null;
-//            try {
-//                googDetail = objectMapper.readValue(dataJsonObject.toString(), GoogDetail.class);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            if (null != googDetail)
-//                list.add(googDetail);
-//        }
-//        resultBean.setTotal(idArr.length);
-//        resultBean.setLists(list);
-//
-//        return resultBean;
-//    }
-
 
     /**
      * 场馆列表
@@ -139,6 +69,25 @@ public class OddsController {
         if (null != goodsResultBean && null != goodsResultBean.getLists()) {
             goodsTypes = goodsResultBean.getLists();
         }
+
+        Map<String, GoodsType> sortGoodsType = new HashMap();
+        int size = null == goodsTypes ? 0 : goodsTypes.size();
+        GoodsType goodsType = null;
+        for (int i = 0; i < size; i++) {
+            goodsType = goodsTypes.get(i);
+            if("健身".equals(goodsType.getSport()))
+                goodsType.setSport("器械健身");
+            sortGoodsType.put(goodsType.getCid(), goodsType);
+        }
+
+        int total = Integer.parseInt(env.getProperty("server.goodtpe.total"));
+        List<GoodsType> goodsTypesSort = new ArrayList<GoodsType>();
+        for (int i = 1; i <= total; i++) {
+            GoodsType goodsType1 = sortGoodsType.get(env.getProperty("server.goodtpe.sort" + i));
+            if (null != goodsType1)
+                goodsTypesSort.add(goodsType1);
+        }
+
         //行政区
         ResultBean regionsResultBean = null;
         try {
@@ -175,7 +124,7 @@ public class OddsController {
         };
         regionList = ordering.sortedCopy(regionList);
 
-        map.addAttribute("goodsTypes", goodsTypes);
+        map.addAttribute("goodsTypes", goodsTypesSort);
         map.addAttribute("regions", regionList);
         map.addAttribute("coordinate", new JSONObject(lntAndLatResultBean.getData().toString()));
 

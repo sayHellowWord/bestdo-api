@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,9 @@ public class VenueBookingController {
     @Autowired
     PublicService publicService;//公共服务
 
+    @Autowired
+    private Environment env;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -60,6 +64,7 @@ public class VenueBookingController {
      */
     @RequestMapping(value = "index")
     public String index(ModelMap map) {
+
         //运动类型
         ResultBean goodsResultBean = null;
         try {
@@ -68,11 +73,29 @@ public class VenueBookingController {
             logger.error(LOG_PRE + "获取运动类型出错");
             e.printStackTrace();
         }
+
         List<GoodsType> goodsTypes = null;
         if (null != goodsResultBean && null != goodsResultBean.getLists()) {
             goodsTypes = goodsResultBean.getLists();
         }
 
+        Map<String, GoodsType> sortGoodsType = new HashMap();
+        int size = null == goodsTypes ? 0 : goodsTypes.size();
+        GoodsType goodsType = null;
+        for (int i = 0; i < size; i++) {
+            goodsType = goodsTypes.get(i);
+            if("健身".equals(goodsType.getSport()))
+                    goodsType.setSport("器械健身");
+            sortGoodsType.put(goodsType.getCid(), goodsType);
+        }
+
+        int total = Integer.parseInt(env.getProperty("server.goodtpe.total"));
+        List<GoodsType> goodsTypesSort = new ArrayList<GoodsType>();
+        for (int i = 1; i <= total; i++) {
+            GoodsType goodsType1 = sortGoodsType.get(env.getProperty("server.goodtpe.sort" + i));
+            if (null != goodsType1)
+                goodsTypesSort.add(goodsType1);
+        }
 
         //行政区
         ResultBean regionsResultBean = null;
@@ -102,7 +125,7 @@ public class VenueBookingController {
         };
         regionList = ordering.sortedCopy(regionList);
 
-        map.addAttribute("goodsTypes", goodsTypes);
+        map.addAttribute("goodsTypes", goodsTypesSort);
         map.addAttribute("regions", regionList);
         map.addAttribute("cardId", HttpParams.cardId);
 
@@ -115,7 +138,6 @@ public class VenueBookingController {
      *
      * @param merid        商品ID
      * @param mer_item_ids 商品明细ids(多个用逗号分隔)
-     * @param mer_price_id 商品价格ID
      * @param city         城市ID
      * @param q            关键字--搜索
      * @param card_type_id 卡种id（必填）

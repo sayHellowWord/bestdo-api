@@ -746,7 +746,7 @@ body {
 }
 
 .headerC p {
-    width: 100%;
+    width: 88%;
     height: 2.2rem;
     line-height: 2.2rem;
     overflow: hidden;
@@ -873,6 +873,7 @@ body {
     padding-left: 0.625rem;
     overflow: auto;
     background: #fff;
+    word-break: break-all;
 }
 
 .venuesInfo ul {

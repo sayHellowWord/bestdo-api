@@ -45,22 +45,26 @@
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
         <a href="javascript:void(0)" class="on" data-merid="-1">全部</a>
-        <a href="javascript:void(0)" data-merid="1020545">羽毛球</a>
-        <a href="javascript:void(0)" data-merid="1020544">网球</a>
-        <a href="javascript:void(0)" data-merid="1020538">游泳</a>
-        <a href="javascript:void(0)" data-merid="1020551">乒乓球</a>
-        <a href="javascript:void(0)" data-merid="1020552">器械健身</a>
-        <a href="javascript:void(0)" data-merid="1020549">足球</a>
-        <a href="javascript:void(0)" data-merid="1020550">篮球</a>
-        <a href="javascript:void(0)" data-merid="1020546">综合资源</a>
-    <#--<#if goodsTypes?? >-->
-        <#--<#list goodsTypes as goodsType>-->
-        <#-- <#if goodsType_index == 0  >
-             <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.sport}</a>
-         <#else >-->
-            <#--<a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>-->
-        <#--</#if>-->
-        <#--</#list>-->
+    <#--<a href="javascript:void(0)" data-merid="1020545">羽毛球</a>
+    <a href="javascript:void(0)" data-merid="1020544">网球</a>
+    <a href="javascript:void(0)" data-merid="1020538">游泳</a>
+    <a href="javascript:void(0)" data-merid="1020551">乒乓球</a>
+    <a href="javascript:void(0)" data-merid="1020552">器械健身</a>
+    <a href="javascript:void(0)" data-merid="1020549">足球</a>
+    <a href="javascript:void(0)" data-merid="1020550">篮球</a>
+    <a href="javascript:void(0)" data-merid="1020546">综合资源</a>-->
+    <#if goodsTypes?? >
+        <#list goodsTypes as goodsType>
+            <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>
+        </#list>
+    </#if>
+    <#--<#list goodsTypes as goodsType>-->
+    <#-- <#if goodsType_index == 0  >
+         <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.sport}</a>
+     <#else >-->
+    <#--<a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>-->
+    <#--</#if>-->
+    <#--</#list>-->
     <#--</#if>-->
     </div>
 </div>
