@@ -306,7 +306,10 @@ public class VenueBookingController {
         //排序器
         Ordering<OneDayItemPrice.InventoryInfo> orderingName = new Ordering<OneDayItemPrice.InventoryInfo>() {
             public int compare(OneDayItemPrice.InventoryInfo left, OneDayItemPrice.InventoryInfo right) {
-                return left.getName().compareTo(right.getName());
+                 String leftName = left.getName().replace("场片","");
+                 String rightName = right.getName().replace("场片","");
+                 return Integer.compare(Integer.parseInt(leftName),Integer.parseInt(rightName));
+                //return left.getName().compareTo(right.getName());
             }
         };
         inventoryInfos = orderingName.sortedCopy(inventoryInfos);

@@ -509,7 +509,6 @@ body {
 
 .bodylist .list2 li {
     width: 100%;
-    height: 3.5rem;
     background: #fff;
     margin-bottom: 0.5rem;
     padding: 0.5rem 0;
@@ -734,6 +733,7 @@ body {
 
 .headerL a {
     float: left;
+    -webkit-touch-callout:none;
 }
 
 .headerL .back:after {
@@ -4096,4 +4096,7 @@ add by wub  需同步
 .detailinfo .scrolldate.yu{
     margin-bottom: 0rem;
     height: 15rem;
+}
+.detailinfo .imgshow .imglist img{
+    height: 100%;
 }

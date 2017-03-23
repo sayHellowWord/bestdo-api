@@ -72,7 +72,7 @@ public class CMSTrainController {
             }
         };
         regionList = ordering.sortedCopy(regionList);
-        modelMap.addAttribute("regions",regionList);
+        modelMap.addAttribute("regions", regionList);
         return "/train/list";
     }
 
@@ -130,7 +130,7 @@ public class CMSTrainController {
     @RequestMapping("/coach/list")
     @ResponseBody
     public Object coachList(String name, String project, String rank, String state, Integer page, Integer rows) throws Exception {
-        String resultStr = restClient.coachList("",name, project, rank, state, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+        String resultStr = restClient.coachList("", name, project, rank, state, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
                 null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         List<Coach> coaches = null;
         try {
