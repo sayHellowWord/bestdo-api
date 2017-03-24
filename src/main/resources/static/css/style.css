@@ -602,6 +602,7 @@ body {
 
 .nav .navCont {
     width: 100%;
+    margin-top: 0.3rem;
 }
 
 .nav a {
@@ -615,7 +616,7 @@ body {
     width: 1.2rem;
     height: 1.2rem;
     margin: 0 auto;
-    margin-top: 0.3rem;
+    /*margin-top: 0.3rem;*/
     position: relative;
     background-size: 24px 24px;
 }
@@ -1591,7 +1592,8 @@ body {
 
 .search {
     width: 100%;
-    margin-top: 0.25rem;
+    /*margin-top: 0.25rem;*/
+    padding-top: 0.25rem;
 }
 
 .search .searchInput {

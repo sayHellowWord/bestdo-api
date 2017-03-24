@@ -232,6 +232,18 @@
                             Handlebars.registerHelper('if_price', function (value, options) {
                                 return Math.floor(value) / 100;
                             });
+
+                            Handlebars.registerHelper('if_images', function (value, options) {
+                                var str = "";
+                                var splitArr = value.split(".");
+                                var length = splitArr.length;
+                                for (var i = 0; i < length - 1; i++) {
+                                    str += splitArr[i] + ".";
+                                }
+                                str += "_90x90." + splitArr[length - 1];
+                                return str;
+                            });
+
                             resultTmp += template(result.lists);
                             $("#googDetail-list").append(template(result.lists));
                         }
@@ -276,6 +288,17 @@
 
                         Handlebars.registerHelper('if_price', function (value, options) {
                             return Math.floor(value) / 100;
+                        });
+
+                        Handlebars.registerHelper('if_images', function (value, options) {
+                            var str = "";
+                            var splitArr = value.split(".");
+                            var length = splitArr.length;
+                            for (var i = 0; i < length - 1; i++) {
+                                str += splitArr[i] + ".";
+                            }
+                            str += "_90x90." + splitArr[length - 1];
+                            return str;
                         });
 
                         var html = template(result.lists);
@@ -383,7 +406,7 @@
 <script id="googDetail-template" type="text/x-handlebars-template">
     {{#each this}}
     <li class="box vip" data-mer_item_id="{{mer_item_id}}" data-mer_price_id="{{mer_price_id}}" data-cid="{{cid}}">
-        <div class="venuesimg"><img src="{{thumb}}"/></div>
+        <div class="venuesimg"><img src="{{#if_images thumb}}{{thumb}}{{/if_images}}"/></div>
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="price font12">
