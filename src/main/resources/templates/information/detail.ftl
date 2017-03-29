@@ -12,7 +12,11 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 
-<body style="background:#fff;">
+<body style="background:#fff;" class="">
+    <div class="seeMask">
+        <div class="hideMask Mtop"></div>
+        <div class="hideMask Mbottom"></div>
+    </div>
 <!--头部公用-->
 <div id="header">
     <div class="header">
@@ -29,7 +33,7 @@
 <div class="saishi">
     <p class="font20">${news.title}</p>
     <p class="font14" style="color:#666">${news.subTitle}</p>
-    <span class="font12">${news.createDate?string('yyyy年MM月dd HH:mm:ss')}&nbsp&nbsp${news.author}</span>
+    <span class="font12" id="Sinsert">${news.createDate?string('yyyy年MM月dd HH:mm:ss')}&nbsp&nbsp${news.author}</span>
     <!--banner-->
     <div class="lunbo">
         <div class="swiper-container">
@@ -59,10 +63,83 @@
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
+        autoplayDisableOnInteraction: false,
         // 如果需要分页器
         pagination: '.swiper-pagination',
     })
     </#if>
+</script>
+<script type="text/javascript">
+    $(function() {
+        var swiperLi = $('.swiper-slide');
+        function MaskHide()
+        {
+            $('.seeMask').hide();
+
+            $('body').removeClass('overflow');
+
+            $('.lunbo').css('margin-top','0%');
+
+            $('#Sinsert').after($('.lunbo'));
+
+            moveDeleteEvent($('.swiper-slide'),touchTo);
+
+            $('.swiper-slide').off('touchend',MaskHide);
+
+            $('.hideMask').off('touchend',MaskHide);
+        }
+
+        function touchTo()
+        {
+
+            $('.seeMask').show();
+
+            $('body').addClass('overflow');
+
+            $('.Mtop').after($('.lunbo'));
+
+            moveDeleteEvent($('.swiper-slide'),MaskHide);
+
+            moveDeleteEvent($('.hideMask'),MaskHide);
+
+            $('.swiper-slide').off('touchend',touchTo);
+
+            var heigt = $('.seeMask').css('height');
+
+            heigt = parseInt(heigt.replace('px',''));
+
+            heigt = (heigt-200)/2;
+
+            $('.hideMask').css('height',heigt+'px');
+        }
+
+        function url2src(url)
+        {
+            src = url.replace('url("','').replace('")','');
+            return src;
+        }
+
+        function moveDeleteEvent(obj,fn)
+        {
+            function addtouchend()
+            {
+                obj.off('touchend',fn);
+                obj.on('touchend',fn);
+            }
+
+            function touchmo()
+            {
+                obj.off('touchend',fn);
+                obj.off('touchend',addtouchend);
+                obj.on('touchend',addtouchend);
+            }
+            obj.off('touchend',fn);
+            obj.on('touchend',fn);
+            obj.on('touchmove',touchmo);
+        }
+
+        moveDeleteEvent($('.swiper-slide'),touchTo);
+    })
 </script>
 </body>
 </html>

@@ -24,14 +24,23 @@ $(function () {
             return;
         }
 
-        var password = $("#login-password").val();
+        function getPassword(){
+
+            var Opassword = $(".login-password-op").attr('value');
+            var Cpassword = $(".login-password-cl").attr('value');
+            if (Opassword == '') {
+                return Cpassword;
+            }else if (Cpassword == '') {
+                return Opassword;
+            }
+        }
 
         $.ajax({
             type: "POST",
             url: "../login/accountLogin",
             data: {
                 "account": account,
-                "password": password
+                "password": getPassword()
             },
             success: function (result) {
                 console.info(result.data.validId)

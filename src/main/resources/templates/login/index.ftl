@@ -17,7 +17,7 @@
     <div class="header fixed">
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
-            <div class="headerC boxflex"><p class="font17">登录</p></div>
+            <div class="headerC boxflex"><p class="font17" style="margin:0 auto" >登录</p></div>
             <div class="headerR"><a href="../login/register" class="txt2 font14">注册</a></div>
         </div>
     </div>
@@ -67,7 +67,9 @@
                 <span class="tit2">密码</span>
                 <div class="cont2 input boxflex">
                     <a href="javascript:void(0)" class="close"></a>
-                    <input id="login-password" type="text" placeholder="6-16位数字或字母">
+                    <a href="javascript:void(0)" class="eye"></a>
+                    <input class="login-password-cl" type="text" placeholder="6-16位数字或字母">
+                    <input class="login-password-op" type="password" placeholder="6-16位数字或字母">
                 </div>
             </li>
         </ul>
@@ -85,5 +87,24 @@
 <script language="javascript" type="text/javascript" src="../js/bestdo.js"></script>
 <!--    登录相关js     -->
 <script language="javascript" type="text/javascript" src="../js/login/index.js"></script>
+<script type="text/javascript">
+    var key = true;
+    var val;
+    $('.eye').click(function(){
+        if (key == true) {
+            $(this).addClass('eyeclose');
+            val = $('.login-password-op').attr('value');
+            $('.login-password-op').hide().attr('value','');
+            $('.login-password-cl').show().attr('value',val);
+            key = false;
+        }else{
+            $(this).removeClass('eyeclose');
+            val = $('.login-password-cl').attr('value');
+            $('.login-password-op').show().attr('value',val);
+            $('.login-password-cl').hide().attr('value','');
+            key = true;
+        }
+    })
+</script>
 </body>
 </html>

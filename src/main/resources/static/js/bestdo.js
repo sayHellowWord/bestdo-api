@@ -25,7 +25,7 @@
 				e.stopPropagation && e.stopPropagation();
 				if(windowflag){
 		            e.returnValue=true;
-		            return true;	
+		            return true;
 				}
 				else{
 			        e.returnValue=false;
@@ -50,15 +50,15 @@
 				cls:'',
 				clearVal:'.close'
 			};
-			var ops = $.extend(defaults,options);	
+			var ops = $.extend(defaults,options);
 			$("input").focus(function(){
-				if(/iphone|ipad|ipod/i.test(navigator.userAgent)){ 
-				     $(ops.cls).css("position", "static"); 
+				if(/iphone|ipad|ipod/i.test(navigator.userAgent)){
+				     $(ops.cls).css("position", "static");
 				}
 			});
 			$("input").blur(function(){
-				if(/iphone|ipad|ipod/i.test(navigator.userAgent)){ 
-				     $(ops.cls).removeAttr("style"); 
+				if(/iphone|ipad|ipod/i.test(navigator.userAgent)){
+				     $(ops.cls).removeAttr("style");
 				}
 			});
 			$("input").keyup(function(){
@@ -142,7 +142,7 @@
 				layername:"#venueslist",
 				flag: false,
 			};
-			var ops = $.extend(defaults,options);	
+			var ops = $.extend(defaults,options);
 			var obj = $(this);
 			$(window).scroll(function(){
 				var sh = $(window).height();
@@ -178,7 +178,7 @@
 		dateControl:function(options){
 			document.onselectstart=function (){return false;};
 			var defaults = {};
-			var ops = $.extend(defaults,options);	
+			var ops = $.extend(defaults,options);
 			var obj = $(this);
 
 			var touchEvents = {
@@ -236,7 +236,7 @@
 					$(this).stop().animate({"top":st},100);
 					$(this).children().eq(ix).addClass("on").siblings().removeClass("on");
 					my = null;
-					
+
 					//详情页自己加的请求
 					if($(this).hasClass('sdate')) {
 						item.getValidTime();
@@ -245,7 +245,7 @@
 					if($(this).hasClass('stime')) {
 						item.setNowMinute();
 					}
-					
+
 				}
 		    }
 
@@ -289,13 +289,13 @@
 						obj.html(txt);
 						obj.css("color","#333");
 					}
-					
+
 					$('.venuesInfo .date p').attr('data-now_day', $('.sdate .on').attr('data-day'));
 					if(olen==3){
 						if($(ops.datecontrol).eq(1).find(".on").html() != undefined) {
 							$('.venuesInfo .date p').attr('data-hours', $('.stime .on').attr('data-valid_time'));
 							$('.venuesInfo .date p').attr('data-teetime', $('.stime .on').text()+':'+$('.steetime .on').text());
-						} 
+						}
 					} else {
 						if($(ops.datecontrol).eq(1).find(".on").html() != undefined) {
 							$('.venuesInfo .date p').attr('data-hours', $('.stime .on').text());

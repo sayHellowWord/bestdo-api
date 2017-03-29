@@ -13,7 +13,11 @@
 </head>
 
 
-<body>
+<body class="">
+    <div class="seeMask">
+        <div class="hideMask Mtop"></div>
+        <div class="hideMask Mbottom"></div>
+    </div>
 <!--头部公用-->
 <div id="header">
     <div class="header">
@@ -57,7 +61,7 @@
         <div class="venuesInfo">
             <h1 class="font15">监测站点介绍</h1>
             <ul>
-                <li class="moreinfo box font14">
+                <li id="maxheit" class="moreinfo box font14">
                     <span class="tit">${phyContext.content}</span>
                 </li>
             </ul>
@@ -74,10 +78,83 @@
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
+        autoplayDisableOnInteraction: false,
         // 如果需要分页器
         pagination: '.swiper-pagination',
     })
     </#if>
+</script>
+<script type="text/javascript">
+    $(function() {
+        var swiperLi = $('.swiper-slide');
+        function MaskHide()
+        {
+            $('.seeMask').hide();
+
+            $('body').removeClass('overflow');
+
+            $('.lunbo').css('margin-top','0%');
+
+            $('#header').after($('.lunbo'));
+
+            moveDeleteEvent($('.swiper-slide'),touchTo);
+
+            $('.swiper-slide').off('touchend',MaskHide);
+
+            $('.hideMask').off('touchend',MaskHide);
+        }
+
+        function touchTo()
+        {
+
+            $('.seeMask').show();
+
+            $('body').addClass('overflow');
+
+            $('.Mtop').after($('.lunbo'));
+
+            moveDeleteEvent($('.swiper-slide'),MaskHide);
+
+            moveDeleteEvent($('.hideMask'),MaskHide);
+
+            $('.swiper-slide').off('touchend',touchTo);
+
+            var heigt = $('.seeMask').css('height');
+
+            heigt = parseInt(heigt.replace('px',''));
+
+            heigt = (heigt-200)/2;
+
+            $('.hideMask').css('height',heigt+'px');
+        }
+
+        function url2src(url)
+        {
+            src = url.replace('url("','').replace('")','');
+            return src;
+        }
+
+        function moveDeleteEvent(obj,fn)
+        {
+            function addtouchend()
+            {
+                obj.off('touchend',fn);
+                obj.on('touchend',fn);
+            }
+
+            function touchmo()
+            {
+                obj.off('touchend',fn);
+                obj.off('touchend',addtouchend);
+                obj.on('touchend',addtouchend);
+            }
+            obj.off('touchend',fn);
+            obj.on('touchend',fn);
+            obj.on('touchmove',touchmo);
+        }
+
+        moveDeleteEvent($('.swiper-slide'),touchTo);
+    })
 </script>
 </body>
 </html>

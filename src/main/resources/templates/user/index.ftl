@@ -4,7 +4,7 @@
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 <title>我的</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<!--忽略页面中的数字识别为电话号码-->  
+<!--忽略页面中的数字识别为电话号码-->
 <meta name="format-detection" content="telephone=no" />
 <!--忽略页面中的邮箱格式为邮箱-->
 <meta name="format-detection" content="email=no"/>
@@ -52,7 +52,7 @@
                 <#--<span></span>-->退出
             </a></li>
 </ul>
-	
+
 </div>
 <!--导航-->
 <div id="nav">

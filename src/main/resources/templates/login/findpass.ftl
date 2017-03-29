@@ -4,7 +4,7 @@
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <title>找回密码</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!--忽略页面中的数字识别为电话号码-->  
+<!--忽略页面中的数字识别为电话号码-->
 <meta name="format-detection" content="telephone=no" />
 <!--忽略页面中的邮箱格式为邮箱-->
 <meta name="format-detection" content="email=no"/>
@@ -19,7 +19,6 @@
 		<div class="headerCont box">
 		<div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
 		<div class="headerC boxflex"><p class="font17">找回密码</p></div>
-		<div class="headerR"></div>
 		</div>
 	</div>
 </div>
@@ -48,7 +47,9 @@
 				<span class="tit2">新密码</span>
 				<div class="cont2 input boxflex">
 					<a href="javascript:void(0)" class="close"></a>
-					<input id="password" type="text" placeholder="6-16位数字或字母" >
+					<a href="javascript:void(0)" class="eye"></a>
+					<input class="login-password-cl" type="text" placeholder="6-16位数字或字母">
+                    <input class="login-password-op" type="password" placeholder="6-16位数字或字母">
 				</div>
 			</li>
 		</ul>
@@ -61,6 +62,38 @@
 <script language="javascript" type="text/javascript" src="../js/bestdo.js"></script>
 <script>
 $(function(){
+
+	// eyes
+
+    var key = true;
+    var val;
+    $('.eye').click(function(){
+        if (key == true) {
+            $(this).addClass('eyeclose');
+            val = $('.login-password-op').attr('value');
+            $('.login-password-op').hide().attr('value','');
+            $('.login-password-cl').show().attr('value',val);
+            key = false;
+        }else{
+            $(this).removeClass('eyeclose');
+            val = $('.login-password-cl').attr('value');
+            $('.login-password-op').show().attr('value',val);
+            $('.login-password-cl').hide().attr('value','');
+            key = true;
+        }
+    })
+
+	function getPassword(){
+
+		var Opassword = $(".login-password-op").attr('value');
+		var Cpassword = $(".login-password-cl").attr('value');
+		if (Opassword == '') {
+			return Cpassword;
+		}else if (Cpassword == '') {
+			return Opassword;
+		}
+	}
+
 	$("input").inputEve({
 		cls:'.header',
 		clearVal:'.close'
@@ -76,7 +109,7 @@ $(function(){
             alert("请输入手机号!!");
             return;
         }
-        var partten = /^1[3,5,8]\d{9}$/;
+        var partten = /^1[34578]\d{9}$/;
         if (!partten.test(telphone)) {
             alert('手机号码格式不正确!');
             return;
@@ -129,7 +162,7 @@ $(function(){
             alert("请输入验证码")
             return;
         }
-        var password = $("#password").val();
+        var password = getPassword();
         if(password.length < 1){
             alert("请输入密码!!");
             return;
@@ -159,7 +192,7 @@ $(function(){
         })
 
     })
-	
+
 
 })
 

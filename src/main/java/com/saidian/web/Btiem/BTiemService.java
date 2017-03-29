@@ -6,6 +6,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.primitives.Doubles;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.AccessServices;
+import com.saidian.config.HttpParams;
 import com.saidian.utils.HttpResultUtil;
 import com.saidian.utils.HttpUtil;
 import com.saidian.web.bean.*;
@@ -14,11 +15,14 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Future;
 
 /**
  * Created by Administrator on 2017/1/5.
@@ -53,7 +57,7 @@ public class BTiemService {
     private static String MER_ONE_DAY_MER_ITEM_PRICE = "item/getOneDayMerItemPrice";
 
     //根据商品ID及卡种ID获取默认价格ID
-    private static String PROJECT_MER_PRICE_ID = "project/getMerPriceId";
+    public static String PROJECT_MER_PRICE_ID = "project/getMerPriceId";
 
 
     /**
@@ -113,6 +117,9 @@ public class BTiemService {
     public ResultBean getMerItemList(String merid, String mer_item_ids, String mer_price_id, String city, String q, String card_type_id,
                                      String radius, String longitude, String latitude, String sort, String price_sort, int page,
                                      int pagesize, int district) throws Exception {
+
+        System.out.println("获取数据开始");
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_id", merid);
         jsonObject.put("mer_item_ids", mer_item_ids);
@@ -164,6 +171,7 @@ public class BTiemService {
             }
             resultBean.setLists(lists);
         }
+        System.out.println("获取数据结束");
         return resultBean;
     }
 
@@ -691,6 +699,5 @@ public class BTiemService {
         ResultBean resultBean = HttpResultUtil.result2Bean(result);
         return resultBean;
     }
-
 
 }

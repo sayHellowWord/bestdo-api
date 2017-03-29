@@ -45,7 +45,18 @@ server.tomcat.uri-encoding=UTF-8
 server.tomcat.basedir=/tomcat-log
 server.tomcat.access-log-enabled=true
 server.tomcat.accesslog.pattern=common
-
+#==============     运动类型排序 羽毛球（102）、网球（101）、游泳（109）、乒乓球（106）、器械健身（108）、足球（120）、篮球（104）、综合资源（122）     =================
+#需要排序类型的个数
+server.goodtpe.total=8
+#排序订场id
+server.goodtpe.sort1=102
+server.goodtpe.sort2=101
+server.goodtpe.sort3=109
+server.goodtpe.sort4=106
+server.goodtpe.sort5=108
+server.goodtpe.sort6=120
+server.goodtpe.sort7=104
+server.goodtpe.sort8=122
 #===============    https    ===============
 #server.ssl.key-store=classpath:keystore.p12
 #server.ssl.key-store-password=baidong

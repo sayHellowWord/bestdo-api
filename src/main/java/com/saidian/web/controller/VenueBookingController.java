@@ -8,8 +8,10 @@ import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
+import com.saidian.task.AsyncService;
 import com.saidian.web.Btiem.BTiemService;
 import com.saidian.web.bean.GoodsType;
+import com.saidian.web.bean.GoogDetail;
 import com.saidian.web.bean.Region;
 import com.saidian.web.bean.siteinfo.OneDayItemPrice;
 import com.saidian.web.platform.PublicService;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Future;
 
 /**
  * Created by Administrator on 2017/1/7.
@@ -48,6 +51,9 @@ public class VenueBookingController {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    AsyncService asyncService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -84,8 +90,8 @@ public class VenueBookingController {
         GoodsType goodsType = null;
         for (int i = 0; i < size; i++) {
             goodsType = goodsTypes.get(i);
-            if("健身".equals(goodsType.getSport()))
-                    goodsType.setSport("器械健身");
+            if ("健身".equals(goodsType.getSport()))
+                goodsType.setSport("器械健身");
             sortGoodsType.put(goodsType.getCid(), goodsType);
         }
 
@@ -172,6 +178,75 @@ public class VenueBookingController {
         goodsDetailResultBean.setData(StringUtils.EMPTY);
         return goodsDetailResultBean;
     }
+
+    //获取全部
+    @ResponseBody
+    @RequestMapping(value = "searchAll")
+    public Object searchAll(String carId, String merid, String mer_item_ids, String city, String q, String card_type_id,
+                            String radius, String longitude, String latitude, String sort, String price_sort, Integer page,
+                            Integer pagesize, Integer district) throws Exception {
+        //运动类型
+        ResultBean goodsResultBean = null;
+        try {
+            goodsResultBean = bTiemService.getGoodsByCardId(HttpParams.cardId);
+        } catch (Exception e) {
+            logger.error(LOG_PRE + "获取运动类型出错");
+            e.printStackTrace();
+        }
+
+        List<GoodsType> goodsTypes = null;
+        if (null != goodsResultBean && null != goodsResultBean.getLists()) {
+            goodsTypes = goodsResultBean.getLists();
+        }
+
+        int length = goodsTypes.size();
+        List<Future<ResultBean<GoogDetail>>> result = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            Future<ResultBean<GoogDetail>> task = asyncService.getMerItemListByMerId(HttpParams.cardId, goodsTypes.get(i).getMerid(),
+                    HttpParams.cityId, "", "", radius, longitude, latitude, sort, "",
+                    null == page ? HttpParams.DEFAULT_PAGE : page, null == pagesize ? HttpParams.DEFAULT_PAGE_SIZE : pagesize, null == district ? 0 : district);
+            result.add(task);
+        }
+
+        length = result.size();
+        while (true) {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            int count = 0;
+            for (int i = 0; i < length; i++) {
+                if (result.get(i).isDone()) {
+                    count++;
+                }
+            }
+            if (count == length) {
+                System.out.println("get-============================");
+                break;
+            }
+            Thread.sleep(0100);
+        }
+
+        ResultBean<GoogDetail> resultBean = new ResultBean<>();
+        resultBean.setCode(200);
+        resultBean.setPage(page);
+        resultBean.setPageSize(pagesize);
+        int total = 0;
+        int totalPage = 0;
+        List<GoogDetail> resultList = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            ResultBean<GoogDetail> tmp = result.get(i).get();
+            if (null != tmp) {
+                resultList.addAll(tmp.getLists());
+                if (tmp.getTotal() > total) {
+                    total = tmp.getTotal();
+                    totalPage = tmp.getTotalPage();
+                }
+            }
+        }
+        resultBean.setLists(resultList);
+        resultBean.setTotal(total);
+        resultBean.setTotalPage(totalPage);
+        return resultBean;
+    }
+
 
     @RequestMapping(value = "toDetail")
     public String toDetail(String mer_item_id, String mer_price_id, String cid, String cardId, ModelMap map, HttpSession httpSession) throws Exception {
@@ -306,10 +381,9 @@ public class VenueBookingController {
         //排序器
         Ordering<OneDayItemPrice.InventoryInfo> orderingName = new Ordering<OneDayItemPrice.InventoryInfo>() {
             public int compare(OneDayItemPrice.InventoryInfo left, OneDayItemPrice.InventoryInfo right) {
-                 String leftName = left.getName().replace("场片","");
-                 String rightName = right.getName().replace("场片","");
-                 return Integer.compare(Integer.parseInt(leftName),Integer.parseInt(rightName));
-                //return left.getName().compareTo(right.getName());
+                String leftName = left.getName().replace("场片", "");
+                String rightName = right.getName().replace("场片", "");
+                return Integer.compare(Integer.parseInt(leftName), Integer.parseInt(rightName));
             }
         };
         inventoryInfos = orderingName.sortedCopy(inventoryInfos);

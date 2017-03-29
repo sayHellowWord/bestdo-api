@@ -14,6 +14,10 @@
 
 
 <body>
+    <div class="seeMask">
+        <div class="hideMask Mtop"></div>
+        <div class="hideMask Mbottom"></div>
+    </div>
 <!--头部公用-->
 <div id="header">
     <div class="header">
@@ -42,7 +46,7 @@
         <div class="venuesInfo">
             <ul>
                 <li class="ede font15"><p>${detail.name} <i class="font12">(${detail.limitMin}人开赛)</i></p></li>
-                <li class="address font14"><p>${detail.address}</p></li>
+                <li class="address font14"><p id="Noafter">${detail.address}</p></li>
             </ul>
         </div>
 
@@ -62,35 +66,34 @@
                 </li>
             </ul>
         </div>
-
+        <div class="venuesInfo">
+            <h1 class="font15">赛事简介</h1>
+            <ul>
+                <li id="maxheit" class="moreinfo box font14">
+                    <span class="tit">${detail.matchContext}</span>
+                </li>
+            </ul>
+        </div>
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">赛事动态</h3>
             <div class="scrolldateCont box font12">
             <#if dynamics?exists>
                 <#list dynamics as dynamic>
                     <span>
-                            <a href="/cms/match/dynamicDetail?id=${dynamic.id}&matchName=${detail.name}" class="sai">
-                                <div class="box">
-                                    <img src="${dynamic.thumbnail?replace(";","")}">
-                                    <div>
-                                        <h2 class="font16">${dynamic.title}</h2>
-                                        <P class="font12 now">${dynamic.createTimeStr}</P>
-                                      <#--  <P class="font12">${dynamic.eventContext}</P>-->
-                                    </div>
+                        <a href="/cms/match/dynamicDetail?id=${dynamic.id}&matchName=${detail.name}" class="sai">
+                            <div class="box">
+                                <img src="${dynamic.thumbnail?replace(";","")}">
+                                <div>
+                                    <h2 class="font16">${dynamic.title}</h2>
+                                    <P class="font12 now">${dynamic.createTimeStr}</P>
+                                  <#--  <P class="font12">${dynamic.eventContext}</P>-->
                                 </div>
-                            </a>
-                        </span>
+                            </div>
+                        </a>
+                    </span>
                 </#list>
             </#if>
             </div>
-        </div>
-        <div class="venuesInfo">
-            <h1 class="font15">赛事简介</h1>
-            <ul>
-                <li class="moreinfo box font14">
-                    <span class="tit">${detail.matchContext}</span>
-                </li>
-            </ul>
         </div>
     </div>
 </div>
@@ -112,10 +115,83 @@
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
         autoplay: 3000,
+        autoplayDisableOnInteraction: false,
         // 如果需要分页器
         pagination: '.swiper-pagination',
     })
     </#if>
+</script>
+<script type="text/javascript">
+    $(function() {
+        var swiperLi = $('.swiper-slide');
+        function MaskHide()
+        {
+            $('.seeMask').hide();
+
+            $('body').removeClass('overflow');
+
+            $('.lunbo').css('margin-top','0%');
+
+            $('#header').after($('.lunbo'));
+
+            moveDeleteEvent($('.swiper-slide'),touchTo);
+
+            $('.swiper-slide').off('touchend',MaskHide);
+
+            $('.hideMask').off('touchend',MaskHide);
+        }
+
+        function touchTo()
+        {
+
+            $('.seeMask').show();
+
+            $('body').addClass('overflow');
+
+            $('.Mtop').after($('.lunbo'));
+
+            moveDeleteEvent($('.swiper-slide'),MaskHide);
+
+            moveDeleteEvent($('.hideMask'),MaskHide);
+
+            $('.swiper-slide').off('touchend',touchTo);
+
+            var heigt = $('.seeMask').css('height');
+
+            heigt = parseInt(heigt.replace('px',''));
+
+            heigt = (heigt-200)/2;
+
+            $('.hideMask').css('height',heigt+'px');
+        }
+
+        function url2src(url)
+        {
+            src = url.replace('url("','').replace('")','');
+            return src;
+        }
+
+        function moveDeleteEvent(obj,fn)
+        {
+            function addtouchend()
+            {
+                obj.off('touchend',fn);
+                obj.on('touchend',fn);
+            }
+
+            function touchmo()
+            {
+                obj.off('touchend',fn);
+                obj.off('touchend',addtouchend);
+                obj.on('touchend',addtouchend);
+            }
+            obj.off('touchend',fn);
+            obj.on('touchend',fn);
+            obj.on('touchmove',touchmo);
+        }
+
+        moveDeleteEvent($('.swiper-slide'),touchTo);
+    })
 </script>
 </body>
 </html>

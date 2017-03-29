@@ -73,6 +73,7 @@
 <script>
     var mySwiper = new Swiper('.swiper-container', {
         loop: true,
+        autoplayDisableOnInteraction: false,
         autoplay: 3000,
 
         // 如果需要分页器

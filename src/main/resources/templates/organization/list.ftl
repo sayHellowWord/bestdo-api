@@ -36,7 +36,7 @@
     </div>
 </div>
 <!--区域-->
-<div class="slidemenu" data-tab="0">
+<div class="slidemenu" id="distance" data-tab="0">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 nearby">
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
@@ -48,7 +48,7 @@
     </div>
 </div>
 <!--排序-->
-<div class="slidemenu" data-tab="1">
+<div class="slidemenu" id="sport-type" data-tab="1">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 sort">
         <a href="javascript:void(0)" data-value="asc" class="on">按时间排序</a>
@@ -82,21 +82,9 @@
         var area = $('.nearby .on').data('value');
         // 获取排序字段
         var order = '';
-        // var order = $('.sort .on').data('value');
 
         // 初始化加载数据
         search(area, order, 1, 15);
-
-        /*var xmlhttp=new XMLHttpRequest();
-        if (xmlhttp.readyState <4 || xmlhttp.status != 200){
-            $(".loading").hide();
-        }
-        document.onreadystatechange = completeLoading;
-        function completeLoading() {
-            if (document.readyState == "complete") {
-                $(".loading").hide();
-            }
-        }*/
 
         /*筛选条件*/
         /*$(".slidemenuCont a").on("click",function(){
@@ -195,6 +183,10 @@
 
     })
     function search(area, order, page, rows) {
+
+        //没有结果提示隐藏
+        $("#no-result").hide();
+
         $.ajax({
             type: "POST",
             url: "/cms/organization/list/cms",
@@ -219,8 +211,13 @@
             Handlebars.registerHelper('if_showImg', function (value, options) {
                 return value.split(';')[0];
             });
-            var html = template(result.data);
-            $("#list").append(html);
+            //当前未分页所以这样做 TODO
+            if (result.data.length > 0) {
+                var html = template(result.data);
+                $("#list").append(html);
+            } else {
+                $("#no-result").show();
+            }
         } else {
             alert(result.data);
         }
@@ -249,6 +246,20 @@
         </div>
     </li>
     {{/each}}
+</script>
+<script type="text/javascript">
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
+                var v = $(this).html();
+                $('.chooseTabCont .on').html(v+'<span></span>')
+            })
+        }
+    }
 </script>
 </body>
 </html>

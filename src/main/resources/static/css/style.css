@@ -445,7 +445,7 @@ body {
 }
 
 .venueslist li .xiajia p.on {
-    color: #999;
+    color: #fc821b;
 }
 
 .venueslist li:last-child .venuesdetial {
@@ -747,7 +747,7 @@ body {
 }
 
 .headerC p {
-    width: 88%;
+    width: 85%;
     height: 2.2rem;
     line-height: 2.2rem;
     overflow: hidden;
@@ -903,7 +903,7 @@ body {
     background-position: left top;
     background-size: 24px 24px;
     background-repeat: no-repeat;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     text-overflow: ellipsis;
     color: #333;
 }
@@ -986,8 +986,11 @@ body {
 
 .scrolldateCont {
     padding-left: 0.625rem;
-    height: 10rem;
     overflow: auto;
+}
+
+.scrolldate.yu .scrolldateCont{
+    padding-left: 0rem;
 }
 
 .scrolldateCont span {
@@ -1066,9 +1069,10 @@ body {
 }
 
 .scrolldateCont span a.sai div img {
-    width: 3.25rem;
+    width: 5.25rem;
     height: 3.25rem;
     margin-right: 0.375rem;
+    margin-top: 0.375rem;
 }
 
 .scrolldateCont span a.sai div div {
@@ -1076,20 +1080,19 @@ body {
 }
 
 .scrolldateCont span a.sai div div h2 {
-    width: 7rem;
-    height: 1rem;
-    white-space: nowrap;
+    width: 8rem;
     text-overflow: ellipsis;
-    overflow: hidden;
     font-weight: 100;
     color: #333;
-    display: block;
     text-align: left;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .scrolldateCont span a.sai div div p {
-    width: 7rem;
-    height: 1rem;
+    width: 6rem;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -1099,7 +1102,7 @@ body {
 }
 
 .scrolldateCont span a.sai div div p.now {
-    margin-top: 0.4rem;
+    margin-top: 0.2rem;
 }
 
 .venuesInfo h1 {
@@ -1632,7 +1635,7 @@ body {
 
 .search .searchInput input {
     height: 100%;
-    padding-left: 1.4rem;
+    /*padding-left: 1.4rem;*/
     padding-right: 0.4rem;
     padding-top: 0;
     border: none;
@@ -1885,6 +1888,7 @@ body {
     left: 0;
     bottom: 0.625rem;
     z-index: 997;
+    opacity: .7
 }
 
 .positionCont {
@@ -1899,12 +1903,13 @@ body {
     background: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 36px;
+    height: 1.2rem;
 }
 
 .positionCont .icon {
     display: block;
     width: 0.9rem;
-    height: 1.8rem;
+    height: 1.2rem;
     margin: 0 0.4rem;
     background-image: url(../images/ic_location_gray.png);
     background-position: center center;
@@ -1919,11 +1924,12 @@ body {
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #666;
+    line-height: 1.2rem;
 }
 
 .positionCont .refresh {
     width: 2rem;
-    height: 1.8rem;
+    height: 1.2rem;
     position: relative;
 }
 
@@ -2511,7 +2517,7 @@ body {
 }
 
 .blockinput li input {
-    width: 100%;
+    width: 65%;
     background: none;
     border: none;
     font-size: 0.7rem;
@@ -3535,7 +3541,7 @@ body {
 .getPswTxt {
     padding: 0 0.75rem;
     text-align: right;
-    color: #666;
+    color: #507daf;
 }
 
 /*结果页*/
@@ -3752,7 +3758,6 @@ body {
 
 /*无数据*/
 .empty {
-    display: none;
     width: 100%;
     padding-top: 4.35rem;
     text-align: center;
@@ -4092,13 +4097,53 @@ add by wub  需同步
     margin-top: 0.7rem;
 }
 /*2017-03-22*/
-.scrolldate #scrolldateCont{
-    height: 14rem;
-}
 .detailinfo .scrolldate.yu{
     margin-bottom: 0rem;
-    height: 15rem;
 }
 .detailinfo .imgshow .imglist img{
     height: 100%;
+}
+/*2017-03-24*/
+input.login-password-op,input.login-password-cl{
+    width: 65%;
+}
+input.login-password-cl{
+    display: none;
+}
+.cont2 a.eye{
+    float: right;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: url(../images/eye.png);
+    background-size:100% 100%;
+    margin-right: 1.7rem;
+    margin-top: 0.275rem;
+}
+.cont2 a.eyeclose{
+    background-image: url(../images/eyeclose.png) !important;
+    background-size:100% 100%;
+}
+/*2017-03-29*/
+.detailinfo .venuesInfo #maxheit{
+    overflow: scroll;
+    max-height: 14rem;
+}
+.seeMask{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: #000;
+    z-index: 99999;
+    display: none;
+}
+.overflow{
+    overflow: hidden;
+}
+.hideMask{
+    width: 100%;
+}
+p#Noafter:after{
+    width: 0rem;
 }

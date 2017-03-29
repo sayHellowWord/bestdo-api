@@ -36,7 +36,7 @@
     </div>
 </div>
 <!--区域-->
-<div class="slidemenu" data-tab="0">
+<div id="distance" class="slidemenu" data-tab="0">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 nearby">
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
@@ -48,7 +48,7 @@
     </div>
 </div>
 <!--排序-->
-<div class="slidemenu" data-tab="1">
+<div id="sport-type" class="slidemenu" data-tab="1">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 sort">
         <a href="javascript:void(0)" class="on" data-value="asc">按时间排序</a>
@@ -309,6 +309,20 @@
             {{/if_signState}}</p></div>
     </li>
     {{/each}}
+</script>
+<script type="text/javascript">
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
+                var v = $(this).html();
+                $('.chooseTabCont .on').html(v+'<span></span>')
+            })
+        }
+    }
 </script>
 </body>
 </html>

@@ -23,7 +23,6 @@
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">场馆预订</p></div>
-            <div class="headerR"></div>
         </div>
     </div>
 </div>
@@ -104,7 +103,7 @@
     </div>
 
     <!--场馆列表结束-->
-    <div id="no-result" class="empty">
+    <div id="no-result" class="empty" style="display: none">
         <div class="icon"></div>
         <p class="font14">暂无相关相关场地信息</p>
     </div>
@@ -209,55 +208,109 @@
         //没有结果提示隐藏
         $("#no-result").hide();
 
-        $("#sport-type a").each(function () {
-            if ($(this).data("merid") == -1) {
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: "/site/search",
-                async: false,
-                data: {
-                    "merid": $(this).data("merid"),
-                    "radius": radius,
-                    "longitude": longitude,
-                    "latitude": latitude,
-                    "sort": sort,
-                    "price_sort": price_sort,
-                    "page": 1,
-                    "pagesize": 5,
-                    "district": district
-                },
-                success: function (result) {
-                    if (200 === result.code) {
-                        if (result.total > 0) {
-                            var source = $("#googDetail-template").html();
-                            var template = Handlebars.compile(source);
-                            Handlebars.registerHelper('if_price', function (value, options) {
-                                return Math.floor(value) / 100;
-                            });
-                            Handlebars.registerHelper('if_images', function (value, options) {
-                                var str = "";
-                                var splitArr = value.split(".");
-                                var length = splitArr.length;
-                                for (var i = 0; i < length - 1; i++) {
-                                    str += splitArr[i] + ".";
-                                }
-                                str += "_90x90." + splitArr[length - 1];
-                                return str;
-                            });
-                            resultTmp += template(result.lists);
-                            $("#googDetail-list").append(template(result.lists));
-                        }
+        $.ajax({
+            type: "POST",
+            url: "/site/searchAll",
+            async: false,
+            data: {
+                "merid": $(this).data("merid"),
+                "radius": radius,
+                "longitude": longitude,
+                "latitude": latitude,
+                "sort": sort,
+                "price_sort": price_sort,
+                "page": 1,
+                "pagesize": 5,
+                "district": district
+            },
+            success: function (result) {
+                if (200 === result.code) {
+                    if (result.total > 0) {
+                        var source = $("#googDetail-template").html();
+                        var template = Handlebars.compile(source);
+                        Handlebars.registerHelper('if_price', function (value, options) {
+                            return Math.floor(value) / 100;
+                        });
+                        Handlebars.registerHelper('if_images', function (value, options) {
+                            var str = "";
+                            var splitArr = value.split(".");
+                            var length = splitArr.length;
+                            for (var i = 0; i < length - 1; i++) {
+                                str += splitArr[i] + ".";
+                            }
+                            str += "_90x90." + splitArr[length - 1];
+                            return str;
+                        });
+                        var html = template(result.lists);
+                        $(".load-container").hide();
+                        $("#googDetail-list").append(html);
+                    } else {
+                        $("#no-result").show();
                     }
                 }
-            });
-        })
+            }
+        });
+
         if (resultTmp.length > 0) {
             $(".load-container").hide();
         } else {
             $("#no-result").show();
         }
+
+        /*
+                $("#sport-type a").each(function () {
+                    if ($(this).data("merid") == -1) {
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "/site/searchAll",
+                        async: false,
+                        data: {
+                            "merid": $(this).data("merid"),
+                            "radius": radius,
+                            "longitude": longitude,
+                            "latitude": latitude,
+                            "sort": sort,
+                            "price_sort": price_sort,
+                            "page": 1,
+                            "pagesize": 5,
+                            "district": district
+                        },
+                        success: function (result) {
+                            if (200 === result.code) {
+                                if (result.total > 0) {
+                                    var source = $("#googDetail-template").html();
+                                    var template = Handlebars.compile(source);
+                                    Handlebars.registerHelper('if_price', function (value, options) {
+                                        return Math.floor(value) / 100;
+                                    });
+                                    Handlebars.registerHelper('if_images', function (value, options) {
+                                        var str = "";
+                                        var splitArr = value.split(".");
+                                        var length = splitArr.length;
+                                        for (var i = 0; i < length - 1; i++) {
+                                            str += splitArr[i] + ".";
+                                        }
+                                        str += "_90x90." + splitArr[length - 1];
+                                        return str;
+                                    });
+                                    resultTmp += template(result.lists);
+                                    $("#googDetail-list").append(template(result.lists));
+                                } else {
+                                    resultTmp = result.data;
+                                }
+                            }
+                        }
+                    });
+
+                    if (resultTmp.length > 0) {
+                        $(".load-container").hide();
+                    } else {
+                        $("#no-result").show();
+                    }
+
+                })*/
     }
 
 
@@ -424,6 +477,19 @@
     </li>
     {{/each}}
 </script>
-
+<script type="text/javascript">
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
+                var v = $(this).html();
+                $('.chooseTabCont .on').html(v+'<span></span>')
+            })
+        }
+    }
+</script>
 </body>
 </html>

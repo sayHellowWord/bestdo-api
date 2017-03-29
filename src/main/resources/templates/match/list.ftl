@@ -36,19 +36,19 @@
     </div>
 </div>
 <!--区域-->
-<div class="slidemenu" data-tab="0">
+<div class="slidemenu" id="distance" data-tab="0">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 nearby">
         <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
     <#if regions??>
         <#list regions as regions>
-            <a href="javascript:void(0)" data-value="${regions.region_id}">${regions.name}</a>
+            <a href="javascript:void(0)" data-value="${regions.name}">${regions.name}</a>
         </#list>
     </#if>
     </div>
 </div>
 <!--排序-->
-<div class="slidemenu" data-tab="1">
+<div class="slidemenu" id="sport-type" data-tab="1">
     <div class="slidebg"></div>
     <div class="slidemenuCont font14 sort">
         <a href="javascript:void(0)" data-value="asc" class="on">按时间排序</a>
@@ -257,6 +257,20 @@
             {{/if_status}}</p></div>
     </li>
     {{/each}}
+</script>
+<script type="text/javascript">
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
+                var v = $(this).html();
+                $('.chooseTabCont .on').html(v+'<span></span>')
+            })
+        }
+    }
 </script>
 </body>
 </html>

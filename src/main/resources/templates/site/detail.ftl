@@ -12,15 +12,16 @@
 </head>
 
 <body>
+    <div class="seeMask">
+        <div class="hideMask Mtop"></div>
+        <div class="hideMask Mbottom"></div>
+    </div>
 <!--头部公用-->
 <div id="header">
     <div class="header">
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">${detail.name}</p></div>
-            <div class="headerR">
-            <#--	<a href="javascript:void(0)" class="addFav addFavOn"></a>-->
-            </div>
         </div>
     </div>
 </div>
@@ -31,9 +32,8 @@
             <div class="imglist"><img src="${detail.thumb}"></div>
             <div class="imgtxt font20"><p>${detail.name}</p></div>
         </div>
-
         <!--场馆信息-->
-        <div class="venuesInfo">
+        <div id="insertBf" class="venuesInfo">
             <ul>
                 <li class="address font15"><a href="/site/map?mer_item_id=${detail.mer_item_id}"><p>${detail.venue.stadium.address}</p></a></li>
                 <li class="tel font15"><p><a href="tel:${detail.venue.stadium.phone}">${detail.venue.stadium.phone}</a>
@@ -145,6 +145,78 @@
                 datecancleBtn: ".cancle",
             })*/
 
+        })
+    </script>
+    <script type="text/javascript">
+        $(function() {
+            var swiperLi = $('.imgshow');
+            function MaskHide()
+            {
+                $('.seeMask').hide();
+
+                $('body').removeClass('overflow');
+
+                // $('.lunbo').css('margin-top','0%');
+
+                $('.imgshow').insertBefore($('#insertBf'));
+
+                moveDeleteEvent($('.imgshow'),touchTo);
+
+                $('.imgshow').off('touchend',MaskHide);
+
+                $('.hideMask').off('touchend',MaskHide);
+            }
+
+            function touchTo()
+            {
+
+                $('.seeMask').show();
+
+                $('body').addClass('overflow');
+
+                $('.Mtop').after($('.imgshow'));
+
+                moveDeleteEvent($('.imgshow'),MaskHide);
+
+                moveDeleteEvent($('.hideMask'),MaskHide);
+
+                $('.imgshow').off('touchend',touchTo);
+
+                var heigt = $('.seeMask').css('height');
+
+                heigt = parseInt(heigt.replace('px',''));
+
+                heigt = (heigt-200)/2;
+
+                $('.hideMask').css('height',heigt+'px');
+            }
+
+            function url2src(url)
+            {
+                src = url.replace('url("','').replace('")','');
+                return src;
+            }
+
+            function moveDeleteEvent(obj,fn)
+            {
+                function addtouchend()
+                {
+                    obj.off('touchend',fn);
+                    obj.on('touchend',fn);
+                }
+
+                function touchmo()
+                {
+                    obj.off('touchend',fn);
+                    obj.off('touchend',addtouchend);
+                    obj.on('touchend',addtouchend);
+                }
+                obj.off('touchend',fn);
+                obj.on('touchend',fn);
+                obj.on('touchmove',touchmo);
+            }
+
+            moveDeleteEvent($('.imgshow'),touchTo);
         })
     </script>
 </body>

@@ -20,6 +20,13 @@
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex">
                 <p class="font17">体育信息</p>
+                <#--<div class="search box font14">
+                    <div class="searchInput boxflex">
+                        <span class="icon"></span>
+                        <input id="search-keyword" type="text" class="font14" placeholder="输入信息名称或内容">
+                    </div>
+                    <a id="btn-search" href="javascript:void(0)" class="btn">搜索</a>
+                </div>-->
             </div>
         </div>
     </div>

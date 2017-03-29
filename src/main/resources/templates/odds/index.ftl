@@ -23,7 +23,6 @@
         <div class="headerCont box">
             <div class="headerL"><a href="javascript:history.go(-1);" class="back"></a></div>
             <div class="headerC boxflex"><p class="font17">场馆预订</p></div>
-            <div class="headerR"></div>
         </div>
     </div>
 </div>
@@ -100,7 +99,7 @@
     </div>
 
     <!--场馆列表结束-->
-    <div id="no-result" class="empty">
+    <div id="no-result" class="empty" style="display: none;">
         <div class="icon"></div>
         <p class="font14">暂无相关相关场地信息</p>
     </div>
@@ -246,6 +245,8 @@
 
                             resultTmp += template(result.lists);
                             $("#googDetail-list").append(template(result.lists));
+                        }else{
+                            resultTmp = result.data;
                         }
                     }
                 }
