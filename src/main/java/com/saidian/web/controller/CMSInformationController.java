@@ -43,6 +43,8 @@ public class CMSInformationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         Result result = new Result();
         result.setCode(200);
         result.setData(newsList);

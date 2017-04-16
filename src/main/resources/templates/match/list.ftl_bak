@@ -32,26 +32,20 @@
     </div>
 </div>
 <!-- 运动类型 -->
-<div class="slidemenu">
+<div class="slidemenu" style="display: none;">
     <div class="slidebg"></div>
-    <div id="itemCode" class="slidemenuCont font14">
-        <a href="javascript:void(0)" class="on" data-value="">全部</a>
-        <a href="javascript:void(0)" data-value="jianshen">健身</a>
-        <a href="javascript:void(0)" data-value="lanqiu">篮球</a>
-        <a href="javascript:void(0)" data-value="pingpangqiu">乒乓球</a>
-        <a href="javascript:void(0)" data-value="wangqiu">网球</a>
-        <a href="javascript:void(0)" data-value="youyong">游泳</a>
-        <a href="javascript:void(0)" data-value="yumaoqiu">羽毛球</a>
-        <a href="javascript:void(0)" data-value="zonghelei">综合类</a>
-        <a href="javascript:void(0)" data-value="zuqiu">足球</a>
-        <a href="javascript:void(0)" data-value="qita">其他</a>
+    <div id="sport-type" class="slidemenuCont font14">
+    <#if goodsTypes?? >
+        <#list goodsTypes as goodsType>
+            <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>
+        </#list>
+    </#if>
     </div>
 </div>
 <!-- 行政区 -->
-<div class="slidemenu">
+<div class="slidemenu" style="display: block;">
     <div class="slidebg"></div>
-    <div id="regionName" class="slidemenuCont font14">
-        <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
+    <div id="administrative-area" class="slidemenuCont font14">
     <#if regions??>
         <#list regions as regions>
             <a href="javascript:void(0)" data-value="${regions.name}">${regions.name}</a>
@@ -60,12 +54,12 @@
     </div>
 </div>
 <!-- 距离 -->
-<div class="slidemenu">
+<div class="slidemenu" style="display: none;">
     <div class="slidebg"></div>
-    <div id="entryStatus" class="slidemenuCont font14">
-        <a href="javascript:void(0)" data-value="" class="on">全部</a>
-        <a href="javascript:void(0)" data-value="1" >开启</a>
-        <a href="javascript:void(0)" data-value="0" >关闭</a>
+    <div id="distance" class="slidemenuCont font14">
+        <a href="javascript:void(0)" data-value="10000" data-distanacesrot="" class="on">报名中</a>
+        <a href="javascript:void(0)" data-value="10000" data-distanacesrot="" class="on">未开启的靠前</a>
+        <a href="javascript:void(0)" data-value="10000" data-distanacesrot="" class="on">报名关闭的靠后</a>
     </div>
 </div>
 
@@ -81,7 +75,7 @@
     <!--场馆列表结束-->
     <div id="no-result" class="empty">
         <div class="icon"></div>
-        <p class="font14">暂无相关相关赛事信息</p>
+        <p class="font14">暂无相关相关场地信息</p>
     </div>
 
 </div>
@@ -90,14 +84,6 @@
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
-
-
-    var page = ${page};
-    var pagesize = ${pagesize};
-
-    var total = -1;
-    var totalPage = -1;
-
     $(function () {
 
         // 获取行政区字段
@@ -106,7 +92,7 @@
         var order = '';
 
         // 初始化加载数据
-        search(area, order, page, pagesize);
+        search(area, order, 1, 15);
 
         $(".chooseTab a").tabEve({
             cls: ".slidemenu",
@@ -115,36 +101,60 @@
             typing: "slidemenu"
         })
 
-        //筛选
-        $("#itemCode a").click(function () {
-            $("#itemCode a").removeClass("on");
-            $(this).addClass("on");
-            $("#list").html('');
-            search(area, order,page, pagesize);
-        });
+        //区域
+        $("div.nearby a").click(function () {
 
-        $("#regionName a").click(function () {
-            $("#regionName a").removeClass("on");
-            $(this).addClass("on");
-            $("#list").html('');
-            search(area, order,page, pagesize);
-        });
-
-        $("#entryStatus a").click(function () {
-            $("#entryStatus a").removeClass("on");
-            $(this).addClass("on");
-            $("#list").html('');
-            search(area, order,page, pagesize);
-        });
-
-
-        /*下拉加载更多*/
-        $(".venueslist ul").loadmore({
-            getData: function () {
-                page = page + 1;
-                search(searchKeyword, page, pagesize);
-                return "";
+            var ind = $(this).parent().parent().data('tab');
+            var titleTxt = '';
+            if ($(this).text() === '全部区域') {
+                titleTxt = '行政区';
+            } else {
+                titleTxt = $(this).text();
             }
+            $('div.chooseTabCont a').eq(ind).html(titleTxt + '<span></span>');
+            $("body").click();
+
+            $("div.nearby").children('a').each(function (index, item) {
+                $(item).removeClass('on');
+            });
+
+            $(this).addClass('on');
+
+            area = $('.nearby .on').data('value');
+            order = $('.sort .on').data('value');
+            $('#list').html('');
+            search(area, order, 1, 15);
+
+        });
+
+        //排序
+        $("div.sort a").click(function () {
+
+            //替换title
+            //$("div.chooseTabCont a.geo").html($(this).html() + '<span></span>');
+
+            var ind = $(this).parent().parent().data('tab');
+            var titleTxt = '';
+            if ($(this).text() === '按时间排序') {
+                titleTxt = '排序';
+            } else {
+                titleTxt = $(this).text();
+            }
+            $('div.chooseTabCont a').eq(ind).html(titleTxt + '<span></span>');
+
+            $("body").click();
+
+            $("div.sort").children('a').each(function (index, item) {
+                $(item).removeClass('on');
+            });
+
+            $(this).addClass('on');
+
+            area = $('.nearby .on').data('value');
+            order = $('.sort .on').data('value');
+            $('#list').html('');
+            search(area, order, 1, 15);
+
         });
 
     })
@@ -155,24 +165,17 @@
         //没有结果提示隐藏
         $("#no-result").hide();
 
-        if (totalPage != -1 && page > totalPage) {
-            return;
-        }
-
         $.ajax({
             type: "POST",
             url: "/cms/match/list/yc",
             data: {
-                "itemCode": $("#itemCode").find(".on").data("value"),
-                "regionName": $("#regionName").find(".on").data("value"),
-                "entryStatus": $("#entryStatus").find(".on").data("value"),
+                "district": area,
+                "time_sort": order,
                 "page": page,
                 "rows": rows
             },
             success: function (resultData) {
                 resultHandler(resultData);
-                total = resultData.total;
-                totalPage = Math.ceil(total / pagesize);
             }
         });
     }
@@ -216,8 +219,7 @@
     <li class="box vip vip2">
         <div class="venuesimg">
             <a href="/cms/match/detail?id={{id}}">
-                <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}"
-                     onerror="this.src='/images/default.jpg'">
+                <img src="{{#if_showImg thumbnail}} {{thumbnail}} {{/if_showImg}}" onerror="this.src='/images/default.jpg'" >
             </a>
         </div>
 
@@ -241,17 +243,15 @@
     {{/each}}
 </script>
 <script type="text/javascript">
-    var addrs = $('#itemCode').find('a');
-    liandong(addrs);
-    var distance = $('#regionName').find('a');
-    liandong(distance);
-    var sporttype = $('#entryStatus').find('a');
-    liandong(sporttype);
-    function liandong(c) {
-        for (var i = 0; i < c.length; i++) {
-            c.eq(i).on('touchend', function () {
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
                 var v = $(this).html();
-                $('.chooseTabCont .on').html(v + '<span></span>')
+                $('.chooseTabCont .on').html(v+'<span></span>')
             })
         }
     }

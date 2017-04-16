@@ -13,8 +13,6 @@
 </head>
 <body class="">
     <div class="seeMask">
-        <div class="hideMask Mtop"></div>
-        <div class="hideMask Mbottom"></div>
     </div>
 <!--头部公用-->
 <div id="header">
@@ -113,32 +111,101 @@
         function MaskHide()
         {
             $('.seeMask').hide();
+
             $('body').removeClass('overflow');
+
             $('.lunbo').css('margin-top','0%');
-            $('#header').after($('.lunbo'));
+
+            $('#maskSwiper').remove();
+
             moveDeleteEvent($('.swiper-slide'),touchTo);
+
             $('.swiper-slide').off('touchend',MaskHide);
+
             $('.hideMask').off('touchend',MaskHide);
+        }
+
+        function setMargin() {
+            var wrapper = $('.swiper-wrapper').find('img');
+            for(var i = 0 ; i < wrapper.length; i++ ){
+                var heigt = $('.swiper-wrapper').css('height');
+                heigt = parseInt(heigt.replace('px',''));
+                var imgH = wrapper.eq(i).css('height');
+                imgH = parseInt(imgH.replace('px',''));
+                heigt = (heigt - imgH)/2;
+                wrapper.eq(i).css('margin-top',heigt);
+            }
         }
 
         function touchTo()
         {
+
             $('.seeMask').show();
+
             $('body').addClass('overflow');
-            $('.Mtop').after($('.lunbo'));
+
+            var imgSwiper = '<div id="maskSwiper" class="swiper-container swiper-container-horizontal">'+
+                                '<div  class="swiper-wrapper">'+
+                                '</div>'+
+                            '</div>';
+            $('.seeMask').append(imgSwiper);
+
+            var divBac = $('.swiper-wrapper .swiper-slide');
+
+            var urlArr = [];
+
+            for(var i = 0 ; i < divBac.length ; i++){
+                var dataJson = {};
+                var bac = divBac.eq(i).css('background-image');
+                var attr = divBac.eq(i).attr('data-swiper-slide-index');
+                var clas = divBac.eq(i).attr('class');
+                dataJson.src = bac;
+                dataJson.attr = attr;
+                dataJson.clas = clas;
+                urlArr.push(dataJson);
+            }
+
+            for(var i = 0 ; i < urlArr.length ; i++){
+                var imgSild = '<div class="'+urlArr[i].clas+'" data-swiper-slide-index="'+urlArr[i].attr+'">'+
+                              '</div>';
+                $('#maskSwiper .swiper-wrapper').append(imgSild);
+            }
+
+            for(var i = 0 ; i <urlArr.length; i++){
+                $('#maskSwiper .swiper-wrapper .swiper-slide').eq(i).css('background-image',urlArr[i].src);
+            }
+
+            setMargin();
+
+            var thisIndex = $(this).attr('data-swiper-slide-index');
+
+            if (thisIndex !== undefined) {
+                var mySwiper = new Swiper('#maskSwiper', {
+                    loop: true,
+                    initialSlide :parseInt(thisIndex)
+                })
+            }
             moveDeleteEvent($('.swiper-slide'),MaskHide);
+
             moveDeleteEvent($('.hideMask'),MaskHide);
+
             $('.swiper-slide').off('touchend',touchTo);
+
             var heigt = $('.seeMask').css('height');
+
             heigt = parseInt(heigt.replace('px',''));
+
             heigt = (heigt-200)/2;
+
             $('.hideMask').css('height',heigt+'px');
         }
+
         function url2src(url)
         {
             src = url.replace('url("','').replace('")','');
-            return src;
+            return src + '?v=1.1';
         }
+
         function moveDeleteEvent(obj,fn)
         {
             function addtouchend()
@@ -146,6 +213,7 @@
                 obj.off('touchend',fn);
                 obj.on('touchend',fn);
             }
+
             function touchmo()
             {
                 obj.off('touchend',fn);
@@ -156,6 +224,7 @@
             obj.on('touchend',fn);
             obj.on('touchmove',touchmo);
         }
+
         moveDeleteEvent($('.swiper-slide'),touchTo);
     })
 </script>

@@ -8,6 +8,8 @@ import com.saidian.bean.Result;
 import com.saidian.bean.ResultBean;
 import com.saidian.config.HttpParams;
 import com.saidian.config.RESTClient;
+import com.saidian.web.Btiem.BTiemService;
+import com.saidian.web.bean.GoodsType;
 import com.saidian.web.bean.Region;
 import com.saidian.web.bean.cms.Match;
 import com.saidian.web.bean.cms.MatchDynamic;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +29,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 体育赛事
@@ -44,6 +49,12 @@ public class CMSMatchController {
 
     @Autowired
     PublicService publicService;//公共服务
+
+    @Autowired
+    BTiemService bTiemService;//场馆
+
+    @Autowired
+    private Environment env;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -76,6 +87,41 @@ public class CMSMatchController {
         };
         regionList = ordering.sortedCopy(regionList);
         modelMap.addAttribute("regions", regionList);
+
+        //运动类型
+        ResultBean goodsResultBean = null;
+        try {
+            goodsResultBean = bTiemService.getGoodsByCardId(HttpParams.oddscardId);
+        } catch (Exception e) {
+            logger.error(LOG_PRE + "获取运动类型出错");
+            e.printStackTrace();
+        }
+        List<GoodsType> goodsTypes = null;
+        if (null != goodsResultBean && null != goodsResultBean.getLists()) {
+            goodsTypes = goodsResultBean.getLists();
+        }
+
+        Map<String, GoodsType> sortGoodsType = new HashMap();
+        int size = null == goodsTypes ? 0 : goodsTypes.size();
+        GoodsType goodsType = null;
+        for (int i = 0; i < size; i++) {
+            goodsType = goodsTypes.get(i);
+            if ("健身".equals(goodsType.getSport()))
+                goodsType.setSport("器械健身");
+            sortGoodsType.put(goodsType.getCid(), goodsType);
+        }
+
+        int total = Integer.parseInt(env.getProperty("server.goodtpe.total"));
+        List<GoodsType> goodsTypesSort = new ArrayList<GoodsType>();
+        for (int i = 1; i <= total; i++) {
+            GoodsType goodsType1 = sortGoodsType.get(env.getProperty("server.goodtpe.sort" + i));
+            if (null != goodsType1)
+                goodsTypesSort.add(goodsType1);
+        }
+
+        modelMap.addAttribute("goodsTypes", goodsTypesSort);
+        modelMap.addAttribute("page", HttpParams.DEFAULT_PAGE_CMS);
+        modelMap.addAttribute("pagesize", HttpParams.DEFAULT_PAGE_SIZE_CMS);
         return "/match/list";
     }
 
@@ -98,7 +144,7 @@ public class CMSMatchController {
             e.printStackTrace();
         }
 
-        result = restClient.matchDynamicList(id,  null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+        result = restClient.matchDynamicList(id, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
                 null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -145,8 +191,10 @@ public class CMSMatchController {
      */
     @RequestMapping("/list/yc")
     @ResponseBody
-    public Result<Match> ycMatchList(String district, Integer page, Integer rows) throws Exception {
-        String result = restClient.matchList(Strings.isNullOrEmpty(district) ? "" : district, null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
+    public Result<Match> ycMatchList(String itemCode, String regionName, String entryStatus, Integer page, Integer rows) throws Exception {
+        String result = restClient.matchList(Strings.isNullOrEmpty(itemCode) ? "" : itemCode,
+                Strings.isNullOrEmpty(regionName) ? "" : regionName, Strings.isNullOrEmpty(entryStatus) ? "" : entryStatus,
+                null == page ? HttpParams.DEFAULT_PAGE_CMS : page,
                 null == rows ? HttpParams.DEFAULT_PAGE_SIZE_CMS : rows);
         ObjectMapper objectMapper = new ObjectMapper();
         Result<Match> matchResult = null;
@@ -156,6 +204,20 @@ public class CMSMatchController {
             logger.error(LOG_PRE + "获取赛事列表出错");
             e.printStackTrace();
         }
+
+        result = restClient.matchListTotal(Strings.isNullOrEmpty(itemCode) ? "" : itemCode,
+                Strings.isNullOrEmpty(regionName) ? "" : regionName, Strings.isNullOrEmpty(entryStatus) ? "" : entryStatus);
+
+        Result<Integer> total = null;
+        try {
+            total = objectMapper.readValue(result, Result.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (null != total && 200 == total.getCode()) {
+            matchResult.setTotal(total.getData());
+        }
+
         return matchResult;
     }
 

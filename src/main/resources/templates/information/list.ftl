@@ -43,7 +43,7 @@
     <!--场馆列表结束-->
     <div id="no-result" class="empty">
         <div class="icon"></div>
-        <p class="font14">暂无相关相关场地信息</p>
+        <p class="font14">暂无相关相关体育信息</p>
     </div>
 </div>
 
@@ -51,11 +51,37 @@
 <script language="javascript" type="text/javascript" src="/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="/js/bestdo.js"></script>
 <script>
+    var page = ${page};
+    var pagesize = ${pagesize};
+
+    var total = -1;
+    var totalPage = -1;
+
     // 初始化加载数据
-    search(1, 15);
+    search(page, pagesize);
+
+    $(function () {
+
+        /*下拉加载更多*/
+        $(".venueslist ul").loadmore({
+            getData: function () {
+                page = page + 1;
+
+                if (totalPage != -1 && page > totalPage) {
+                    return;
+                }
+
+                search(searchKeyword, page, pagesize);
+                return "";
+            }
+        });
+
+    })
+
 
     //只负责查询和追加数据，如果需要刷新页面（如查询）请执行前自己情况list数据
     function search(page, rows) {
+
         //没有结果提示隐藏
         $("#no-result").hide();
         $.ajax({
@@ -68,6 +94,10 @@
             success: function (resultData) {
                 console.info(resultData);
                 resultHandler(resultData);
+
+                total = resultData.total;
+                totalPage = Math.ceil(total / pagesize);
+
             }
         });
     }

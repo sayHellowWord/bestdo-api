@@ -11,12 +11,22 @@
     <link rel="stylesheet" href="/css/swiper-3.2.7.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 </head>
-
-
+<style>
+    .overflow16{
+        overflow: hidden;
+        height: 16rem;
+    }
+    input#btn {
+        display: none;
+        width: 100%;
+        height: 2rem;
+        background: none;
+        border: none;
+        color: #888;
+    }
+</style>
 <body>
     <div class="seeMask">
-        <div class="hideMask Mtop"></div>
-        <div class="hideMask Mbottom"></div>
     </div>
 <!--头部公用-->
 <div id="header">
@@ -69,10 +79,11 @@
         <div class="venuesInfo">
             <h1 class="font15">赛事简介</h1>
             <ul>
-                <li id="maxheit" class="moreinfo box font14">
+                <li id="maxheit" class="moreinfo font14">
                     <span class="tit">${detail.matchContext}</span>
                 </li>
             </ul>
+            <input id="btn" type="button" value="显示更多">
         </div>
         <div class="scrolldate yu">
             <h3 class="biaotiyong font16">赛事动态</h3>
@@ -132,13 +143,25 @@
 
             $('.lunbo').css('margin-top','0%');
 
-            $('#header').after($('.lunbo'));
+            $('#maskSwiper').remove();
 
             moveDeleteEvent($('.swiper-slide'),touchTo);
 
             $('.swiper-slide').off('touchend',MaskHide);
 
             $('.hideMask').off('touchend',MaskHide);
+        }
+
+        function setMargin() {
+            var wrapper = $('.swiper-wrapper').find('img');
+            for(var i = 0 ; i < wrapper.length; i++ ){
+                var heigt = $('.swiper-wrapper').css('height');
+                heigt = parseInt(heigt.replace('px',''));
+                var imgH = wrapper.eq(i).css('height');
+                imgH = parseInt(imgH.replace('px',''));
+                heigt = (heigt - imgH)/2;
+                wrapper.eq(i).css('margin-top',heigt);
+            }
         }
 
         function touchTo()
@@ -148,8 +171,47 @@
 
             $('body').addClass('overflow');
 
-            $('.Mtop').after($('.lunbo'));
+            var imgSwiper = '<div id="maskSwiper" class="swiper-container swiper-container-horizontal">'+
+                                '<div  class="swiper-wrapper">'+
+                                '</div>'+
+                            '</div>';
+            $('.seeMask').append(imgSwiper);
 
+            var divBac = $('.swiper-wrapper .swiper-slide');
+
+            var urlArr = [];
+
+            for(var i = 0 ; i < divBac.length ; i++){
+                var dataJson = {};
+                var bac = divBac.eq(i).css('background-image');
+                var attr = divBac.eq(i).attr('data-swiper-slide-index');
+                var clas = divBac.eq(i).attr('class');
+                dataJson.src = bac;
+                dataJson.attr = attr;
+                dataJson.clas = clas;
+                urlArr.push(dataJson);
+            }
+
+            for(var i = 0 ; i < urlArr.length ; i++){
+                var imgSild = '<div class="'+urlArr[i].clas+'" data-swiper-slide-index="'+urlArr[i].attr+'">'+
+                              '</div>';
+                $('#maskSwiper .swiper-wrapper').append(imgSild);
+            }
+
+            for(var i = 0 ; i <urlArr.length; i++){
+                $('#maskSwiper .swiper-wrapper .swiper-slide').eq(i).css('background-image',urlArr[i].src);
+            }
+
+            setMargin();
+
+            var thisIndex = $(this).attr('data-swiper-slide-index');
+
+            if (thisIndex !== undefined) {
+                var mySwiper = new Swiper('#maskSwiper', {
+                    loop: true,
+                    initialSlide :parseInt(thisIndex)
+                })
+            }
             moveDeleteEvent($('.swiper-slide'),MaskHide);
 
             moveDeleteEvent($('.hideMask'),MaskHide);
@@ -168,7 +230,7 @@
         function url2src(url)
         {
             src = url.replace('url("','').replace('")','');
-            return src;
+            return src + '?v=1.1';
         }
 
         function moveDeleteEvent(obj,fn)
@@ -191,6 +253,25 @@
         }
 
         moveDeleteEvent($('.swiper-slide'),touchTo);
+        //赛事简介点击显示更多
+        var LiH = $('#maxheit').css('height');
+        var disKey = false;
+        LiH = parseInt(LiH.replace('px','')) / 20;
+        if(LiH >= 16){
+            $('#maxheit').addClass('overflow16');
+            $('#btn').show();
+        }
+        $('#btn').on('touchend',function(){
+            if(disKey == false){
+                $('#maxheit').removeClass('overflow16');
+                $('#btn').attr('value','收起');
+                disKey = true;
+            }else{
+                $('#maxheit').addClass('overflow16');
+                $('#btn').attr('value','显示更多');
+                disKey = false;
+            }
+        })
     })
 </script>
 </body>

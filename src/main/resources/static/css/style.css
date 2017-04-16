@@ -909,6 +909,7 @@ body {
 }
 
 .venuesInfo li p:after {
+    display:none;
     content: '';
     width: 1.2rem;
     height: 100%;
@@ -4124,14 +4125,10 @@ input.login-password-cl{
     background-size:100% 100%;
 }
 /*2017-03-29*/
-.detailinfo .venuesInfo #maxheit{
-    overflow: scroll;
-    max-height: 14rem;
-}
 .seeMask{
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     background: #000;
@@ -4139,11 +4136,31 @@ input.login-password-cl{
     display: none;
 }
 .overflow{
-    overflow: hidden;
+    overflow-y: hidden;
+    height: 100%;
+    position: fixed;
 }
 .hideMask{
     width: 100%;
 }
 p#Noafter:after{
     width: 0rem;
+}
+.swiper-slide{
+    background: #000;
+}
+.swiper-slide img{
+    margin-top:50%;
+}
+.swiper-container{
+    background: #000;
+}
+.seeMask .swiper-slide{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position:0 50% ;
+}
+#maskSwiper{
+    width: 100%;
+    height: 100%;
 }

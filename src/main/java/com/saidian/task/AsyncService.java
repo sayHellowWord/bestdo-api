@@ -39,6 +39,6 @@ public class AsyncService {
         ResultBean<GoogDetail> goodsDetailResultBean = bTiemService.getMerItemList(merid, "", mer_price_id,
                 HttpParams.cityId, "", "", radius, longitude, latitude, sort, "",
                 null == page ? HttpParams.DEFAULT_PAGE : page, null == pagesize ? HttpParams.DEFAULT_PAGE_SIZE : pagesize, null == district ? 0 : district);
-        return new AsyncResult<>(goodsDetailResultBean);
+        return new AsyncResult<ResultBean<GoogDetail>>(goodsDetailResultBean);
     }
 }

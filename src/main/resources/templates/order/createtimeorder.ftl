@@ -124,7 +124,8 @@
                 alert("请输入手机号!!");
                 return;
             }
-            var partten = /^1[3,5,8]\d{9}$/;
+          //  var partten = /^1[3,5,8]\d{9}$/;
+            var partten = /^1[34578]\d{9}$/;
             if (!partten.test(telphone)) {
                 alert('手机号码格式不正确!');
                 return;

@@ -117,9 +117,6 @@ public class BTiemService {
     public ResultBean getMerItemList(String merid, String mer_item_ids, String mer_price_id, String city, String q, String card_type_id,
                                      String radius, String longitude, String latitude, String sort, String price_sort, int page,
                                      int pagesize, int district) throws Exception {
-
-        System.out.println("获取数据开始");
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mer_id", merid);
         jsonObject.put("mer_item_ids", mer_item_ids);
@@ -170,8 +167,11 @@ public class BTiemService {
                 lists = ordering.sortedCopy(lists);
             }
             resultBean.setLists(lists);
+            if(resultJsonObject.has("total"))
+                resultBean.setTotal(resultJsonObject.getInt("total"));
+            if(resultJsonObject.has("totalPage"))
+                resultBean.setTotalPage(resultJsonObject.getInt("totalPage"));
         }
-        System.out.println("获取数据结束");
         return resultBean;
     }
 

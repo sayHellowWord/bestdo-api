@@ -5,6 +5,11 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by wubo on 2016/12/27.
  */
@@ -20,16 +25,30 @@ public class RESTClient {
     /**
      * 体育赛事列表
      *
-     * @param keyword
      * @param page
      * @param rows
      * @return
      */
-    public String matchList(String keyword, Integer page, Integer rows) {
-        String result = restTemplate.postForObject(HttpParams.CMS_URL + "match/list?keyword={keyword}&page={page}&rows={rows}",
-                null, String.class, keyword, page, rows);
+    public String matchList(String itemCode, String regionName, String entryStatus, Integer page, Integer rows) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "match/list?itemCode={itemCode}&regionName={regionName}" +
+                        "&entryStatus={entryStatus}&" +
+                        "page={page}&rows={rows}",
+                null, String.class, itemCode, regionName, entryStatus, page, rows);
         return result;
     }
+
+    /**
+     * 体育赛事列表总数
+     *
+     * @return
+     */
+    public String matchListTotal(String itemCode, String regionName, String entryStatus) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "match/list?itemCode={itemCode}&regionName={regionName}" +
+                        "&entryStatus={entryStatus}",
+                null, String.class, itemCode, regionName, entryStatus);
+        return result;
+    }
+
 
     /**
      * 体育赛事详情
@@ -123,12 +142,27 @@ public class RESTClient {
     }
 
     //十分钟健身圈列表
-    public String excrciseHoodList(String keyword, Integer page, Integer rows) {
+    public String excrciseHoodList(String firstType, String scop, String keyword, Integer page, Integer rows) {
         String url = "tenminsite/front_list?page={page}&rows={rows}";
-        if (!Strings.isNullOrEmpty(keyword))
-            url += "&name={keyword}&";
+        Map params = new HashMap();
+        params.put("page",page);
+        params.put("rows",rows);
+        if (!Strings.isNullOrEmpty(firstType)) {
+            url += "&firstType={firstType}";
+            params.put("firstType",firstType);
+        }
+        if (!Strings.isNullOrEmpty(scop)) {
+            url += "&scop={scop}";
+            params.put("scop",scop);
+        }
+        if (!Strings.isNullOrEmpty(keyword)) {
+            url += "&name={keyword}";
+            params.put("keyword",keyword);
+        }
         String result = restTemplate.postForObject(HttpParams.CMS_URL + url,
-                null, String.class, page, rows, keyword);
+                null, String.class,params);
+      /*  String result = restTemplate.postForObject(HttpParams.CMS_URL + url,
+                null, String.class, page, rows,params);*/
         return result;
     }
 
@@ -199,11 +233,15 @@ public class RESTClient {
 
     //体育信息列表
     public String informationiList(String title, String label, String state, Integer page, Integer rows, String startDate, String endDate) {
-//        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?title={title}&label={label}&state={state}" +
-//                        "&page={page}&rows={rows}&startDate={startDate}&endDate={endDate}",
-//                null, String.class, title, label, state, page, rows, startDate, endDate);
         String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX?page={page}&rows={rows}",
                 null, String.class, page, rows);
+        return result;
+    }
+
+    //体育信息列表总数
+    public String informationiListTotal(String title, String label, String state, Integer page, Integer rows, String startDate, String endDate) {
+        String result = restTemplate.postForObject(HttpParams.CMS_URL + "news/listWX",
+                null, String.class);
         return result;
     }
 

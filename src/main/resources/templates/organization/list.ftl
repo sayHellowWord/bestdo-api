@@ -66,7 +66,7 @@
     <!--场馆列表结束-->
     <div id="no-result" class="empty">
         <div class="icon"></div>
-        <p class="font14">暂无相关相关场地信息</p>
+        <p class="font14">暂无相关相关信息</p>
     </div>
 </div>
 <!--城市地位-->

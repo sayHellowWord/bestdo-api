@@ -44,15 +44,19 @@
     <div class="slidebg"></div>
     <div id="sport-type" class="slidemenuCont font14">
         <a href="javascript:void(0)" class="on" data-merid="-1">全部</a>
-        <a href="javascript:void(0)" data-merid="1020545">羽毛球</a>
-        <a href="javascript:void(0)" data-merid="1020544">网球</a>
-        <a href="javascript:void(0)" data-merid="1020538">游泳</a>
-        <a href="javascript:void(0)" data-merid="1020551">乒乓球</a>
-        <a href="javascript:void(0)" data-merid="1020552">器械健身</a>
-        <a href="javascript:void(0)" data-merid="1020549">足球</a>
-        <a href="javascript:void(0)" data-merid="1020550">篮球</a>
-        <a href="javascript:void(0)" data-merid="1020546">综合资源</a>
-    <#--<#if goodsTypes?? >-->
+    <#--<a href="javascript:void(0)" data-merid="1020545">羽毛球</a>
+    <a href="javascript:void(0)" data-merid="1020544">网球</a>
+    <a href="javascript:void(0)" data-merid="1020538">游泳</a>
+    <a href="javascript:void(0)" data-merid="1020551">乒乓球</a>
+    <a href="javascript:void(0)" data-merid="1020552">器械健身</a>
+    <a href="javascript:void(0)" data-merid="1020549">足球</a>
+    <a href="javascript:void(0)" data-merid="1020550">篮球</a>
+    <a href="javascript:void(0)" data-merid="1020546">综合资源</a>-->
+    <#if goodsTypes?? >
+        <#list goodsTypes as goodsType>
+            <a href="javascript:void(0)" data-merid="${goodsType.merid}">${goodsType.sport}</a>
+        </#list>
+    </#if>
     <#--<#list goodsTypes as goodsType>-->
     <#-- <#if goodsType_index == 0  >
          <a href="javascript:void(0)" class="on" data-merid="${goodsType.merid}">${goodsType.sport}</a>
@@ -99,7 +103,7 @@
     </div>
 
     <!--场馆列表结束-->
-    <div id="no-result" class="empty" style="display: none;">
+    <div id="no-result" class="empty" style="display: none">
         <div class="icon"></div>
         <p class="font14">暂无相关相关场地信息</p>
     </div>
@@ -126,6 +130,10 @@
     var cardId = '${cardId}';
 
     var resultTmp = "";
+
+
+    var total = -1;
+    var totalPage = -1;
 
     baiduLocation();
 
@@ -173,6 +181,29 @@
             window.location.href = window.location.href;
         });
 
+
+        /*下拉加载更多*/
+        $(".venueslist ul").loadmore({
+            getData: function () {
+
+                page = page + 1;
+
+                if (totalPage != -1 && page > totalPage) {
+                    return;
+                }
+
+                var merid = $("#sport-type").find(".on").data("merid");
+
+                //点击全部 每个类型获取五次
+                if (merid == -1) {
+                    venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+                    return;
+                }
+                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+                return "";
+            }
+        });
+
     });
 
 
@@ -194,6 +225,7 @@
         //点击全部 每个类型获取五次
         if (merid == -1) {
             venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
+            return;
         }
 
         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
@@ -231,7 +263,6 @@
                             Handlebars.registerHelper('if_price', function (value, options) {
                                 return Math.floor(value) / 100;
                             });
-
                             Handlebars.registerHelper('if_images', function (value, options) {
                                 var str = "";
                                 var splitArr = value.split(".");
@@ -242,16 +273,21 @@
                                 str += "_90x90." + splitArr[length - 1];
                                 return str;
                             });
-
                             resultTmp += template(result.lists);
                             $("#googDetail-list").append(template(result.lists));
-                        }else{
-                            resultTmp = result.data;
+
+
+                            if (result.total > total) {
+                                total = result.total;
+                                totalPage = result.totalPage;
+                            }
+
                         }
                     }
                 }
             });
         })
+
         if (resultTmp.length > 0) {
             $(".load-container").hide();
         } else {
@@ -308,6 +344,10 @@
                     } else {
                         $("#no-result").show();
                     }
+
+                    total = result.total;
+                    totalPage = result.totalPage;
+
                 }
             }
         });
@@ -407,20 +447,35 @@
 <script id="googDetail-template" type="text/x-handlebars-template">
     {{#each this}}
     <li class="box vip" data-mer_item_id="{{mer_item_id}}" data-mer_price_id="{{mer_price_id}}" data-cid="{{cid}}">
-        <div class="venuesimg"><img src="{{#if_images thumb}}{{thumb}}{{/if_images}}"/></div>
+        <div class="venuesimg"><img src="{{#if_images thumb}}{{thumb}}{{/if_images}} "/></div>
         <div class="venuesdetial boxflex">
             <h2 class="font16">{{name}}</h2>
             <div class="price font12">
+            <#-- <span class="font18">￥{{price}}</span>-->
                 <span class="font18">￥{{#if_price price}} {{price}} {{/if_price}}</span>
             </div>
             <div class="address font12">
-                <span class="d">{{geodistStr}}</span>
+                <span class="d"><#--{{geodist}}km-->{{geodistStr}}</span>
+            <#-- <span class="q">{{region}}</span>-->
                 <span class="p">{{region}}</span>
             </div>
         </div>
     </li>
     {{/each}}
 </script>
-
+<script type="text/javascript">
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
+                var v = $(this).html();
+                $('.chooseTabCont .on').html(v+'<span></span>')
+            })
+        }
+    }
+</script>
 </body>
 </html>

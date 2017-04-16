@@ -182,13 +182,13 @@ public class VenueBookingController {
     //获取全部
     @ResponseBody
     @RequestMapping(value = "searchAll")
-    public Object searchAll(String carId, String merid, String mer_item_ids, String city, String q, String card_type_id,
+    public Object searchAll(String cardId, String merid, String mer_item_ids, String city, String q, String card_type_id,
                             String radius, String longitude, String latitude, String sort, String price_sort, Integer page,
                             Integer pagesize, Integer district) throws Exception {
         //运动类型
         ResultBean goodsResultBean = null;
         try {
-            goodsResultBean = bTiemService.getGoodsByCardId(HttpParams.cardId);
+            goodsResultBean = bTiemService.getGoodsByCardId(cardId);
         } catch (Exception e) {
             logger.error(LOG_PRE + "获取运动类型出错");
             e.printStackTrace();
@@ -200,9 +200,9 @@ public class VenueBookingController {
         }
 
         int length = goodsTypes.size();
-        List<Future<ResultBean<GoogDetail>>> result = new ArrayList<>();
+        List<Future<ResultBean<GoogDetail>>> result = new ArrayList<Future<ResultBean<GoogDetail>>>();
         for (int i = 0; i < length; i++) {
-            Future<ResultBean<GoogDetail>> task = asyncService.getMerItemListByMerId(HttpParams.cardId, goodsTypes.get(i).getMerid(),
+            Future<ResultBean<GoogDetail>> task = asyncService.getMerItemListByMerId(cardId, goodsTypes.get(i).getMerid(),
                     HttpParams.cityId, "", "", radius, longitude, latitude, sort, "",
                     null == page ? HttpParams.DEFAULT_PAGE : page, null == pagesize ? HttpParams.DEFAULT_PAGE_SIZE : pagesize, null == district ? 0 : district);
             result.add(task);
@@ -210,7 +210,6 @@ public class VenueBookingController {
 
         length = result.size();
         while (true) {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
             int count = 0;
             for (int i = 0; i < length; i++) {
                 if (result.get(i).isDone()) {
@@ -218,22 +217,26 @@ public class VenueBookingController {
                 }
             }
             if (count == length) {
-                System.out.println("get-============================");
                 break;
             }
-            Thread.sleep(0100);
+//            Thread.sleep(10);
         }
 
-        ResultBean<GoogDetail> resultBean = new ResultBean<>();
+        ResultBean<GoogDetail> resultBean = new ResultBean<GoogDetail>();
         resultBean.setCode(200);
         resultBean.setPage(page);
         resultBean.setPageSize(pagesize);
         int total = 0;
         int totalPage = 0;
-        List<GoogDetail> resultList = new ArrayList<>();
+        List<GoogDetail> resultList = new ArrayList<GoogDetail>();
         for (int i = 0; i < length; i++) {
             ResultBean<GoogDetail> tmp = result.get(i).get();
             if (null != tmp) {
+
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                System.out.println(tmp.getLists().toString());
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
                 resultList.addAll(tmp.getLists());
                 if (tmp.getTotal() > total) {
                     total = tmp.getTotal();

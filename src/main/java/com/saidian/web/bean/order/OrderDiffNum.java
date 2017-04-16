@@ -1,8 +1,11 @@
 package com.saidian.web.bean.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Administrator on 2017/1/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDiffNum {
     private String all_num;
     private String unpay_num;

@@ -14,7 +14,7 @@
 <body>
     <div class="seeMask">
         <div class="hideMask Mtop"></div>
-        <div class="hideMask Mbottom"></div>
+        <div class="hideMask"></div>
     </div>
 <!--头部公用-->
 <div id="header">
@@ -215,9 +215,9 @@
                 obj.on('touchend',fn);
                 obj.on('touchmove',touchmo);
             }
-
             moveDeleteEvent($('.imgshow'),touchTo);
         })
+        console.log('Σ(ﾟД ﾟ;)');
     </script>
 </body>
 </html>

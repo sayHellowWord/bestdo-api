@@ -27,39 +27,11 @@
                     <a id="btn-search" href="javascript:void(0)" class="btn">搜索</a>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-<div class="chooseTab font13">
-    <div class="chooseTabCont">
-        <a id="" href="javascript:void(0)" class="" data-tab="0">分类<span id="" href="javascript:void(0)" class=""></span></a>
-        <a id="" href="javascript:void(0)" class="" data-tab="1">行政区<span id="" href="javascript:void(0)" class=""></span></a>
-    </div>
-</div>
-<!-- 区域 -->
-<div class="slidemenu" id="firstType" data-tab="0">
-    <div class="slidebg"></div>
-    <div class="slidemenuCont font14 nearby">
-        <a href="javascript:void(0)" data-value="" class="on">全部</a>
-        <a href="javascript:void(0)" data-value="健身步道">健身步道</a>
-        <a href="javascript:void(0)" data-value="晨晚练点">晨晚练点</a>
-        <a href="javascript:void(0)" data-value="健身路径">健身路径</a>
-        <a href="javascript:void(0)" data-value="笼式灯光运动场">笼式灯光运动场</a>
 
-    </div>
-</div>
-<!-- 分类 -->
-<div class="slidemenu" id="scop" data-tab="1">
-    <div class="slidebg"></div>
-    <div class="slidemenuCont font14 sort">
-        <a href="javascript:void(0)" data-value="" class="on">全部区域</a>
-    <#if regions??>
-        <#list regions as regions>
-            <a href="javascript:void(0)" data-value="${regions.name}">${regions.name}</a>
-        </#list>
-    </#if>
-    </div>
-</div>
 <!--场馆列表-->
 <div class="wrapper">
     <!--场馆列表-->
@@ -105,6 +77,7 @@
             $("#list").html('');
             searchKeyword = $('#search-keyword').val();
             page = 1;
+//            pagesize = 10;
             search(searchKeyword, page, pagesize);
         })
 
@@ -116,27 +89,11 @@
             typing: "slidemenu"
         })
 
-        $("#firstType a").click(function () {
-            $("#firstType a").removeClass("on");
-            $(this).addClass("on");
-            $("#list").html('');
-            page = 1;
-            search(searchKeyword, page, pagesize);
-        });
-
-        $("#scop a").click(function () {
-            $("#scop a").removeClass("on");
-            $(this).addClass("on");
-            $("#list").html('');
-            page = 1;
-            search(searchKeyword, page, pagesize);
-        });
-
-
         /*下拉加载更多*/
         $(".venueslist ul").loadmore({
             getData: function () {
                 page = page + 1;
+//                pagesize = 10;
                 search(searchKeyword, page, pagesize);
                 return "";
             }
@@ -151,7 +108,7 @@
         //没有结果提示隐藏
         $("#no-result").hide();
 
-        if (totalPage != -1 && page > totalPage) {
+        if(totalPage != -1 && page > totalPage){
             return;
         }
 
@@ -159,16 +116,16 @@
             type: "POST",
             url: "/cms/exercisehoop/list/yc",
             data: {
-                "keyword": $('#search-keyword').val(),
-                "firstType": $("#firstType").find(".on").data("value"),
-                "scop": $("#scop").find(".on").data("value"),
+                "keyword": keyword,
                 "page": page,
                 "rows": rows
             },
             success: function (resultData) {
                 resultHandler(resultData);
+
                 total = resultData.total;
-                totalPage = Math.ceil(total / pagesize);
+                totalPage =Math.ceil( total / pagesize );
+
             }
         });
     }
@@ -210,25 +167,13 @@
             <a href="/cms/exercisehoop/toDetail?id={{id}}">
                 <h2 class="font16">{{name}}</h2>
                 <div class="address add2 font12">
+                <#--<span class="d">1.0km</span>-->
                     <span class="p">{{address}}</span>
                 </div>
             </a>
         </div>
     </li>
     {{/each}}
-</script>
-<script type="text/javascript">
-    var addrs = $('#firstType').find('a'); liandong(addrs);
-    var distance = $('#scop').find('a'); liandong(distance);
-    function liandong(c){
-        for(var i = 0 ; i < c.length ; i++)
-        {
-            c.eq(i).on('touchend',function(){
-                var v = $(this).html();
-                $('.chooseTabCont .on').html(v+'<span></span>')
-            })
-        }
-    }
 </script>
 </body>
 </html>

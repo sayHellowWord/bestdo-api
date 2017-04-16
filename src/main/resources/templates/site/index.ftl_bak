@@ -130,10 +130,6 @@
     var cardId = '${cardId}';
 
     var resultTmp = "";
-    var page = 1;
-    var pagesize = 10;
-    var total = -1;
-    var totalPage = -1;
 
     baiduLocation();
 
@@ -181,38 +177,6 @@
             window.location.href = window.location.href;
         });
 
-
-        /*下拉加载更多*/
-        $(".venueslist ul").loadmore({
-            getData: function () {
-
-                page = page + 1;
-
-                if (totalPage != -1 && page > totalPage) {
-                    return;
-                }
-
-                var merid = $("#sport-type").find(".on").data("merid");
-                var radius = $("#distance").find(".on").data("value");
-                var sort = $("#distance").find(".on").data("distanacesrot");
-                var price_sort;
-                var district = $("#administrative-area").find(".on").data("value");
-                if (sort.length > 1) {
-                    radius = 10000;
-                }
-
-                //点击全部 每个类型获取五次
-                if (merid == -1) {
-                    venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-                    return;
-                }
-
-                venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-                return "";
-            }
-        });
-
-
     });
 
 
@@ -222,7 +186,8 @@
         var radius = $("#distance").find(".on").data("value");
         var sort = $("#distance").find(".on").data("distanacesrot");
         var price_sort;
-        page = 1;
+        var page = 1;
+        var pagesize = 10;
         var district = $("#administrative-area").find(".on").data("value");
         $("#googDetail-list").html('');
 
@@ -233,7 +198,6 @@
         //点击全部 每个类型获取五次
         if (merid == -1) {
             venueSearchOnLoad(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
-            return;
         }
 
         venueSearch(merid, radius, longitude, latitude, sort, price_sort, page, pagesize, district);
@@ -244,70 +208,49 @@
         //没有结果提示隐藏
         $("#no-result").hide();
 
-        resultTmp = '';
-
-        total = 0;
-        totalPage = 0;
-
-        $("#sport-type a").each(function () {
-            if (Number($(this).data("merid")) == -1) {
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: "/site/search",
-                async: false,
-                data: {
-                    "merid": $(this).data("merid"),
-                    "radius": radius,
-                    "longitude": longitude,
-                    "latitude": latitude,
-                    "sort": sort,
-                    "price_sort": price_sort,
-                    "page": page,
-                    "pagesize": 5,
-                    "district": district
-                },
-                success: function (result) {
-                    if (200 === result.code) {
-                        if (result.total > 0) {
-                            var source = $("#googDetail-template").html();
-                            var template = Handlebars.compile(source);
-                            Handlebars.registerHelper('if_price', function (value, options) {
-                                return Math.floor(value) / 100;
-                            });
-                            Handlebars.registerHelper('if_images', function (value, options) {
-                                var str = "";
-                                var splitArr = value.split(".");
-                                var length = splitArr.length;
-                                for (var i = 0; i < length - 1; i++) {
-                                    str += splitArr[i] + ".";
-                                }
-                                str += "_90x90." + splitArr[length - 1];
-                                return str;
-                            });
-                            resultTmp += template(result.lists);
-                            $("#googDetail-list").append(template(result.lists));
-
-                            if (result.total > total) {
-                                total = result.total;
-                                totalPage = result.totalPage;
+        $.ajax({
+            type: "POST",
+            url: "/site/searchAll",
+            async: false,
+            data: {
+                "cardId":cardId,
+                "merid": $(this).data("merid"),
+                "radius": radius,
+                "longitude": longitude,
+                "latitude": latitude,
+                "sort": sort,
+                "price_sort": price_sort,
+                "page": 1,
+                "pagesize": 5,
+                "district": district
+            },
+            success: function (result) {
+                if (200 === result.code) {
+                    if (result.total > 0) {
+                        var source = $("#googDetail-template").html();
+                        var template = Handlebars.compile(source);
+                        Handlebars.registerHelper('if_price', function (value, options) {
+                            return Math.floor(value) / 100;
+                        });
+                        Handlebars.registerHelper('if_images', function (value, options) {
+                            var str = "";
+                            var splitArr = value.split(".");
+                            var length = splitArr.length;
+                            for (var i = 0; i < length - 1; i++) {
+                                str += splitArr[i] + ".";
                             }
-                        }
+                            str += "_90x90." + splitArr[length - 1];
+                            return str;
+                        });
+                        var html = template(result.lists);
+                        $(".load-container").hide();
+                        $("#googDetail-list").append(html);
+                    } else {
+                        $("#no-result").show();
                     }
-
                 }
-            });
-        })
-
-        if (resultTmp.length > 0) {
-            $(".load-container").hide();
-        } else {
-            $("#no-result").show();
-        }
-
-        console.info(total + "   " + totalPage)
-
+            }
+        });
     }
 
 
@@ -359,10 +302,6 @@
                     } else {
                         $("#no-result").show();
                     }
-
-                    total = result.total;
-                    totalPage = result.totalPage;
-
                 }
             }
         });
@@ -479,17 +418,15 @@
     {{/each}}
 </script>
 <script type="text/javascript">
-    var addrs = $('#administrative-area').find('a');
-    liandong(addrs);
-    var distance = $('#distance').find('a');
-    liandong(distance);
-    var sporttype = $('#sport-type').find('a');
-    liandong(sporttype);
-    function liandong(c) {
-        for (var i = 0; i < c.length; i++) {
-            c.eq(i).on('touchend', function () {
+    var addrs = $('#administrative-area').find('a'); liandong(addrs);
+    var distance = $('#distance').find('a'); liandong(distance);
+    var sporttype = $('#sport-type').find('a'); liandong(sporttype);
+    function liandong(c){
+        for(var i = 0 ; i < c.length ; i++)
+        {
+            c.eq(i).on('touchend',function(){
                 var v = $(this).html();
-                $('.chooseTabCont .on').html(v + '<span></span>')
+                $('.chooseTabCont .on').html(v+'<span></span>')
             })
         }
     }
